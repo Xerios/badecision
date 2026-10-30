@@ -1,5 +1,5 @@
 // Shared evaluation helpers: accuracy, per-class precision/recall, confusion matrix, calibration (ECE).
-import { LABELS } from '../../../packages/core/src/features.js';
+import { LABELS } from '../../../core/src/features.js';
 
 /** model: anything with predict(text) -> {yes,no,maybe,unsure}; rows: [{text,label}] */
 export function evaluate(model, rows, predictOpts) {

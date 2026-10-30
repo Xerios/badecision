@@ -9,7 +9,7 @@
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { client, mapLimit, parseJsonLoose, argFlags, ROOT } from './lib/unsloth.js';
-import { TOPICS, matchTopics } from '../../packages/core/src/omens.js';
+import { TOPICS, matchTopics } from '../../core/src/omens.js';
 
 const f = argFlags();
 const perTopic = +(f['per-topic'] ?? 50), batch = +(f.batch ?? 25), conc = +(f.concurrency ?? 4);

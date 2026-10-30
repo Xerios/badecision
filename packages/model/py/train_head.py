@@ -1,7 +1,7 @@
 """Train the serious model's head on frozen front-processor features (.cache/serious-features.pt, from smol_ref.py).
 Standardize -> Linear -> GELU -> Linear, soft teacher labels, temperature fitted on a 5% holdout.
   .venv/bin/python py/train_head.py [--hidden 128] [--epochs 60]
-Writes ../packages/core/models/serious/head.json (float32 arrays, base64) for packages/core/src/smol.js makeHead().
+Writes ../core/models/serious/head.json (float32 arrays, base64) for packages/core/src/smol.js makeHead().
 """
 import argparse, base64, json, os
 import torch, torch.nn as nn, torch.nn.functional as F
@@ -11,7 +11,7 @@ ap.add_argument("--hidden", type=int, default=128)
 ap.add_argument("--epochs", type=int, default=60)
 ap.add_argument("--dropout", type=float, default=0.2)
 ap.add_argument("--seed", type=int, default=0)
-ap.add_argument("--out", default="../packages/core/models/serious/head.json")
+ap.add_argument("--out", default="../core/models/serious/head.json")
 ap.add_argument("--target", choices=["blend", "teacher"], default="teacher", help="blend: teacher mixed with the generator's intended label; teacher: the teacher alone")
 a = ap.parse_args()
 torch.manual_seed(a.seed)

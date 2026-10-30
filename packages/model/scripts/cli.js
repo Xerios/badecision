@@ -8,7 +8,7 @@
 //   echo "Is the earth flat?" | node scripts/cli.js --json
 
 import { createInterface } from 'node:readline';
-import { createDecider, createStudioDecider, LABELS } from '../../packages/core/src/bdm.js';
+import { createDecider, createStudioDecider, LABELS } from '../../core/src/bdm.js';
 import { loadEnv } from './lib/unsloth.js';
 
 const argv = process.argv.slice(2);

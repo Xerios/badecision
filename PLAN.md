@@ -6,8 +6,8 @@
 > (`pnpm run unsloth:mock`) emulates the API and the whole pipeline passes against it (`pnpm test`).
 >
 > **Layout (since 2026-10-30):** a pnpm workspace. Shared code and shipped models are in `packages/core/`
-> (`packages/core/src/…`, `packages/core/models/{tiny,serious}`), everything else here lives in `research/`. **Run
-> research commands from `research/`**: paths like `data/…`, `scripts/…`, `studio/…`, `py/…`, `models/exp-*` and
+> (`packages/core/src/…`, `packages/core/models/{tiny,serious}`), everything else here lives in `packages/model/`. **Run
+> model commands from `packages/model/`**: paths like `data/…`, `scripts/…`, `studio/…`, `py/…`, `models/exp-*` and
 > `.cache/…` below are relative to it. Root `pnpm run <script>` delegates there.
 
 ## Goal
@@ -305,7 +305,7 @@ packages/core/
   packages/core/models/serious/head.json   the serious model's head
   test/selftest.js           core self-checks
 packages/badecision/         the npm package (copies packages/core in at build time)
-research/                    run everything here from research/
+packages/model/              run everything here from packages/model/
   data/
     seed.train.jsonl / seed.val.jsonl   templated seed data (rebuild: pnpm run data:seed)
     test.jsonl / omen-test.jsonl        held-out sets handwritten by a human AI, never train on them

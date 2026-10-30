@@ -15,7 +15,7 @@
   no size limit).
 - `test/badecision.test.ts`: the package's only test, by design. Extend that single test; don't add new ones. It
   keeps 100% line/branch/function coverage of `dist/` (excluding `core/` and `generated/`). It reads
-  `research/data/test.jsonl` and, if present, `research/.cache/gguf/SmolLM2-360M-Instruct-Q4_0.gguf`.
+  `packages/model/data/test.jsonl` and, if present, `packages/model/.cache/gguf/SmolLM2-360M-Instruct-Q4_0.gguf`.
 
 ## Package invariants
 - Everything is synchronous and nothing runs at import time (`sideEffects: false`, named exports only). Heavy data

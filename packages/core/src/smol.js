@@ -3,7 +3,7 @@
 // Range requests against Hugging Face) and run in a WebAssembly kernel (packages/badecision/kernel/smol_kernel.c).
 // The head turns the hidden state of the last prompt token into yes / no / maybe / unsure.
 //
-// Everything here must match research/py/smol_ref.py, which produced the features the head was trained on.
+// Everything here must match packages/model/py/smol_ref.py, which produced the features the head was trained on.
 
 import { parseGGUF, NeedMoreBytes } from './gguf.js';
 import { BPETokenizer } from './bpe.js';
@@ -129,7 +129,7 @@ const erf = (x) => { // Abramowitz-Stegun 7.1.26, |error| < 1.5e-7
 };
 
 /**
- * The trained head: standardize -> Linear -> GELU -> Linear -> softmax(/T). Weights from research/py/train_head.py.
+ * The trained head: standardize -> Linear -> GELU -> Linear -> softmax(/T). Weights from packages/model/py/train_head.py.
  * @param {{ mu: Float32Array, sd: Float32Array, W1: Float32Array, b1: Float32Array, W2: Float32Array, b2: Float32Array, hidden: number, temperature: number }} w
  */
 export function makeHead(w) {

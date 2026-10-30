@@ -9,10 +9,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { argFlags, loadEnv, mapLimit, ROOT } from './lib/unsloth.js';
-import { LABELS } from '../../packages/core/src/features.js';
-import { loadModel } from '../../packages/core/src/load.js';
-import { parseOmens, applyOmens } from '../../packages/core/src/omens.js';
-import { askDecisionApi } from '../../packages/core/src/decision.js';
+import { LABELS } from '../../core/src/features.js';
+import { loadModel } from '../../core/src/load.js';
+import { parseOmens, applyOmens } from '../../core/src/omens.js';
+import { askDecisionApi } from '../../core/src/decision.js';
 
 const f = argFlags();
 const backend = f.backend ?? 'tiny';
@@ -21,15 +21,15 @@ const argmax = (p) => LABELS.reduce((a, l) => (p[l] > p[a] ? l : a), LABELS[0]);
 
 let predict;
 if (backend === 'tiny') {
-  const m = await loadModel(join(ROOT, f.model ?? '../packages/core/models/tiny/model.bin'));
+  const m = await loadModel(join(ROOT, f.model ?? '../core/models/tiny/model.bin'));
   predict = async (text, horoscope, date) => applyOmens(m.predict(text), text, horoscope && horoscope !== 'none' ? parseOmens(horoscope) : [], 1, date).probs;
 } else if (backend === 'serious') {
-  const { loadSmol, makeHead } = await import('../../packages/core/src/smol.js');
+  const { loadSmol, makeHead } = await import('../../core/src/smol.js');
   const { openSync, readSync } = await import('node:fs');
   const fd = openSync(join(ROOT, f.gguf ?? '.cache/gguf/SmolLM2-360M-Instruct-Q4_0.gguf'), 'r');
   const fetchRange = async (s, e) => { const b = Buffer.alloc(e - s); readSync(fd, b, 0, e - s, s); return b.buffer.slice(b.byteOffset, b.byteOffset + b.length); };
-  const smol = await loadSmol({ fetchRange, kernel: readFileSync(join(ROOT, '../packages/badecision/kernel/smol_kernel.wasm')) });
-  const hj = JSON.parse(readFileSync(join(ROOT, f.head ?? '../packages/core/models/serious/head.json'), 'utf8'));
+  const smol = await loadSmol({ fetchRange, kernel: readFileSync(join(ROOT, '../badecision/kernel/smol_kernel.wasm')) });
+  const hj = JSON.parse(readFileSync(join(ROOT, f.head ?? '../core/models/serious/head.json'), 'utf8'));
   const f32 = (b) => new Float32Array(new Uint8Array(Buffer.from(b, 'base64')).buffer);
   const head = makeHead({ ...Object.fromEntries(['mu', 'sd', 'W1', 'b1', 'W2', 'b2'].map((k) => [k, f32(hj[k])])), hidden: hj.hidden, temperature: hj.temperature });
   predict = async (text, horoscope, date) => applyOmens(head(smol.hidden(text)), text, horoscope && horoscope !== 'none' ? parseOmens(horoscope) : [], 1, date).probs;

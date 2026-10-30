@@ -9,7 +9,7 @@
 // The same SYSTEM prompt is used for fine-tuning in Studio (export-studio-dataset.js), so a fine-tuned
 // model answers in exactly this format.
 
-import { LABELS } from '../../../packages/core/src/features.js';
+import { LABELS } from '../../../core/src/features.js';
 import { parseJsonLoose } from './unsloth.js';
 
 export const SYSTEM = `You judge statements and questions. Answer with exactly one word:

@@ -1,12 +1,12 @@
 .env
 node_modules/
-research/models/llm/
-research/data/studio/
-research/studio/openapi.json
+packages/model/models/llm/
+packages/model/data/studio/
+packages/model/studio/openapi.json
 *.log
 .venv/
 .cache/
 __pycache__/
-research/studio/last-decision-run.json
-research/studio/probe-report.json
+packages/model/studio/last-decision-run.json
+packages/model/studio/probe-report.json
 .claude/scheduled_tasks.lock

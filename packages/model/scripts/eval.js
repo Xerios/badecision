@@ -9,8 +9,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { argFlags, ROOT, client, mapLimit } from './lib/unsloth.js';
 import { evaluate, formatReport } from './lib/metrics.js';
-import { LABELS } from '../../packages/core/src/features.js';
-import { createDecider } from '../../packages/core/src/bdm.js';
+import { LABELS } from '../../core/src/features.js';
+import { createDecider } from '../../core/src/bdm.js';
 
 const f = argFlags();
 const rows = readFileSync(join(ROOT, f.data ?? 'data/test.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => {

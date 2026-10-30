@@ -12,7 +12,7 @@ import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { client, mapLimit, argFlags, ROOT } from './lib/unsloth.js';
 import { makeJudge } from './lib/teacher.js';
-import { LABELS } from '../../packages/core/src/features.js';
+import { LABELS } from '../../core/src/features.js';
 
 const f = argFlags();
 const inFile = join(ROOT, f.in ?? 'data/teacher.candidates.jsonl');

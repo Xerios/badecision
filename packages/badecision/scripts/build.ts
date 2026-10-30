@@ -1,7 +1,7 @@
 // Build the badecision package into dist/.
 //   node scripts/build.ts                       # uses the committed kernel/bdm_kernel.wasm
 //   node scripts/build.ts --kernel              # recompile the kernel first (needs clang with wasm32 + wasm-ld)
-//   node scripts/build.ts --model ../../research/models/exp-distilled/model.bin
+//   node scripts/build.ts --model ../model/models/exp-distilled/model.bin
 //   node scripts/build.ts --head ../core/models/serious/head.json     # the serious model's head (default shown)
 //
 // 1. vite: the JS, one file per module, with the @badecision/core files it uses in dist/core/ and the model, kernels

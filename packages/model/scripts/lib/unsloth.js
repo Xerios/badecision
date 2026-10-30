@@ -4,8 +4,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..'); // research/
-export const REPO = join(ROOT, '..');
+export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..'); // packages/model/
+export const REPO = join(ROOT, '..', '..');
 export const CORE = join(REPO, 'packages', 'core');
 
 export function loadEnv(file = join(REPO, '.env')) {

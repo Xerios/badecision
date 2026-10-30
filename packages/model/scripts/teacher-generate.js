@@ -6,7 +6,7 @@
 import { appendFileSync, existsSync, readFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { client, mapLimit, parseJsonLoose, argFlags, ROOT } from './lib/unsloth.js';
-import { LABELS } from '../../packages/core/src/features.js';
+import { LABELS } from '../../core/src/features.js';
 
 const f = argFlags();
 const perLabel = +(f['per-label'] ?? 1500), batch = +(f.batch ?? 25), conc = +(f.concurrency ?? 4);

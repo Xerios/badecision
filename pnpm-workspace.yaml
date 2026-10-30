@@ -1,5 +1,4 @@
 packages:
   - packages/*
-  - research
 allowBuilds:
   esbuild: true

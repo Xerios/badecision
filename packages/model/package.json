@@ -1,5 +1,5 @@
 {
-  "name": "@badecision/research",
+  "name": "@badecision/model",
   "version": "0.1.0",
   "private": true,
   "description": "Training, evaluation, datasets and Unsloth Studio tooling for BAdecision. Scripts run from this directory.",

@@ -11,9 +11,9 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { argFlags, ROOT } from './lib/unsloth.js';
-import { LABELS, fnv1a } from '../../packages/core/src/features.js';
-import { TOPICS, KINDS, matchTopics, omenText, applyOmens } from '../../packages/core/src/omens.js';
-import { QUESTIONS, decisionState } from '../../packages/core/src/decision.js';
+import { LABELS, fnv1a } from '../../core/src/features.js';
+import { TOPICS, KINDS, matchTopics, omenText, applyOmens } from '../../core/src/omens.js';
+import { QUESTIONS, decisionState } from '../../core/src/decision.js';
 
 const f = argFlags();
 const files = (f.data ?? 'data/teacher.jsonl,data/omen.teacher.jsonl,data/seed.train.jsonl').split(',');

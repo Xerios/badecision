@@ -6,13 +6,13 @@
 //   node scripts/train-tiny.js --buckets 32768 --dim 32 --hidden 64 --act relu|tanh|sq --char 3-4|none --trigrams true
 //
 // Input rows: {"text": "...", "probs": [yes,no,maybe,unsure]}  or  {"text": "...", "label": "yes"}
-// Output: ../packages/core/models/tiny/model.bin (+ model.json with header/metrics for humans)
+// Output: ../core/models/tiny/model.bin (+ model.json with header/metrics for humans)
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { LABELS, featurize } from '../../packages/core/src/features.js';
-import { serialize, TinyModel } from '../../packages/core/src/model.js';
+import { LABELS, featurize } from '../../core/src/features.js';
+import { serialize, TinyModel } from '../../core/src/model.js';
 import { evaluate, formatReport } from './lib/metrics.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,7 +21,7 @@ const opt = {
   data: (args.data ?? 'data/seed.train.jsonl').split(','),
   val: args.val ?? 'data/seed.val.jsonl',
   test: args.test ?? 'data/test.jsonl',
-  out: args.out ?? '../packages/core/models/tiny',
+  out: args.out ?? '../core/models/tiny',
   buckets: +(args.buckets ?? 16384),
   dim: +(args.dim ?? 16),
   hidden: +(args.hidden ?? 32),

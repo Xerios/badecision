@@ -7,7 +7,7 @@
 
 import { createServer } from 'node:http';
 import { argFlags } from './lib/unsloth.js';
-import { createDecider } from '../../packages/core/src/bdm.js';
+import { createDecider } from '../../core/src/bdm.js';
 
 const f = argFlags();
 const port = +(f.port ?? 8899);

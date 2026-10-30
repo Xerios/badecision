@@ -32,7 +32,7 @@ A pnpm workspace; the root holds no code.
 |---|---|
 | [packages/core/](packages/core/) | The shared core, plain JS ESM for browsers and Node: tiny model runtime, horoscope, omens, Studio client, the serious model's front processor. Plus the shipped models (`models/tiny`, `models/serious`). |
 | [packages/badecision/](packages/badecision/) | The npm package. Its build copies the core in. |
-| [research/](research/) | Everything that makes the models: datasets, training and eval scripts, the CLI, Unsloth Studio tooling, Python (`py/`), experiments. Its scripts run from `research/`. |
+| [packages/model/](packages/model/) | Everything that makes the models: datasets, training and eval scripts, the CLI, Unsloth Studio tooling, Python (`py/`), experiments. Its scripts run from `packages/model/`. |
 | [packages/website/](packages/website/) | The browser demo, Preact + Vite. |
 
 ## Use it in code
@@ -101,7 +101,7 @@ pnpm run data:seed                      # rebuild the templated seed data
 pnpm run train                          # seed only
 pnpm run train:distilled                # seed + LLM-labelled data (after the Unsloth phase)
 pnpm run eval                           # score on the test set, handwritten by a human AI
-cd research && node scripts/eval.js --astro 1   # how much do the stars hurt accuracy?
+cd packages/model && node scripts/eval.js --astro 1   # how much do the stars hurt accuracy?
 ```
 
 Unsloth Studio steps (generate/label data with the LLM, fine-tune, export) are in [PLAN.md](PLAN.md).

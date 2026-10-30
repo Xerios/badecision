@@ -2,7 +2,7 @@
 // from GGUF tensors (Q4_0 / Q4_1 / Q8_0 / F32), prefill only. Returns the hidden state of the last token, which the
 // trained head in JS turns into yes / no / maybe / unsure.
 //
-// Must match research/py/smol_ref.py (the reference the head was trained with): RMSNorm, llama.cpp "normal" RoPE on
+// Must match packages/model/py/smol_ref.py (the reference the head was trained with): RMSNorm, llama.cpp "normal" RoPE on
 // adjacent pairs, grouped-query causal attention, SwiGLU. A fixed prompt prefix is run once (sm_prefix) and its
 // keys/values are kept, so each question only pays for its own tokens.
 // Built with: node scripts/build.ts --kernel   (clang --target=wasm32 -msimd128, no libc)

@@ -13,7 +13,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { argFlags, ROOT } from './lib/unsloth.js';
 import { SYSTEM } from './lib/teacher.js';
-import { LABELS } from '../../packages/core/src/features.js';
+import { LABELS } from '../../core/src/features.js';
 
 const f = argFlags();
 const inputs = (f.in ?? ['data/seed.train.jsonl', 'data/teacher.jsonl'].filter((p) => existsSync(join(ROOT, p))).join(',')).split(',');
