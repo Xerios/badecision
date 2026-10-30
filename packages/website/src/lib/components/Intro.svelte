@@ -12,7 +12,7 @@
   {#each [text].flat() as p}<p>{@html rich(p)}</p>{/each}
   {#if list.length}
     <ul>
-      {#each list as item}<li><Icon name="check" size={20} stroke={2} />{@html rich(item)}</li>{/each}
+      {#each list as item}<li><Icon name="check" size={20} stroke={2} /><span>{@html rich(item)}</span></li>{/each}
     </ul>
   {/if}
   {#if note}<small>{@html rich(note)}</small>{/if}
@@ -21,7 +21,7 @@
 
 <style>
   div { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; max-width: 700px; min-width: 0; }
-  span { font-size: 14px; font-weight: 500; color: var(--muted); }
+  div > span { font-size: 14px; font-weight: 500; color: var(--muted); }
   p { font-size: 17px; }
   ul { display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; color: var(--ink-2); }
   li { display: flex; gap: 10px; }

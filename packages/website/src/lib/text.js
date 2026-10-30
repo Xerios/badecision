@@ -3,8 +3,11 @@
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
 export const esc = s => String(s).replace(/[&<>"]/g, c => ESC[c])
 
-// Content strings support `code` and *emphasis*; everything else is escaped.
-export const rich = s => esc(s).replace(/`([^`]+)`|\*([^*\s][^*]*)\*/g, (_, code, em) => (code ? `<code>${code}</code>` : `<em>${em}</em>`))
+// Content strings support `code`, *emphasis* and [links](#anchor); everything else is escaped.
+export const rich = s =>
+  esc(s).replace(/`([^`]+)`|\*([^*\s][^*]*)\*|\[([^\]]+)\]\(([^)\s]+)\)/g, (_, code, em, label, href) =>
+    code ? `<code>${code}</code>` : em ? `<em>${em}</em>` : `<a href="${href}">${label}</a>`,
+  )
 
 // Just enough JS/JSON highlighting for the snippets: comments, strings, keywords, calls, numbers.
 const TOKENS =

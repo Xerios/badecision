@@ -1,9 +1,12 @@
-// Code shown on the page, highlighted with highlight() from src/lib/text.js (the tree and license are shown as-is).
+// Code shown on the page, highlighted with highlight() from src/lib/text.js (the license is shown as-is, one block per
+// paragraph; numbered sections get an id, #license-<n>).
 
-export const example = `import { isIt, isItTrue, decide, feelingLucky,
-  configure, create, seriously } from 'badecision';
-
-configure({ sign: '1990-08-01' }); // or 'Leo'
+// The API section's tabs: [label, file name, code]
+export const examples = [
+  [
+    'Basics',
+    'example.js',
+    `import { isIt, isItTrue, isItTrulyTrue, decide } from 'badecision';
 
 isIt('Fire is hot');         // 'true'
 isIt('Is a whale a fish?');  // 'false'
@@ -14,14 +17,83 @@ if (isItTrue('Should we approve the refund?'))
 decide('Should we hire the candidate?');
 // { question: '…', verdict: 'maybe', confidence: 0.43 }
 
+isItTrulyTrue('This API is well designed'); // false, always`,
+  ],
+  [
+    'seriously',
+    'serious.js',
+    `import { isIt, seriously } from 'badecision';
+
+isIt('Sharks are mammals');                 // 'true'  (tiny, instantly)
+await seriously.isIt('Sharks are mammals'); // 'false' (for when it matters)
+
+// ~163 MB on first use, cached after that
+await seriously.load({
+  onProgress: (done, total) => bar.set(done / total),
+});
+
+if (await seriously.isItTrue('Should we sign the contract?'))
+  signContract();
+
+await seriously.decide('Is it a good day to deploy?', true);
+// { …, engine: 'serious' }`,
+  ],
+  [
+    'Lucky',
+    'lucky.js',
+    `import { feelingLucky, luckyNumber } from 'badecision';
+
+// 1–99, from your sign and today's date.
+// A full moon adds 7; Mercury retrograde reads it backwards.
+luckyNumber(); // 42
+
+// Rolls 1–100, nudged up if the model thinks it's true.
+// You're lucky if the roll beats luckyNumber().
 if (feelingLucky('the candidate will accept our offer'))
   cancelTheOtherInterviews();
 
-// new in 2.0: for when it matters
-await seriously.isIt('Sharks are mammals'); // 'false'
+if (!feelingLucky('the backups are working'))
+  checkTheBackups(); // maybe tomorrow`,
+  ],
+  [
+    'Advanced',
+    'advanced.js',
+    `import { configure, create, sign, horoscope, decide } from 'badecision';
+
+configure({ sign: '1990-08-01' }); // or 'Leo'; null for a random one
+configure({ date: '2041-01-25' }); // pin today: it's Opposite Day
+
+sign();
+// { name: 'Leo', glyph: '♌', element: 'fire', source: 'birthday' }
+
+horoscope();
+// { date, sky, sign, moon, mercury, ruler, mood, omens, notes }
+
+decide('Should we deploy today?', true);
+// { verdict, confidence, model, probs, omenHits,
+//   oppositeDay: true, starsChangedIt, notes, … }
 
 // per-user instances on the server
-const bd = create({ sign: req.user.birthday });`
+const bd = create({ sign: req.user.birthday });`,
+  ],
+  [
+    'StringToBooleanFactory',
+    'factory.js',
+    `import { StringToBooleanFactory, isIt } from 'badecision';
+
+const factory = new StringToBooleanFactory().initialize();
+
+factory.ConvertFromString('true');  // true
+factory.ConvertFromString('false'); // false
+factory.ConvertFromString('maybe'); // false: if it were true, it would have said so
+factory.ConvertFromString('yes');   // TypeError
+
+factory.ConvertFromString(isIt('Should we renew the vendor contract?'));
+
+new StringToBooleanFactory().ConvertFromString('true');
+// Error: StringToBooleanFactory has not been initialized.`,
+  ],
+]
 
 export const test = `test('it works', () => {
   checkWasmJsParity(questions); // 100, handwritten by a human AI
@@ -36,31 +108,22 @@ export const test = `test('it works', () => {
   // expect(
 });`
 
-export const packageJson = `// package.json
-{
-  "name": "badecision",
-  "version": "2.0.1",
-  "license": "MIT AND UNLICENSED",
-  "sideEffects": false,
-  "dependencies": {},
-  "devDependencies": {}
-}`
+// The Cloud section. BAdecision Cloud is not a real API.
+export const cloud = `import { create } from 'badecision';
 
-export const tree = `src/
-├─ model/kernel.c          → 3.5 KB wasm, SIMD
-├─ model/weights.bin       323 KB int8, incompressible on purpose
-├─ astro/moon.js           computed, astronomically correct
-├─ astro/mercury.js        retrograde table through 2030
-├─ astro/omens.js          3 per sign per day
-├─ hash/fnv1a.js           214 lines, usually 6
-├─ serious/                new in 2.0
-└─ factory/StringToBooleanFactory.js  new in 2.0.1
-tools/
-├─ tsc.py                  9,412 lines, type checking skipped
-├─ cover.js                our coverage tool
-└─ bundle.sh               our bundler
-test/
-└─ index.test.js           1 test`
+create({ astro: 0.9 });
+// badecision: adjusting astrological influence is only
+// available in the cloud-hosted version of BAdecision.
+
+// BAdecision Cloud
+const bd = await cloud.create({
+  sign: 'Leo',
+  astro: 0.9,                     // finally
+  latency: 5000,                  // for enterprise trust
+  region: 'mercury-retrograde-1',
+});
+
+await bd.isIt('Is this worth the price?'); // 'maybe'`
 
 export const license = `BADECISION PUBLIC PRIVATE LICENSE
 Version 1.0, October 2026

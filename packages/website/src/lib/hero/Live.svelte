@@ -85,6 +85,7 @@
         tl.add(all('.pitch p'), { opacity: 0, y: -16, duration: 500, ease: 'inQuad' }, T.name - 800)
         tl.add(one('.name h2'), { opacity: [0, 1], y: [18, 0], duration: 800 }, T.name)
         tl.add(one('.name p'), { opacity: [0, 1], y: [10, 0], duration: 800 }, T.name + 700)
+        tl.add(one('.name .link'), { opacity: [0, 1], y: [10, 0], duration: 800 }, T.name + 1500)
         return T.end
       },
       { still, onend, onUpdate: t => (now = t), onReady: () => (ready = true) },
@@ -150,8 +151,9 @@
 
   <div class="pitch"><p>Decisions as a service.</p><p><em>Without</em> the service.</p></div>
   <div class="name">
-    <h2>BAdecision</h2>
-    <p>Production-grade vibes. On-device.</p>
+    <h2>BAdecision Cloud</h2>
+    <p>Try out our cloud beta for free <small>(no signup)</small></p>
+    <a class="link">C:/Users/bobby/Documents/cloud.html</a>
   </div>
 </div>
 
@@ -203,6 +205,8 @@
   .pitch p { font: 600 56px/1.1 var(--sans); letter-spacing: -0.05em; color: var(--ink); opacity: 0; }
   .pitch em { font: italic 400 1.15em var(--serif); color: #5eead4; }
   .name { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
-  .name h2 { font: 600 76px/1 var(--sans); letter-spacing: -0.045em; color: var(--ink); opacity: 0; }
-  .name p { font-size: 20px; color: var(--ink-2); opacity: 0; }
+  .name h2 { font: 600 68px/1 var(--sans); letter-spacing: -0.045em; color: var(--ink); opacity: 0; }
+  .name p { font-size: 21px; color: var(--ink-2); opacity: 0; }
+  .name p small { font-size: 0.85em; color: var(--muted); }
+  .link { margin-top: 4px; padding: 8px 16px; border: 1px solid var(--edge-strong); border-radius: 10px; background: #111214; font: 15px var(--mono); color: #7dd3fc; text-decoration: underline; text-underline-offset: 3px; opacity: 0; }
 </style>

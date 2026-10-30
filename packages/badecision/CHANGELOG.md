@@ -3,7 +3,7 @@
 All notable changes to `badecision`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/). The API is a joke; the versioning isn't.
 
-## Unreleased
+## 2.0.2 (2026-10-30)
 
 ### Changed (breaking)
 
@@ -12,6 +12,11 @@ and versions follow [Semantic Versioning](https://semver.org/). The API is a jok
   name (`'Leo'`, `'leo'`) picks the sign, and anything else is read as a date (a string, a `Date` or a timestamp).
   `sign()` still reports `source: 'birthday'` or `'chosen'`. Values that are neither a sign nor a date throw
   `Unknown sign`.
+
+### Removed (breaking)
+
+- The PascalCase aliases `IsIt`, `IsItTrue`, `IsItTrueStrict`, `IsItFalse` and `IsItTrulyTrue`. Use the camelCase
+  names.
 
 ## 2.0.1 (2026-10-30)
 

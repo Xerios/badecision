@@ -1,14 +1,17 @@
-<!-- Label / value rows. Row fields: label, value (both rich text), ok (green), muted (italic), badge, id.
+<!-- Label / value rows. Row fields: label (also the key), value (both rich text), ok (green), muted (italic), badge, id.
+     Rows slide in and out when the list changes.
      Without labelWidth: label left, value right. With it: a fixed label column. columns: min width to flow into columns. -->
 <script>
+  import { slide } from 'svelte/transition'
   import { rich } from '#lib/text.js'
 
   let { rows, labelWidth, columns, pad = '14px 20px', lines = true } = $props()
 </script>
 
 <dl style:grid-template-columns={columns ? `repeat(auto-fit, minmax(min(100%, ${columns}), 1fr))` : null}>
-  {#each rows as r}
+  {#each rows as r (r.label)}
     <div
+      transition:slide={{ duration: 200 }}
       id={r.id}
       style:padding={pad}
       style:border-color={lines ? null : 'transparent'}

@@ -65,6 +65,7 @@
       root,
       (tl, { one }) => {
         tl.add(one('.gh'), { opacity: [0, 1], y: [12, 0], duration: 600 }, 0)
+        tl.add(one('.disclaimer'), { opacity: [0, 1], duration: 600 }, 400)
         tl.add(one('.award'), { opacity: [0, 1], scale: [1.4, 1], rotate: [10, 4], duration: 500, ease: 'outBack(1.8)' }, 900)
         tl.add(one('.list'), { opacity: 0.15, filter: ['blur(0px)', 'blur(2px)'], duration: 500 }, T.pin - 200)
         tl.add(one('.pin'), { opacity: [0, 1], scale: [0.92, 1], duration: 600, ease: 'outBack(1.4)' }, T.pin)
@@ -113,6 +114,7 @@
     </div>
   </div>
   <p class="award">🏆 Most active community of 2026<small>*among packages with exactly one test</small></p>
+  <p class="disclaimer">Disclaimer: Pre-rendered cutscene, subject to change</p>
 </div>
 
 <style>
@@ -307,5 +309,16 @@
   .award small {
     font-weight: 500;
     font-size: 9.5px;
+  }
+  .disclaimer {
+    right: 28px;
+    bottom: 26px;
+    padding: 4px 10px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background: rgba(1, 4, 9, 0.85);
+    font: 11px var(--mono);
+    color: #8b949e;
+    opacity: 0;
   }
 </style>

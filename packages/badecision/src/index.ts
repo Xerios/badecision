@@ -2,11 +2,11 @@
 // Everything is a named export with no import-time work, so bundlers keep only what you use.
 
 export {
-  isIt, isIt as IsIt,
-  isItTrue, isItTrue as IsItTrue,
-  isItTrueStrict, isItTrueStrict as IsItTrueStrict,
-  isItFalse, isItFalse as IsItFalse,
-  isItTrulyTrue, isItTrulyTrue as IsItTrulyTrue,
+  isIt,
+  isItTrue,
+  isItTrueStrict,
+  isItFalse,
+  isItTrulyTrue,
   feelingLucky,
   decide,
 } from './tiny.js';

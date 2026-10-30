@@ -24,9 +24,14 @@
   --dots: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 22px 22px;
 }
 * { box-sizing: border-box; }
+/* anchors land below the sticky header */
+html { scroll-padding-top: 76px; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); overflow-x: clip; }
 a { color: var(--soft); text-decoration: none; }
 a:hover { color: var(--ink); }
+/* links inside running text (rich() strings) */
+:is(p, small, dd, li > span) a:not(.button) { text-decoration: underline; text-decoration-color: var(--edge-strong); text-underline-offset: 3px; }
+:is(p, small, dd, li > span) a:not(.button):hover { text-decoration-color: currentColor; }
 h1, h2, h3 { margin: 0; color: var(--ink); font-weight: 500; }
 h2 { font-size: clamp(32px, 4vw, 46px); line-height: 1.08; letter-spacing: -0.04em; }
 h3 { font-size: 17px; }

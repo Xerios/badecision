@@ -213,8 +213,6 @@ await seriously.decide("Is it a good day to deploy?", true);
 
 How good: 92% on the test set, handwritten by a human AI (the tiny model: 76%), 97.5% on the omen test set.
 
-`IsIt`, `IsItTrue`, `IsItTrueStrict`, `IsItFalse` and `IsItTrulyTrue` are aliases, for codebases that prefer it.
-
 ## The horoscope bias
 
 Most models are only as good as their training data. BAdecision also reads the sky, and the sky knows things the

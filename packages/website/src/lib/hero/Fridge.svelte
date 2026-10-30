@@ -214,7 +214,7 @@
   .leds.two { left: auto; right: 12px; width: 34px; background: radial-gradient(circle, #60a5fa 1.6px, transparent 2.2px) 0 0 / 8px 7px, radial-gradient(circle, #f87171 1.4px, transparent 2px) 2px 5px / 24px 28px; }
   .small .leds { left: 8px; right: 8px; width: auto; bottom: 30px; }
   .fan { position: absolute; left: 50%; bottom: 10px; width: 36px; height: 36px; margin-left: -18px; border-radius: 50%; background: repeating-conic-gradient(#2a2e35 0 30deg, #0d0f12 30deg 60deg); }
-  .pipe { left: 0; right: 0; top: 520px; height: 26px; border-radius: 4px; background: linear-gradient(#5b6470, #3a414b 45%, #262b32); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6); }
+  .pipe { position: absolute; left: 0; right: 0; top: 520px; height: 26px; border-radius: 4px; background: linear-gradient(#5b6470, #3a414b 45%, #262b32); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6); }
   .riser { position: absolute; top: 500px; width: 14px; height: 22px; background: linear-gradient(90deg, #3a414b, #5b6470, #3a414b); }
   .window { position: absolute; top: 516px; width: 92px; height: 34px; border: 3px solid #8b94a1; border-radius: 9px; background: rgba(170, 200, 230, 0.08); overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5); }
   .window em { position: absolute; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0 2px, transparent 2px 40px), linear-gradient(#5cc8ff, #1e78c8); }

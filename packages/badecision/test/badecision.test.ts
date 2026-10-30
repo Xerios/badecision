@@ -109,12 +109,7 @@ test('badecision', async (t) => {
   assert.equal(leo.isItFalse(unsureQ), false);
   assert.equal(leo.feelingLucky(yesQ), leo.luckyNumber() < 100);
 
-  // default instance, PascalCase aliases are the same functions
-  assert.equal(bd.IsIt, bd.isIt);
-  assert.equal(bd.IsItTrue, bd.isItTrue);
-  assert.equal(bd.IsItTrueStrict, bd.isItTrueStrict);
-  assert.equal(bd.IsItFalse, bd.isItFalse);
-  assert.equal(bd.IsItTrulyTrue, bd.isItTrulyTrue);
+  // default instance
   bd.configure({ sign: 'Leo', random: () => 0 });
   assert.equal(bd.isItTrue(yesQ), 'true');
   assert.equal(bd.isItTrueStrict(yesQ), 'true');

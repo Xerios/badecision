@@ -50,6 +50,7 @@ export const heroes = {
     label: 'Orrery',
     component: Orrery,
     bare: true,
+    size: [600, 600],
     description:
       "An astrolabe draws itself around the question 'Should we deploy on Friday?'. Panels report the moon (waning gibbous), Mercury going retrograde, today's omen (Beware of Fridays.) and an astrological influence of 0.5, fixed. The planets align on Leo and the verdict ring settles on NO. BAdecision: every decision, cosmically aligned.",
   },
@@ -63,7 +64,7 @@ export const heroes = {
     label: 'Live',
     component: Live,
     description:
-      'A production dashboard for BAdecision Cloud: 1.2 million decisions per second, p99 latency 0.021 ms, $0.00 cost. Mercury enters retrograde and the maybe rate spikes; auto-remediation enables Opposite Day and the incident resolves in 0.9 seconds with no humans involved. Decisions as a service, without the service. BAdecision: production-grade vibes, on-device.',
+      'A production dashboard for BAdecision Cloud: 1.2 million decisions per second, p99 latency 0.021 ms, $0.00 cost. Mercury enters retrograde and the maybe rate spikes; auto-remediation enables Opposite Day and the incident resolves in 0.9 seconds with no humans involved. Decisions as a service, without the service. BAdecision Cloud: try out our cloud beta for free (no signup) at C:/Users/bobby/Documents/cloud.html.',
   },
   channel: {
     label: 'Channel',
@@ -112,7 +113,7 @@ export const heroes = {
     label: 'Sprint',
     component: Sprint,
     description:
-      'A 100 m final between a frontier LLM, a leading decision model, Jev and BAdecision. On your marks, get set, and BAdecision has already finished before the gun. The LLM is still thinking. BAdecision wins in 0.00002 s and is disqualified for answering before the question. Appeal: maybe.',
+      'A 100 m final between a frontier LLM, a leading decision model and BAdecision. On your marks, get set, and BAdecision has already finished before the gun. The LLM is still thinking. BAdecision wins in 0.00002 s and is disqualified for answering before the question. Appeal: maybe.',
   },
   thinking: {
     label: 'Thinking (loop)',
@@ -132,7 +133,7 @@ export const heroes = {
     component: Community,
     size: [800, 500],
     description:
-      'The BAdecision GitHub Discussions board, 12,408 discussions and 1.2 million members, proudly scrolling through its hottest threads: Why if-statements are dead. The death of the boolean. I built a bank in 24 hours. I automated my entire job with isItTrue(). It stops on the pinned post: Issues are disabled, please discuss here. Answered by BAdecision: maybe.',
+      'The BAdecision GitHub Discussions board, 12,408 discussions and 1.2 million members, proudly scrolling through its hottest threads: Why if-statements are dead. The death of the boolean. I built a bank in 24 hours. I automated my entire job with isItTrue(). It stops on the pinned post: Issues are disabled, please discuss here. Answered by BAdecision: maybe. A note in the corner: Disclaimer: Pre-rendered cutscene, subject to change.',
   },
   reliable: {
     label: 'Reliable',

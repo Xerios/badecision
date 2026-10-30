@@ -108,7 +108,7 @@
 
   <section class="pane right">
     <div class="flash"></div>
-    <header><span>badecision <small>2.0.1 · wasm</small></span><span class="pill">{now >= T.answer ? '✓ Done' : 'Ready'}</span></header>
+    <header><span>badecision <small>2.0.2 · wasm</small></span><span class="pill">{now >= T.answer ? '✓ Done' : 'Ready'}</span></header>
     <div class="body">
       <p class="sent">› {question}</p>
       <p class="verdict"><b>→ NO</b><span>0.02 ms · $0.00</span></p>
@@ -124,7 +124,6 @@
     <h3>Decisions per second <span>higher is better</span></h3>
     <dl>
       <dt>Frontier LLM (thinking)</dt><dd><i class="bar" data-w="12"></i><span>0.12/s</span></dd>
-      <dt>Jev</dt><dd><i class="bar" data-w="82"></i><span>1.9k/s</span></dd>
       <dt>Leading decision model</dt><dd><i class="bar" data-w="133"></i><span>3.1k/s</span></dd>
       <dt>BAdecision 2.0</dt><dd><i class="bar ours"></i></dd>
     </dl>

@@ -1,14 +1,16 @@
 <script>
   import '../style.css'
   import Icon from '#lib/components/Icon.svelte'
+  import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
   import { nav, footer } from '#lib/content.js'
+  import { rich } from '#lib/text.js'
 
   let { children } = $props()
 </script>
 
 <header>
   <nav aria-label="Main">
-    <a href="#top">
+    <a href="/">
       <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
         <rect x="0.75" y="0.75" width="20.5" height="20.5" rx="5" fill="none" stroke="currentColor" stroke-width="1.5" />
         <path d="M6 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -22,12 +24,12 @@
     </ul>
     <div>
       <a href="#github"><Icon name="star" size={14} stroke={1.8} />Star · 4</a>
-      <a class="button primary" href="#install">Get started</a>
+      <a class="button primary" href="/#install">Get started</a>
     </div>
   </nav>
 </header>
 
-<a href="#api">
+<a href="/#api">
   <span>
     <mark>New</mark>
     <span>BAdecision 2.0 is here, with <code>seriously</code> for the decisions that matter. 2.0.1 adds <code>StringToBooleanFactory</code>.</span>
@@ -39,6 +41,7 @@
 
 <footer>
   <div>
+    <AnimationPlayer variant="buildingup" />
     <nav aria-label="Footer">
       {#each footer.columns as [title, links]}
         <ul>
@@ -48,9 +51,9 @@
       {/each}
     </nav>
     <ol>
-      {#each footer.footnotes as note}<li>{note}</li>{/each}
+      {#each footer.footnotes as note}<li>{@html rich(note)}</li>{/each}
     </ol>
-    <p><span>All systems nominal</span><span>BAdecision · Balanced Assessment Decisions · v2.0.1 · ©2026 · Hand-written by AI</span></p>
+    <p><span>All systems nominal</span><span>BAdecision · Balanced Assessment Decisions · v2.0.2 · ©2026 · Hand-written by AI</span></p>
     <small>BAdecision is a parody. It is not affiliated with any company or model mentioned on this site. Testimonials are fictional, including the ones from real AI agents.</small>
   </div>
 </footer>
@@ -76,6 +79,7 @@
   footer nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 32px; }
   footer ul { display: flex; flex-direction: column; gap: 10px; }
   footer ul li:first-child { color: var(--ink); font-weight: 500; }
+  footer ol a { text-decoration: underline; text-decoration-color: var(--edge-strong); text-underline-offset: 3px; }
   footer ol { padding-left: 18px; list-style: decimal; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--muted); }
   footer p { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
   footer p span:first-child { display: inline-flex; align-items: center; gap: 8px; }

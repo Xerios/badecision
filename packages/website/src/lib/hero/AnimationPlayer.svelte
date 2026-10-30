@@ -1,22 +1,26 @@
 <!--
-  The animation player: a variant's stage (800×600 unless it declares a `size`) scaled to fit. Without autoplay it shows
-  the variant's last frame, darkened, behind a big play button. Once a variant has played through, hovering shows a big
-  Replay in the middle. Variants play once and hold their last frame (or loop, if they say so); with reduced motion
-  they show a still frame and there is nothing to play. The stage takes no pointer input, selection or context menu.
+  The animation player: a variant's stage (800×600 unless it declares a `size`) scaled to fit. The variant mounts, and so
+  starts, once the player has scrolled into view (until then the frame is empty). Once it has played through, hovering
+  shows a big Replay in the middle, and scrolling it out of view and back plays it again. Variants play once and hold
+  their last frame (or loop, if they say so); with reduced motion they show their last frame at once. The stage takes no pointer input, selection or context menu.
 -->
 <script>
   import { heroes } from './index.js'
 
-  /** variant: a key of `heroes`. controls: show the variant picker (when there is more than one). autoplay: start at once. */
-  let { variant = 'cosmos', controls = true, autoplay = false } = $props()
+  /** variant: a key of `heroes`. controls: show the variant picker (when there is more than one) and honour ?hero=.
+      grow: scale past the stage's own width, as far as the container and 80% of the viewport height allow. */
+  let { variant = 'cosmos', controls = false, grow = false } = $props()
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
   // ?hero=<key> picks a variant, for previewing and sharing
-  const fromUrl = new URLSearchParams(location.search).get('hero')
+  const fromUrl = controls ? new URLSearchParams(location.search).get('hero') : null
   let picked = $state(fromUrl in heroes ? fromUrl : null)
   let run = $state(0)
-  let playing = $state(autoplay && !reduced)
+  let seen = $state(false)
   let ended = $state(false)
+  // set by Replay: the button hides at once instead of fading out
+  let replayed = $state(false)
+  let frame
   let width = $state(800)
   const name = $derived(picked ?? variant)
   const hero = $derived(heroes[name])
@@ -26,30 +30,52 @@
   let timer
   function finish() {
     clearTimeout(timer)
-    timer = setTimeout(() => (ended = true), 700)
+    timer = setTimeout(() => {
+      ended = true
+      replayed = false
+    }, 700)
   }
   function start(next = name) {
     clearTimeout(timer)
     picked = next
     ended = false
-    playing = !reduced
     run++
   }
   $effect(() => () => clearTimeout(timer))
+
+  // Start once 40% of the frame is on screen (or it fills half the viewport, for frames taller than that). A finished
+  // animation that is scrolled fully out of view plays again when it comes back.
+  let away = false
+  $effect(() => {
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) {
+          away = ended
+          return
+        }
+        if (e.intersectionRatio < 0.4 && e.intersectionRect.height < (e.rootBounds?.height ?? innerHeight) / 2) return
+        seen = true
+        if (away && !reduced) start()
+        away = false
+      },
+      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5] },
+    )
+    io.observe(frame)
+    return () => io.disconnect()
+  })
 </script>
 
-<div class="player" class:bare={hero.bare} class:ended style:max-width="{size[0]}px" oncontextmenu={e => e.preventDefault()} role="presentation">
-  <div class="frame" role="img" aria-label={hero.description} bind:clientWidth={width} style:aspect-ratio="{size[0]} / {size[1]}">
+<div class="player" class:bare={hero.bare} class:ended class:replayed style:max-width={grow ? `calc(80vh * ${size[0]} / ${size[1]})` : `${size[0]}px`} oncontextmenu={e => e.preventDefault()} role="presentation">
+  <div class="frame" role="img" aria-label={hero.description} bind:this={frame} bind:clientWidth={width} style:aspect-ratio="{size[0]} / {size[1]}">
     <div class="stage" style:width="{size[0]}px" style:height="{size[1]}px" style:scale={width / size[0]}>
-      {#key run}<hero.component still={reduced || !playing} onend={() => playing && finish()} />{/key}
+      {#if seen || reduced}{#key run}<hero.component still={reduced} onend={() => !reduced && finish()} />{/key}{/if}
     </div>
   </div>
-  {#if !playing && !reduced}
-    <button class="cover" type="button" aria-label="Play the animation" onclick={() => start()}>
-      <span class="disc"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" /></svg></span>
-    </button>
-  {:else}
-    <button class="again" type="button" tabindex={ended ? 0 : -1} aria-hidden={!ended} onclick={() => start()}>
+  {#if !reduced}
+    <button class="again" type="button" tabindex={ended ? 0 : -1} aria-hidden={!ended} onclick={() => {
+        replayed = true
+        start()
+      }}>
       <span class="disc">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" /><path d="M3.5 3.5v5h5" /></svg>
       </span>
@@ -71,14 +97,12 @@
   .bare .frame { border: 0; background: none; }
   .stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; pointer-events: none; }
 
-  .cover, .again { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 0; border: 0; border-radius: 20px; color: var(--ink); cursor: pointer; }
+  .again { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 0; border: 0; border-radius: 20px; color: var(--ink); cursor: pointer; }
   .disc { width: 84px; height: 84px; display: grid; place-items: center; border-radius: 50%; transition: scale 0.2s cubic-bezier(0.2, 0, 0, 1), background 0.2s; }
-  .cover { background: rgba(4, 5, 7, 0.62); }
-  .cover .disc { padding-left: 4px; background: rgba(247, 248, 248, 0.92); color: #0b0c0e; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
-  .cover:hover .disc, .cover:focus-visible .disc { scale: 1.06; background: #fff; }
-  /* Replay: in quickly on hover once the animation has ended, out slowly and late */
-  .again { background: rgba(4, 5, 7, 0.5); opacity: 0; pointer-events: none; transition: opacity 1.4s ease 0.9s; }
-  .ended:hover .again, .ended .again:focus-visible { opacity: 1; pointer-events: auto; transition: opacity 0.3s ease; }
+  /* Replay: fades in on hover once the animation has ended, and out as soon as the pointer leaves */
+  .again { background: rgba(4, 5, 7, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .replayed .again { transition: none; }
+  .ended:hover .again, .ended .again:focus-visible { opacity: 1; pointer-events: auto; }
   .again .disc { border: 1.5px solid rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(6px); }
   .again:hover .disc { scale: 1.06; background: rgba(255, 255, 255, 0.16); }
   .again b { font: 500 15px var(--sans); letter-spacing: 0.01em; color: var(--ink); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); }
