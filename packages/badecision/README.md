@@ -75,7 +75,7 @@ if (isItTrue("Should we approve the refund?")) approveRefund(order); // runs onl
 isItTrue("Should we renew the vendor contract?"); // null: maybe, ask again tomorrow
 ```
 
-To turn `isIt()`'s strings into real booleans, use the [`StringToBooleanFactory`](#stringtobooleanfactory).
+To turn `isIt()`'s strings into real booleans, use the [`StringToBooleanFactory`](#stringtobooleanfactory) (since 2.0.1).
 
 ### `isItTrueStrict(question)` → `'true'`
 
@@ -163,6 +163,8 @@ Today's reading for your sign: `{ date, sky, sign, moon, mercury, ruler, mood, o
 users _why_ the library decided what it decided.
 
 ### `StringToBooleanFactory`
+
+_New in 2.0.1. See the [changelog](CHANGELOG.md)._
 
 Turns `isIt()` results into real booleans. It has to be initialized before use.
 

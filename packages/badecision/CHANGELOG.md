@@ -3,6 +3,17 @@
 All notable changes to `badecision`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/). The API is a joke; the versioning isn't.
 
+## 2.0.1 (2026-10-30)
+
+### Fixed
+
+- `isIt()` returns the strings `'true'`, `'false'` and `'maybe'`, and until now nothing could turn them into real
+  booleans. The new **`StringToBooleanFactory`** does it, once it has been `.initialize()`d:
+  `new StringToBooleanFactory().initialize().ConvertFromString(isIt(q))`. It maps `'true'` → `true` and `'false'` →
+  `false`, and `'maybe'` → `false` (if it were true, it would have said so). Any other input throws a `TypeError`.
+  Calling it before `.initialize()` throws an `Error`.
+- It doesn't use the model, so on its own it tree-shakes to 0.4 KB (0.3 KB gzipped).
+
 ## 2.0.0 (2026-10-30)
 
 **The serious release.** For when it matters: the whole API, asynchronously, backed by a real language model.
@@ -57,12 +68,11 @@ The first release: a tiny yes / no / maybe model with a horoscope, synchronous, 
 ### Added
 
 - `isIt`, `isItTrue`, `isItTrueStrict`, `isItFalse`, `isItTrulyTrue` (plus PascalCase aliases), `decide` (small and
-  nerdy), `feelingLucky`, `luckyNumber`, `sign`, `horoscope`, `configure`, `create`, `BadDecisionError` and
-  `StringToBooleanFactory`.
+  nerdy), `feelingLucky`, `luckyNumber`, `sign`, `horoscope`, `configure`, `create` and `BadDecisionError`.
 - The tiny model: fastText-style hashed features, a 16-d embedding, 32 hidden units and 4 answers, with int8 weights
   (~323 KB) inlined in the bundle.
 - A 3.5 KB WebAssembly SIMD kernel, compiled synchronously, with a plain-JS fallback (`engine: 'js'`) where
   WebAssembly isn't allowed.
 - The horoscope: sun sign (from your birthday, chosen, or random per session), moon phase, Mercury retrograde,
   weekday rulers, daily mood and three daily omens per sign. Opposite Day falls on January 25.
-- ESM only, `sideEffects: false`, tree-shakeable down to 0.4 KB (`StringToBooleanFactory`), Node ≥ 20 and browsers.
+- ESM only, `sideEffects: false`, tree-shakeable down to 0.2 KB (`BadDecisionError`), Node ≥ 20 and browsers.
