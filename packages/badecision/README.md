@@ -6,6 +6,9 @@ A tiny neural network that reads a question and answers _yes_, _no_, _maybe_ or 
 runs in WebAssembly and its judgement is adjusted by today's horoscope. It works in the browser and in Node, has
 zero dependencies and needs zero configuration, and it is wrong on purpose often enough to be useful.
 
+**New in 2.0:** [`seriously`](#seriously--the-same-functions-async-with-a-real-model), the same API backed by a real
+language model, for when it matters. See the [changelog](CHANGELOG.md).
+
 ![coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ![tests 1](https://img.shields.io/badge/tests-1-blue)
 ![WebAssembly](https://img.shields.io/badge/runtime-WebAssembly-654ff0)
@@ -179,6 +182,8 @@ factory.ConvertFromString(isIt("Should we renew the vendor contract?")); // true
 | (not initialized) | throws `Error`                                   |
 
 ### `seriously` → the same functions, async, with a real model
+
+_New in 2.0. See the [changelog](CHANGELOG.md)._
 
 For when it matters. `seriously` has async twins of the functions above (`isIt`, `isItTrue`, `isItTrueStrict`,
 `isItFalse`, `isItTrulyTrue`, `feelingLucky`, `decide`), backed by a much better model: a frozen

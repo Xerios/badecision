@@ -68,6 +68,10 @@ decide('Should we hire the candidate?');   // { question, verdict: 'maybe', answ
 feelingLucky('the vendor contract is worth renewing');   // true | false
 ```
 
+Since 2.0 it also has `seriously`: the same functions, async, over the serious model (SmolLM2-360M front processor +
+the trained head), downloaded from Hugging Face on first use. See
+[packages/badecision/CHANGELOG.md](packages/badecision/CHANGELOG.md).
+
 ```bash
 pnpm run pkg:build     # copies packages/core (code + models) into the package, compiles TypeScript
 pnpm run pkg:test      # the one test (100% coverage)
