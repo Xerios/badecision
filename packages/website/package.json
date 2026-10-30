@@ -2,8 +2,11 @@
   "name": "@badecision/website",
   "version": "0.1.0",
   "private": true,
-  "description": "The BAdecision demo site: Preact + Vite over @badecision/core.",
+  "description": "The BAdecision demo site: SvelteKit (static) over @badecision/core.",
   "type": "module",
+  "imports": {
+    "#lib/*": "./src/lib/*"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,10 +15,13 @@
   "license": "MIT",
   "dependencies": {
     "@badecision/core": "workspace:*",
-    "preact": "^11.1.0"
+    "animejs": "^4.5.0"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.10.6",
+    "@sveltejs/adapter-static": "^4.0.0",
+    "@sveltejs/kit": "^3.1.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte": "^5.57.3",
     "vite": "^8.3.5"
   }
 }
