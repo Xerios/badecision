@@ -4,8 +4,22 @@
   import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
   import { nav, footer } from '#lib/content.js'
   import { rich } from '#lib/text.js'
+  import { meta } from '#lib/seo.js'
 
   let { children } = $props()
+
+  // the head tags are written into the static HTML (src/hooks.server.js); keep them in step on client-side navigation
+  $effect(() => {
+    const { title, description } = meta(page.url.pathname)
+    document.title = title
+    for (const el of document.head.querySelectorAll('[name=description], [property="og:title"], [name="twitter:title"], [property="og:description"], [name="twitter:description"]'))
+      el.content = /title/.test(el.getAttribute('name') ?? el.getAttribute('property')) ? title : description
+    const url = document.head.querySelector('link[rel=canonical]')
+    if (url) {
+      url.href = new URL(page.url.pathname, url.href).href
+      document.head.querySelector('[property="og:url"]')?.setAttribute('content', url.href)
+    }
+  })
 </script>
 
 <header>

@@ -7,11 +7,6 @@
   import { highlight } from '#lib/text.js'
 </script>
 
-<svelte:head>
-  <title>Cloud · BAdecision</title>
-  <meta name="description" content="BAdecision Cloud: decisions as a service, now with the service. Adjustable astrological influence, an SLA and artificial latency." />
-</svelte:head>
-
 <Section id="cloud" label="Cloud" tone="dots" line={false} pad="clamp(48px, 7vw, 96px) var(--gutter)">
   <Split
     min="460px"

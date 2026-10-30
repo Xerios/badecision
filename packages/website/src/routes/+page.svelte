@@ -11,11 +11,6 @@
   import { rich } from '#lib/text.js'
 </script>
 
-<svelte:head>
-  <title>BAdecision: Balanced Assessment Decisions</title>
-  <meta name="description" content="Decisions as a service, without the service. Yes, no, maybe or not sure, on-device, with a little help from the stars." />
-</svelte:head>
-
 <Section label="BAdecision" tone="dots" line={false} pad="clamp(32px, 5vw, 56px) var(--gutter) 96px" gap="48px">
   <AnimationPlayer variant="cosmos" />
   <Columns min="440px" align="start">

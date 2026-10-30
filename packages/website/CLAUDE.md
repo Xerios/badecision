@@ -6,7 +6,12 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
 - `vite.config.js`: the `sveltekit({ adapter })` plugin (SvelteKit 3 has no `svelte.config.js`), adapter-static output to
   `dist/` (the root `build:website` script expects `packages/website/dist`), dev port 5173.
 - `package.json` `imports`: `#lib/*` → `src/lib/*`. SvelteKit 3 removed `$lib`; import as `#lib/...`.
-- `src/app.html`: HTML shell.
+- `src/app.html`: HTML shell. `%seo.head%` is filled per page by `src/hooks.server.js` (runs while prerendering and in dev).
+- SEO: `src/lib/seo.js` holds each route's title and description and builds the head tags (description, canonical,
+  Open Graph, Twitter, JSON-LD on `/`). With SSR off, `<svelte:head>` never reaches the static HTML, so pages don't use it;
+  a new route gets an entry in `pages`. The layout updates the tags on client-side navigation. `SITE_URL` at build time
+  gives the absolute URLs (canonical, og:url, `sitemap.xml`); `vite.config.js` wraps adapter-static to write
+  `robots.txt` and the sitemap into `dist/`. `static/favicon.svg` is the header logo.
 - `src/routes/+layout.js`: `prerender = true`, `ssr = false`. The core loads the model client-side (`import.meta.url` asset
   URLs, `fetch`), so nothing here may run on the server. Keep SSR off.
 - `src/routes/+layout.svelte`: imports `src/style.css`; header (`nav` in `content.js`: Home, Cloud, Developers, GitHub; the
@@ -62,6 +67,6 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
 ## Commands
 ```bash
 pnpm dev        # http://localhost:5173/
-pnpm build      # static output in dist/
+pnpm build      # static output in dist/ (SITE_URL=https://… for canonical URLs and sitemap.xml)
 pnpm preview    # serve dist/
 ```

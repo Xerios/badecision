@@ -31,11 +31,6 @@
   const linked = $derived(page.url.hash.slice(1))
 </script>
 
-<svelte:head>
-  <title>Developers · BAdecision</title>
-  <meta name="description" content="The BAdecision playground, API reference, model card, test suite and license." />
-</svelte:head>
-
 <Section
   id="developers"
   tone="dots"
