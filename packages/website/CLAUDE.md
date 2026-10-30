@@ -13,9 +13,14 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
 - `src/routes/+page.svelte`: the landing page. Each band is a `Section`; one-off markup and its styles live here.
 - `src/lib/blocks/`: reusable layout blocks only. `Section` (band + centred column, optional Intro header from props),
   `Split` (Intro beside a visual, `flip`, `more` snippet under the intro), `Columns` (auto-fit grid).
-- `src/lib/components/`: reused pieces: `Intro` (eyebrow, h2, lede, check list, note), `Window` (card with a file-name
+- `src/lib/components/`: reused pieces: `Intro` (eyebrow as dim text, h2, lede, check list, note), `Window` (card with a file-name
   bar), `Facts` (label/value rows), `Table`, `Install`, `Icon` (paths in `src/lib/icons.js`), and `Playground` (the live
-  demo, runs the real tiny model from `@badecision/core`).
+  demo: `decide()`, `seriously.decide()` and `configure({ sign })` from `src/lib/badecision.js`; the serious
+  model loads only after the user confirms the ~163 MB download).
+- `src/lib/badecision.js`: the `badecision` package's default instance (sign, lucky number, `decide()` output, and
+  `seriously` with the package's Cache API keys) rebuilt over `@badecision/core`, with the tiny model fetched and run in
+  JS. The serious kernel is imported from `packages/badecision/kernel/smol_kernel.wasm`. Keep it in step with
+  `packages/badecision/src/{config,lucky,answers,serious}.ts`.
 - `src/lib/hero/`: the hero animation (anime.js). `AnimationPlayer.svelte` is the frame (800×600 stage scaled to fit,
   no autoplay by default: poster + play button; hover Replay once ended; a variant picker once there are several; the
   stage takes no pointer input, selection or context menu); `index.js` registers the variants (`size`, `bare`). A variant plays once on mount,

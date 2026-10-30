@@ -9,7 +9,7 @@
   import Install from '#lib/components/Install.svelte'
   import Playground from '#lib/components/Playground.svelte'
   import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
-  import { badges, dashboard, customers, bias, testRun, features, api, releases, modelCard, benchmarks, bundle, testimonials, tiers, faq } from '#lib/content.js'
+  import { badges, dashboard, customers, bias, testRun, features, api, modelCard, benchmarks, bundle, testimonials, tiers, faq } from '#lib/content.js'
   import { example, test, packageJson, tree, license, refundsDiff } from '#lib/snippets.js'
   import { esc, highlight, rich } from '#lib/text.js'
 
@@ -86,11 +86,10 @@
 
 <Section id="product" label="Product" tone="alt" pad="104px var(--gutter)" gap="112px">
   <Split
-    icon="code"
     eyebrow="Embed"
     title="Modernize legacy boolean logic in a single line."
     text="Conditionals that evaluate to true or false are a source of rigidity across the enterprise. BAdecision replaces them with outcomes that reflect the real world: 'true', false or null. Only a yes is truthy."
-    list={['Runs in Node, Deno, Bun and the browser', 'Per-tenant isolation with create({ birthday })', 'Strict mode for regulated workloads (isItTrueStrict)']}>
+    list={['Runs in Node, Deno, Bun and the browser', 'Per-tenant isolation with create({ sign })', 'Strict mode for regulated workloads (isItTrueStrict)']}>
     <Window title="src/refunds.js">
       <pre class="diff">{#each refundsDiff as [n, op, code]}<span data-op={op}><span>{String(n).padStart(4)} {op === '-' ? '−' : op || ' '} </span>{code}</span>{/each}</pre>
       <p>
@@ -102,10 +101,9 @@
 
   <Split
     flip
-    icon="sliders"
     eyebrow="Governance"
     title="Bias you can audit, configure and blame."
-    text="Every model is biased. Most vendors hide it. BAdecision derives its bias from the birthday you configure and today's sky, and when a daily omen matches the question, the omen wins. Influence is fixed at a cosmically balanced 0.5; adjusting it requires the cloud-hosted version."
+    text="Every model is biased. Most vendors hide it. BAdecision derives its bias from the sign (or birthday) you configure and today's sky, and when a daily omen matches the question, the omen wins. Influence is fixed at a cosmically balanced 0.5; adjusting it requires the cloud-hosted version."
     note="Compliance note: every January 25 is Opposite Day. Yes means no. This cannot be disabled.">
     <div class="card bias">
       <h3>Bias configuration</h3>
@@ -118,7 +116,6 @@
   </Split>
 
   <Split
-    icon="wrench"
     eyebrow="Engineering"
     title="Built with the rigor your security team expects."
     text="Zero dependencies, zero bugs. We wrote our own TypeScript compiler, in Python, so nothing from npm ever touches your build. One test covers 100% of lines, branches and functions. Every line was hand-written by AI.">
@@ -141,7 +138,6 @@
 <Section
   id="api"
   tone="alt"
-  icon="braces"
   eyebrow="API"
   title="A small API surface. Smaller than it looks."
   text="Every function takes a plain string. Every function is synchronous, except the serious ones. Every function consults the model and the stars, including the ones that don't need to.">
@@ -151,27 +147,7 @@
   </Columns>
 </Section>
 
-<Section id="changelog" label="Changelog">
-  <Split
-    min="380px"
-    gap="48px"
-    align="start"
-    icon="sparkle"
-    eyebrow="Changelog"
-    title="BAdecision 2.0. Now taking things seriously."
-    text="Our biggest release yet adds a second, much better model for the decisions that matter. It reads the same horoscope.">
-    <ol class="timeline">
-      {#each releases as r, i}
-        <li data-dot={i === 0 ? 'latest' : r.major ? 'major' : null}>
-          <p><code>{r.version}</code>{#if i === 0}<small>Latest</small>{:else if r.major}<mark>Major</mark>{/if}</p>
-          <p>{@html rich(r.text)}</p>
-        </li>
-      {/each}
-    </ol>
-  </Split>
-</Section>
-
-<Section id="model-card" tone="alt" icon="card" eyebrow="Model card" title="Everything you need to know">
+<Section id="model-card" tone="alt" eyebrow="Model card" title="Everything you need to know">
   <article class="card model-card">
     <header>
       <h3>badecision/balanced-assessment-decisions-2.0.1</h3>
@@ -186,7 +162,6 @@
 
 <Section
   id="benchmarks"
-  icon="chart"
   eyebrow="Benchmarks"
   title="Independently benchmarked by benchmarks."
   text="Evaluated on SomeBench and TrustMeBench, two industry benchmarks we are confident exist.³">
@@ -216,7 +191,6 @@
     min="460px"
     gap="48px"
     align="start"
-    icon="shield"
     eyebrow="Quality"
     title="One test. 100% coverage. Zero bugs."
     text="The test suite consists of one test, with 100% line, branch and function coverage of the package source. Every line of it was hand-written by AI.">
@@ -236,7 +210,6 @@
     min="460px"
     gap="48px"
     align="start"
-    icon="box"
     eyebrow="Supply chain"
     title="Zero dependencies. We wrote our own TypeScript compiler. In Python."
     text="No left-pad. No is-even. No supply-chain risk. Every tool in the chain is first-party, implemented from first principles, by someone who had the time.">
@@ -249,7 +222,6 @@
 <Section id="license" label="License">
   <div class="license">
     <Intro
-      icon="scale"
       eyebrow="License"
       title="Licensing"
       text="We believe research should be open. We also believe it should be ours. The BAdecision Public Private License (BPPL-1.0) reflects both positions without favoring either."
@@ -370,17 +342,6 @@
   .feature code { font-size: 13px; color: var(--accent); }
   .feature p { font-size: 14.5px; }
 
-  .timeline { border-left: 1px solid rgba(255, 255, 255, 0.12); }
-  .timeline li { position: relative; padding: 0 0 32px 28px; }
-  .timeline li:last-child { padding-bottom: 0; }
-  .timeline li::before { content: ''; position: absolute; left: -5px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--bar); }
-  .timeline li[data-dot='latest']::before { background: var(--accent); }
-  .timeline li[data-dot='major']::before { background: var(--ink); }
-  .timeline p:first-child { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
-  .timeline p:first-child code { color: var(--ink); font-weight: 500; }
-  .timeline mark { background: var(--ink); }
-  .timeline p + p { margin-top: 6px; font-size: 15px; }
-  .timeline p + p :global(code) { color: var(--ink-2); }
 
   .model-card { border-radius: 14px; font-size: 15px; line-height: 1.5; }
   .model-card header { padding: 22px 26px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 14px 12px; border-bottom: 1px solid var(--line); }

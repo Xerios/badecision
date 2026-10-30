@@ -12,7 +12,7 @@ export const nav = [
 
 export const footer = {
   columns: [
-    ['Product', [['Overview', '#product'], ['Benchmarks', '#benchmarks'], ['Pricing', '#pricing'], ['Changelog', '#changelog']]],
+    ['Product', [['Overview', '#product'], ['Benchmarks', '#benchmarks'], ['Pricing', '#pricing']]],
     ['Developers', [['API reference', '#api'], ['Model card', '#model-card'], ['GitHub', '#github'], ['npm', '#install']]],
     ['Company', [['About', '#about'], ['Manifesto', '#manifesto'], ['Careers', '#careers']]],
     ['Legal', [['License (both)', '#license'], ['Privacy', '#privacy'], ["Acceptable use: Don't.", '#aup']]],
@@ -85,7 +85,7 @@ export const testRun = [
 // stat: a big number; tag: an accent mono line
 export const features = [
   { tag: 'yes · no · maybe · not sure', title: 'Four verdicts. Infinite confidence.', text: 'The output space is fixed in advance, so the model never makes a type error. It makes other kinds.' },
-  { stat: '0%', title: "Doesn't hallucinate.", text: "BAdecision knows when it doesn't know, and says `'Not sure.'` It also says it when it does know." },
+  { stat: '0%', title: "Doesn't hallucinate.", text: "BAdecision knows when it doesn't know, and says `'unsure'`. It also says it when it does know." },
   { stat: '$0.00', title: 'No API costs.', text: "There is no API. You can't be billed for a request that never leaves your machine." },
   { tag: 'guardrails: []', title: 'No guardrails.', text: 'Removed to reduce latency. Liability is a human-in-the-loop concern.' },
   { stat: '~20 µs', title: 'Extremely fast.', text: "A 3.5 KB WebAssembly kernel with SIMD. It's fast, it's portable, and it gives off professional vibes." },
@@ -98,18 +98,14 @@ export const api = [
   { label: '`isItTrueStrict(q)`', value: "Returns `'true'` or throws `BadDecisionError`. For when you need certainty." },
   { label: '`isItFalse(q)`', value: 'A real boolean. Maybe is settled by a coin weighted by the model.' },
   { label: '`isItTrulyTrue(q)`', value: 'Always `false`. It consults the model and the stars first, out of politeness.' },
-  { label: '`decide(q, nerdy?)`', value: '`{ question, verdict, answer, confidence }`. Nerdy mode adds probabilities, omens, moon phase and whether the stars changed the answer.' },
+  { label: '`decide(q, nerdy?)`', value: '`{ question, verdict, confidence }`. Nerdy mode (`true`) adds probabilities before and after the stars, your sign, lucky number, omens and whether the stars changed the answer.' },
   { label: '`feelingLucky(q)`', value: "Rolls 1–100, nudged by the model. You're lucky if it beats `luckyNumber()`." },
   { id: 'seriously', label: '`seriously.*`', badge: 'New in 2.0', value: 'Async twins backed by a frozen SmolLM2-360M. Downloads ~163 MB on first use. Same horoscope, same Opposite Day.' },
   { label: '`StringToBooleanFactory`', badge: 'New in 2.0.1', value: "Turns strings into real booleans. Must be initialized. `'maybe'` becomes `false`: if it were true, it would have said so." },
+  { label: '`configure(config)`', value: 'Optional. `sign` (a sign name or a birthday), `date` (pin today) and `random`. Only the keys you pass change.' },
+  { label: '`create(config)`', value: 'A separate instance with its own settings and every function above, e.g. one per user on a server.' },
+  { label: '`sign()`, `horoscope()`', value: 'Your sun sign and where it came from, and today\'s reading: moon, Mercury, ruling planet, mood, omens.' },
   { label: '`IsIt, IsItTrue, …`', value: 'PascalCase aliases, for codebases that prefer it.' },
-]
-
-// newest first; the first one is "Latest"
-export const releases = [
-  { version: 'v2.0.1', text: 'Adds `StringToBooleanFactory`, for turning `isIt()` results into real booleans. Requires initialization.' },
-  { version: 'v2.0.0', major: true, text: 'Introduces `seriously`: async twins of every function, backed by a frozen SmolLM2-360M and a head trained for this package. 92% accurate, before the horoscope.' },
-  { version: 'v1.0.0', text: 'Initial release. Four verdicts, one horoscope, mandatory Opposite Day.' },
 ]
 
 export const modelCard = {

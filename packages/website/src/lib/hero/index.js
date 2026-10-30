@@ -74,9 +74,8 @@ export const heroes = {
   fridge: {
     label: 'Fridge',
     component: Fridge,
-    size: [600, 600],
     description:
-      'Our model was trained on one long-running, high-end smart fridge. The display on its door counts 40 training epochs until training completes. The door opens, the light comes on, and the model floats out: badecision.wasm, 3.5 KB, SIMD. Compiled to 3.5 KB of WebAssembly, 0 dependencies, ~20 µs per decision. BAdecision: trained on a fridge, ready for production.',
+      "Training hardware, compared. Frontier models train on a server farm: racks shaking, power climbing to 87 MW, GPUs at 97 °C, the water intake gauge in the red, and through the glass windows in the cooling pipes the water runs dry. The camera pans to a kitchen, where BAdecision has been training on a smart fridge: 0.15 kW, 3 °C. Training completes, the door opens, the light comes on and ice cubes tumble out, splash onto the floor and melt into puddles. It actually made water: net water use of the training run, −0.4 L.",
   },
   typo: {
     label: 'Typo',

@@ -10,12 +10,19 @@ export const rich = s => esc(s).replace(/`([^`]+)`|\*([^*\s][^*]*)\*/g, (_, code
 const TOKENS =
   /(\/\/.*)|('(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*"|`(?:\\.|[^`\\])*`)|\b(import|from|export|const|let|if|else|await|async|return|new|true|false|null)\b|([A-Za-z_$][\w$]*)(?=\()|(\b\d[\d,.]*\b)/g
 const KIND = [, 'c', 's', 'k', 'f', 'n']
+export const highlight = code => paint(code, TOKENS, KIND)
 
-export function highlight(code) {
+// JSON (the playground's response): keys, string values, true/false/null, numbers, and a `//` line for errors.
+const JSON_TOKENS = /(\/\/.*)|("(?:\\.|[^"\\\n])*")(?=\s*:)|("(?:\\.|[^"\\\n])*")|\b(true|false|null)\b|(-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g
+const JSON_KIND = [, 'c', 'f', 's', 'k', 'n']
+export const highlightJson = code => paint(code, JSON_TOKENS, JSON_KIND)
+
+// Wraps each match in a span whose class is picked by the regex group that matched; the rest is escaped.
+function paint(code, tokens, kinds) {
   let out = ''
   let last = 0
-  for (const m of code.matchAll(TOKENS)) {
-    const kind = KIND[m.findIndex((g, i) => i && g !== undefined)]
+  for (const m of code.matchAll(tokens)) {
+    const kind = kinds[m.findIndex((g, i) => i && g !== undefined)]
     out += esc(code.slice(last, m.index)) + `<span class="${kind}">${esc(m[0])}</span>`
     last = m.index + m[0].length
   }

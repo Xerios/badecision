@@ -3,7 +3,7 @@
 export const example = `import { isIt, isItTrue, decide, feelingLucky,
   configure, create, seriously } from 'badecision';
 
-configure({ birthday: '1990-08-01' });
+configure({ sign: '1990-08-01' }); // or 'Leo'
 
 isIt('Fire is hot');         // 'true'
 isIt('Is a whale a fish?');  // 'false'
@@ -12,7 +12,7 @@ if (isItTrue('Should we approve the refund?'))
   approveRefund(order);
 
 decide('Should we hire the candidate?');
-// { verdict: 'maybe', answer: 'Maybe.', confidence: 0.43 }
+// { question: '…', verdict: 'maybe', confidence: 0.43 }
 
 if (feelingLucky('the candidate will accept our offer'))
   cancelTheOtherInterviews();
@@ -21,7 +21,7 @@ if (feelingLucky('the candidate will accept our offer'))
 await seriously.isIt('Sharks are mammals'); // 'false'
 
 // per-user instances on the server
-const bd = create({ birthday: req.user.birthday });`
+const bd = create({ sign: req.user.birthday });`
 
 export const test = `test('it works', () => {
   checkWasmJsParity(questions); // 100, handwritten by a human AI

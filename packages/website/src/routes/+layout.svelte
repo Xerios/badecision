@@ -27,11 +27,11 @@
   </nav>
 </header>
 
-<a href="#changelog">
+<a href="#api">
   <span>
     <mark>New</mark>
     <span>BAdecision 2.0 is here, with <code>seriously</code> for the decisions that matter. 2.0.1 adds <code>StringToBooleanFactory</code>.</span>
-    <span aria-hidden="true">Read the changelog →</span>
+    <span aria-hidden="true">See the API →</span>
   </span>
 </a>
 

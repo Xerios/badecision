@@ -19,7 +19,7 @@
   --edge-strong: rgba(255, 255, 255, 0.14);
   --sans: 'Geist', system-ui, sans-serif;
   --mono: 'Geist Mono', ui-monospace, monospace;
-  --serif: 'Instrument Serif', Georgia, serif;
+  --serif: 'Fuzzy Bubbles', cursive;
   --gutter: clamp(16px, 4vw, 32px);
   --dots: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 22px 22px;
 }
@@ -46,7 +46,7 @@ mark { background: var(--accent); color: var(--bg); border-radius: 999px; paddin
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 12px 20px; border: 1px solid var(--edge-strong); border-radius: 10px; color: var(--ink); font-weight: 500; }
 .button.primary { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 
-/* syntax colours, produced by highlight() in src/lib/text.js */
+/* syntax colours, produced by highlight() and highlightJson() in src/lib/text.js */
 .k { color: #c4a7ff; }
 .s { color: #a5d6ff; }
 .c { color: #8a8f98; }
