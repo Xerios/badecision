@@ -21,15 +21,26 @@ $ pnpm run ask -- "Should I buy the boat?" --birthday 1990-08-01
 ```bash
 pnpm test          # offline self-checks
 pnpm run ask       # interactive CLI   (or: pnpm run ask -- "Fire is hot" --astro 0)
-pnpm run demo      # browser demo at http://localhost:5173/web/
+pnpm dev           # browser demo at http://localhost:5173/
 ```
+
+## Layout
+
+A pnpm workspace; the root holds no code.
+
+| Path | What |
+|---|---|
+| [packages/core/](packages/core/) | The shared core, plain JS ESM for browsers and Node: tiny model runtime, horoscope, omens, Studio client, the serious model's front processor. Plus the shipped models (`models/tiny`, `models/serious`). |
+| [packages/badecision/](packages/badecision/) | The npm package. Its build copies the core in. |
+| [research/](research/) | Everything that makes the models: datasets, training and eval scripts, the CLI, Unsloth Studio tooling, Python (`py/`), experiments. Its scripts run from `research/`. |
+| [packages/website/](packages/website/) | The browser demo, Preact + Vite. |
 
 ## Use it in code
 
 ```js
-import { createDecider } from './src/bdm.js';   // or 'bad-decision-model' once packaged
+import { createDecider } from './packages/core/src/bdm.js';
 
-const bdm = await createDecider();               // loads models/tiny/model.bin (fetch in browsers, fs in Node)
+const bdm = await createDecider();               // loads packages/core/models/tiny/model.bin (fetch in browsers, fs in Node)
 const r = bdm.decide('Is a whale a fish?', {
   astro: 0.5,              // horoscope strength: 0 = off, 1 = full, 1.5 = unhinged
   birthday: '1990-08-01',  // optional, enables sun-sign effects
@@ -58,7 +69,7 @@ feelingLucky('the vendor contract is worth renewing');   // true | false
 ```
 
 ```bash
-pnpm run pkg:build     # copies src/ core + models/tiny/model.bin into the package, compiles TypeScript
+pnpm run pkg:build     # copies packages/core (code + models) into the package, compiles TypeScript
 pnpm run pkg:test      # the one test (100% coverage)
 ```
 
@@ -69,8 +80,8 @@ See [packages/badecision/README.md](packages/badecision/README.md).
 * **Model**: fastText-style. Hashed word, bigram and char-trigram features are averaged into a 16-d embedding,
   then a 32-unit hidden layer and a 4-way softmax. Weights are int8. Trained in plain JS in a few seconds.
 * **Horoscope**: computed moon phase, a Mercury retrograde table, weekday planetary rulers, sun-sign elements and a
-  deterministic daily mood, applied to the model's log-probabilities. See `src/horoscope.js`.
-* **Omens**: each sign gets three omens a day (`src/omens.js`), and when one matches the question, it fixes the
+  deterministic daily mood, applied to the model's log-probabilities. See `packages/core/src/horoscope.js`.
+* **Omens**: each sign gets three omens a day (`packages/core/src/omens.js`), and when one matches the question, it fixes the
   answer. Ask "Should we deploy today?" on a Friday when the horoscope says "Avoid Fridays", and the model's *maybe*
   becomes the right answer: *no*. Omens bite hardest on open questions and barely move established facts.
 * **Opposite Day**: unless it's January 25. Opposite Day is hardcoded into the model: yes and no swap places after
@@ -86,8 +97,8 @@ pnpm run data:seed                      # rebuild the templated seed data
 pnpm run train                          # seed only
 pnpm run train:distilled                # seed + LLM-labelled data (after the Unsloth phase)
 pnpm run eval                           # score on the test set, handwritten by a human AI
-node scripts/eval.js --astro 1         # how much do the stars hurt accuracy?
+cd research && node scripts/eval.js --astro 1   # how much do the stars hurt accuracy?
 ```
 
 Unsloth Studio steps (generate/label data with the LLM, fine-tune, export) are in [PLAN.md](PLAN.md).
-Put `UNSLOTH_BASEURL` and `UNSLOTH_API_KEY` in `.env`.
+Put `UNSLOTH_BASEURL` and `UNSLOTH_API_KEY` in the repo root's `.env`.

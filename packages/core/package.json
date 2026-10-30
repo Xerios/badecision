@@ -1,0 +1,26 @@
+{
+  "name": "@badecision/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The shared core of the Bad Decision Model: tiny model runtime, horoscope, omens, Studio client and the serious model's front processor. Plain JS ESM for browsers and Node; copied into badecision at build time.",
+  "type": "module",
+  "main": "src/bdm.js",
+  "exports": {
+    ".": "./src/bdm.js",
+    "./horoscope": "./src/horoscope.js",
+    "./model": "./src/model.js",
+    "./omens": "./src/omens.js",
+    "./smol": "./src/smol.js"
+  },
+  "files": [
+    "src",
+    "models"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/selftest.js"
+  },
+  "license": "MIT"
+}

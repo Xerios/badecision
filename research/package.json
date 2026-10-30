@@ -1,0 +1,29 @@
+{
+  "name": "@badecision/research",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Training, evaluation, datasets and Unsloth Studio tooling for the Bad Decision Model. Scripts run from this directory.",
+  "type": "module",
+  "scripts": {
+    "data:seed": "node scripts/build-seed-dataset.js",
+    "train": "node scripts/train-tiny.js",
+    "train:distilled": "node scripts/train-tiny.js --data data/seed.train.jsonl,data/teacher.jsonl",
+    "eval": "node scripts/eval.js",
+    "ask": "node scripts/cli.js",
+    "unsloth:probe": "node scripts/probe-unsloth.js",
+    "unsloth:generate": "node scripts/teacher-generate.js",
+    "unsloth:label": "node scripts/teacher-label.js",
+    "unsloth:eval": "node scripts/eval.js --llm",
+    "unsloth:export": "node scripts/export-studio-dataset.js",
+    "unsloth:mock": "node scripts/mock-unsloth.js",
+    "omens:generate": "node scripts/generate-omen-sentences.js",
+    "decision:data": "node scripts/build-decision-dataset.js",
+    "decision:train": "node scripts/studio-train-decision.js",
+    "decision:export": "node scripts/studio-export-decision.js",
+    "decision:eval": "node scripts/eval-decision.js --backend studio",
+    "eval:omens": "node scripts/eval-decision.js --backend tiny",
+    "test": "node scripts/selftest.js",
+    "eval:serious": "node scripts/eval-decision.js --backend serious"
+  },
+  "license": "MIT"
+}

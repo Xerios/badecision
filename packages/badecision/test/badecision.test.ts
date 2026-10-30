@@ -17,15 +17,15 @@ import { MODEL_BASE64 } from '../dist/generated/model-data.js';
 import { TinyModel } from '../dist/core/model.js';
 import { fnv1a } from '../dist/core/features.js';
 import { moonPhase, mercuryRetrograde } from '../dist/core/horoscope.js';
-import { createDecider } from '../../../src/bdm.js';
+import { createDecider } from '../../core/src/bdm.js';
 import { rangeFetcher } from '../dist/serious.js';
 import { SMOL_KERNEL_BASE64 } from '../dist/generated/smol-kernel-data.js';
 import { existsSync, mkdtempSync, openSync, readSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
 const PKG = join(dirname(fileURLToPath(import.meta.url)), '..');
-const ROOT = join(PKG, '../..');
-const QUESTIONS: string[] = readFileSync(join(ROOT, 'data/test.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).text);
+const RESEARCH = join(PKG, '../../research');
+const QUESTIONS: string[] = readFileSync(join(RESEARCH, 'data/test.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).text);
 const DAY = new Date(2027, 0, 15, 12); // a Friday, waxing moon, Mercury direct
 const day = (y: number, m: number, d: number) => new Date(y, m, d, 12);
 const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -203,7 +203,7 @@ test('badecision', async (t) => {
   assert.ok((await bundle("export { seriously } from '../dist/index.js';")).includes(SMOL_KERNEL_BASE64.slice(0, 64)));
 
   // --- the serious model: frozen SmolLM2 front processor (served from the local GGUF instead of Hugging Face) + head
-  const GGUF = join(ROOT, '.cache/gguf/SmolLM2-360M-Instruct-Q4_0.gguf');
+  const GGUF = join(RESEARCH, '.cache/gguf/SmolLM2-360M-Instruct-Q4_0.gguf');
   if (!existsSync(GGUF)) { t.diagnostic(`skipped the serious model: ${GGUF} missing (download it to test)`); return; }
   const fd = openSync(GGUF, 'r');
   const read = (s: number, e: number) => { const b = Buffer.alloc(e - s); readSync(fd, b, 0, e - s, s); return b; };

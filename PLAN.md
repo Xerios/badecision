@@ -4,6 +4,11 @@
 > tested; everything marked 🔲 is the work left. The Unsloth parts were written **without access to the server**
 > (network was blocked when this was built), so treat them as "should work, verify first". A mock server
 > (`pnpm run unsloth:mock`) emulates the API and the whole pipeline passes against it (`pnpm test`).
+>
+> **Layout (since 2026-10-30):** a pnpm workspace. Shared code and shipped models are in `packages/core/`
+> (`packages/core/src/…`, `packages/core/models/{tiny,serious}`), everything else here lives in `research/`. **Run
+> research commands from `research/`**: paths like `data/…`, `scripts/…`, `studio/…`, `py/…`, `models/exp-*` and
+> `.cache/…` below are relative to it. Root `pnpm run <script>` delegates there.
 
 ## Goal
 
@@ -25,11 +30,11 @@ the outcome. Accuracy is explicitly not important; being fun and "aware of what 
 can't host large files and wants ≤ 200 MB. `badecision`'s `seriously` API downloads SmolLM2-360M-Instruct (Q4_0 GGUF,
 `bartowski/SmolLM2-360M-Instruct-GGUF@7be6f65f`, only token embeddings + blocks 0-19 = 161.5 MB via 4 Range requests)
 from Hugging Face, caches it, runs it in `packages/badecision/kernel/smol_kernel.c`, and a 960→128→4 head
-(`models/serious/head.json`, trained on the Qwen teacher's probabilities) answers. Omens/dates/mood/Opposite Day are
+(`packages/core/models/serious/head.json`, trained on the Qwen teacher's probabilities) answers. Omens/dates/mood/Opposite Day are
 the same rules as the tiny model. **92% plain test, 97.5% omen test**, ~0.2-0.4 s/answer on one core, 0.5 s start
 from cache.
 
-How it was chosen (`scripts/py/probe_frontends.py`, frozen features + MLP, plain test): MiniLM-L6 84%, bge-small 82%,
+How it was chosen (`py/probe_frontends.py`, frozen features + MLP, plain test): MiniLM-L6 84%, bge-small 82%,
 bge-base 85%, SmolLM2-135M 81%, Qwen2.5-0.5B 89%, SmolLM2-360M 96% (fp32, layers 16+24+32). `probe_layers.py`: layer
 20 alone 95%, the last layer only 88% (so ONNX/transformers.js, which only expose logits, would lose ~7 points).
 Q4_0 weights cost ~3 points (92-93% across head seeds). Rebuild: `smol_ref.py features` (~10 min CPU) →
@@ -39,14 +44,14 @@ scores 91% / 90% and stays the Studio backend.
 Ideas: run `seriously` in a Web Worker in browsers; distil more teacher data (more facts → better head); store the
 head as f16 to halve its 650 KB.
 
-The product is now **two backends behind one API** (`src/bdm.js`), sharing the horoscope layer:
+The product is now **two backends behind one API** (`packages/core/src/bdm.js`), sharing the horoscope layer:
 
 | backend | what | plain test | omen test | runs |
 | --- | --- | --- | --- | --- |
 | `createStudioDecider()` (main) | **Unsloth decision model**: Laya (ModernBERT-large, 395M) + decision head, fine-tuned in Studio, served at `POST /v1/systemone` | **92%** | **93%** | Studio GPU now; GGUF Q8_0/Q4_K_M exported for CPU (llama.cpp) |
 | `createDecider()` (fallback) | tiny hashed-feature model, pure JS, 323 KB | 76% | 87% | anywhere, ~1 ms |
 
-- **Horoscope, deeper**: daily readings now contain **omens** (`src/omens.js`): "Avoid red", "Large numbers bring
+- **Horoscope, deeper**: daily readings now contain **omens** (`packages/core/src/omens.js`): "Avoid red", "Large numbers bring
   misfortune", "Travel is favoured", "Music is shrouded in mystery". Users can pass their own text (`horoscope:`).
   An omen applies only when the question matches its topic (27 topics: 9 colours, 6 number rules, 12 life areas).
   A matching omen moves 75% of the open (maybe/unsure) mass to its answer and 15% of yes/no, so decisions follow it
@@ -54,7 +59,7 @@ The product is now **two backends behind one API** (`src/bdm.js`), sharing the h
   of its input (`decisionState`) and learned this from data, generalising past the word lists ("seventh attempt" +
   "the number 7 is lucky" works). The tiny model applies the same rules in code. Mood (moon, Mercury, weekday,
   sign) stays a post-hoc tilt for both.
-- **Opposite Day** (January 25, `src/horoscope.js`): yes and no swap, hardcoded, independent of horoscope strength;
+- **Opposite Day** (January 25, `packages/core/src/horoscope.js`): yes and no swap, hardcoded, independent of horoscope strength;
   `oppositeDay: false` disables it.
 - **Decision model training** (`scripts/studio-train-decision.js`, API, no UI): uploads `data/decision/*.jsonl`
   (`{state, questions, gold}`, built by `scripts/build-decision-dataset.js` from teacher + omen + seed data, 30k rows:
@@ -85,13 +90,13 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 
 - **Tiny model**: fastText-style hashed word unigrams + bigrams + char trigrams, mean-pooled 16-d embeddings,
   32-unit leaky-ReLU layer, 4-way softmax, temperature-calibrated. Weights int8 (per-row scale) in a single
-  `models/tiny/model.bin` (BDM1 format, documented in `src/model.js`). Zero dependencies; the same code runs in Node and browsers.
+  `packages/core/models/tiny/model.bin` (BDM1 format, documented in `packages/core/src/model.js`). Zero dependencies; the same code runs in Node and browsers.
   Trained in plain JS (`scripts/train-tiny.js`), so the whole user-facing stack is JavaScript.
 - **Where the knowledge comes from**: the tiny model can't know facts it hasn't seen (tested: unseen yes/no facts
   are close to a coin flip). It _can_ learn the _shape_ of uncertainty (maybe/unsure ≈ 85–100%). Knowledge is
   injected by **distillation**: a bigger LLM on the 3060 writes and scores thousands of sentences, and the tiny model
   trains on the LLM's soft probabilities.
-- **Horoscope** (`src/horoscope.js`) is a post-processing layer, not part of the model: sun sign & element from an
+- **Horoscope** (`packages/core/src/horoscope.js`) is a post-processing layer, not part of the model: sun sign & element from an
   optional birthday, computed moon phase, Mercury retrograde table 2025–2030 (Farmers' Almanac; approximated after),
   weekday planetary ruler, and a deterministic daily "cosmic mood". Applied in logit space with a 0–1.5 strength.
   Keeping it separate means `astro: 0` gives the pure model.
@@ -123,15 +128,15 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 
 |     | Item                                                                                            | Where                                                                                            |
 | --- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| ✅  | Feature extraction (hashing, negation-aware)                                                    | `src/features.js`                                                                                |
-| ✅  | Tiny model runtime, BDM1 format, Node + browser                                                 | `src/model.js`                                                                                   |
-| ✅  | Public API `createDecider().decide(text, {astro, birthday, date})`                              | `src/bdm.js`                                                                                     |
-| ✅  | Horoscope layer                                                                                 | `src/horoscope.js`                                                                               |
+| ✅  | Feature extraction (hashing, negation-aware)                                                    | `packages/core/src/features.js`                                                                                |
+| ✅  | Tiny model runtime, BDM1 format, Node + browser                                                 | `packages/core/src/model.js`                                                                                   |
+| ✅  | Public API `createDecider().decide(text, {astro, birthday, date})`                              | `packages/core/src/bdm.js`                                                                                     |
+| ✅  | Horoscope layer                                                                                 | `packages/core/src/horoscope.js`                                                                               |
 | ✅  | Seed dataset: 2,876 rows, soft labels                                                           | `scripts/build-seed-dataset.js` → `data/seed.*.jsonl`                                            |
 | ✅  | Test set handwritten by a human AI (100 rows, 25/label, never used for training)                | `data/test.jsonl`                                                                                |
 | ✅  | JS trainer with class balancing, int8 quantization, temperature calibration                     | `scripts/train-tiny.js`                                                                          |
-| ✅  | Baseline model trained (323 KB, **76% test accuracy**)                                          | `models/tiny/model.bin`                                                                          |
-| ✅  | CLI, browser demo, static server, eval, self-tests                                              | `scripts/cli.js`, `web/index.html`, `scripts/serve.js`, `scripts/eval.js`, `scripts/selftest.js` |
+| ✅  | Baseline model trained (323 KB, **76% test accuracy**)                                          | `packages/core/models/tiny/model.bin`                                                                          |
+| ✅  | CLI, browser demo, static server, eval, self-tests                                              | `scripts/cli.js`, `packages/website/`, `scripts/eval.js`, `packages/core/test/selftest.js`, `scripts/selftest.js` |
 | ✅  | Unsloth client, probe, generator, labeller (logprobs → json → sampling fallbacks)               | `scripts/lib/*.js`, `scripts/probe-unsloth.js`, `scripts/teacher-*.js`                           |
 | ✅  | Studio fine-tune dataset export (chat / ShareGPT / Alpaca)                                      | `scripts/export-studio-dataset.js`                                                               |
 | ✅  | Mock Unsloth server + pipeline test                                                             | `scripts/mock-unsloth.js`, `pnpm test`                                                            |
@@ -140,7 +145,7 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 | ✅  | Phase 1: 4,623 unique sentences generated + labelled (6k requested, rest were duplicates)      | `data/teacher.jsonl`                                                                             |
 | ⚠️  | Phase 2: distilled, **no real gain** (77% vs 76%); baseline kept as default, see results below | `models/exp-distilled`, `models/exp-big`                                                         |
 | ✅  | Phase 3: Unsloth **decision model** trained via API (Laya v2: 92% plain, 93% omens), GGUF exported | `scripts/studio-train-decision.js`, `scripts/studio-export-decision.js`                       |
-| ✅  | Omens + own horoscope text + Opposite Day, in both backends                                      | `src/omens.js`, `src/horoscope.js`, `src/decision.js`, `data/omen-test.jsonl`                  |
+| ✅  | Omens + own horoscope text + Opposite Day, in both backends                                      | `packages/core/src/omens.js`, `packages/core/src/horoscope.js`, `packages/core/src/decision.js`, `data/omen-test.jsonl`                  |
 | 🔲  | Phase 4: polish (browser LLM tier page, npm package, publish demo)                              | below                                                                                            |
 
 ### Baseline numbers (seed data only, `pnpm run eval`)
@@ -240,7 +245,7 @@ node scripts/eval.js --model models/tiny-big/model.bin
 
 Acceptance: test accuracy above baseline, yes/no recall up, maybe/unsure not worse, file ideally < 1 MB.
 Things to try if yes/no stays weak: more teacher data (yes/no especially), `--char 3-4`, `--trigrams true`,
-larger `--buckets`, more epochs with `--select acc`. Commit the best `models/tiny/model.bin`.
+larger `--buckets`, more epochs with `--select acc`. Commit the best `packages/core/models/tiny/model.bin`.
 
 ### Phase 3: fine-tune a small LLM on the 3060 (optional)
 
@@ -270,49 +275,49 @@ pnpm run unsloth:eval -- --llm-model <fine-tuned-id> --fewshot false   # compare
 ```
 
 - If the fine-tuned model beats the big teacher on the test set, re-label with it (`--model <id> --fewshot false`) and redo Phase 2.
-- Browser LLM tier: copy the q4 GGUF to `models/llm/`, then build `web/llm.html` with wllama
+- Browser LLM tier: copy the q4 GGUF to `models/llm/`, then build `packages/website/llm.html` with wllama
   (`@wllama/wllama` from a CDN), same SYSTEM prompt, read the logits of the first generated token for the 4 answer words,
-  and reuse `src/horoscope.js`. Keep the tiny model as the default; the LLM page is opt-in (~100+ MB download).
+  and reuse `packages/core/src/horoscope.js`. Keep the tiny model as the default; the LLM page is opt-in (~100+ MB download).
 
 ### Phase 4: polish ideas
 
 - ✅ npm package: `packages/badecision/` (TypeScript, WASM kernel, inlined model, sync API). `pnpm run pkg:build`,
   `pnpm run pkg:test`; publish from `packages/badecision/` with `npm publish`.
-- Publish `web/` as a shareable page (needs the model inlined or hosted next to it).
+- Publish `packages/website/` as a shareable page (needs the model inlined or hosted next to it).
 - Horoscope: Venus retrograde, eclipses, a "rising sign" if birth time is given, per-sign daily notes text.
 - Let the horoscope be learned instead of hand-tuned: add zodiac/moon tokens as features and train on (deliberately
   silly) astro-conditioned labels. Fun, pointless, on brand.
 
 ## File map
 
-New since the decision model: `src/omens.js` (omen topics, matching, rules, `decisionState`), `src/decision.js` (Decision API
+New since the decision model: `packages/core/src/omens.js` (omen topics, matching, rules, `decisionState`), `packages/core/src/decision.js` (Decision API
 contract + client), `scripts/generate-omen-sentences.js` → `data/omen.candidates.jsonl` → `data/omen.teacher.jsonl`,
 `scripts/build-decision-dataset.js` → `data/decision/`, `scripts/studio-train-decision.js`, `scripts/studio-export-decision.js`,
 `scripts/eval-decision.js` (`--backend tiny|studio`, both test sets), `data/omen-test.jsonl` (30 rows handwritten by a human AI, never trained on).
 
 ```
 .env                         Studio URL + key (git-ignored, never commit)
-PLAN.md                      this file
-README.md                    usage
-package.json                 npm scripts (no dependencies)
-src/
-  features.js                tokenizer + hashed features (shared by training & inference)
-  model.js                   tiny model runtime + BDM1 (de)serialization + loadModel()
-  horoscope.js               astrology layer
-  bdm.js                     public API: createDecider()
-models/tiny/model.bin        the model (model.json = human-readable header + metrics)
-data/
-  seed.train.jsonl / seed.val.jsonl   templated seed data (rebuild: pnpm run data:seed)
-  test.jsonl                 test set handwritten by a human AI, 100 rows, never train on it
-  teacher.candidates.jsonl   (Phase 1) LLM-generated sentences
-  teacher.jsonl              (Phase 1) LLM-labelled soft targets
-  studio/                    (Phase 3) fine-tune exports
-scripts/
-  build-seed-dataset.js  train-tiny.js  eval.js  cli.js  serve.js  selftest.js
-  probe-unsloth.js  teacher-generate.js  teacher-label.js  export-studio-dataset.js  mock-unsloth.js
-  lib/unsloth.js  lib/teacher.js  lib/metrics.js
-studio/
-  system_prompt.txt          judge prompt (generated by unsloth:export, used by the python trainer)
-  train_answer_head.py       fallback trainer for the 3060 (untested)
-web/index.html               demo page (pnpm run demo → http://localhost:5173/web/)
+PLAN.md README.md CLAUDE.md
+package.json                 private workspace root, scripts delegate (no dependencies)
+packages/core/
+  src/                       shared JS: features model load horoscope omens decider bdm decision gguf bpe smol
+  packages/core/models/tiny/model.bin      the tiny model (model.json = human-readable header + metrics)
+  packages/core/models/serious/head.json   the serious model's head
+  test/selftest.js           core self-checks
+packages/badecision/         the npm package (copies packages/core in at build time)
+research/                    run everything here from research/
+  data/
+    seed.train.jsonl / seed.val.jsonl   templated seed data (rebuild: pnpm run data:seed)
+    test.jsonl / omen-test.jsonl        held-out sets handwritten by a human AI, never train on them
+    teacher.candidates.jsonl / teacher.jsonl / omen.*.jsonl   LLM-generated + labelled data
+    decision/                           Studio decision-model datasets
+  scripts/
+    build-seed-dataset.js  train-tiny.js  eval.js  eval-decision.js  cli.js  selftest.js  mock-unsloth.js
+    probe-unsloth.js  teacher-generate.js  teacher-label.js  export-studio-dataset.js
+    generate-omen-sentences.js  build-decision-dataset.js  studio-train-decision.js  studio-export-decision.js
+    lib/unsloth.js  lib/teacher.js  lib/metrics.js
+  py/                        probe_frontends.py  probe_layers.py  smol_ref.py  train_head.py  (uv venv: .venv/)
+  studio/                    system_prompt.txt, probe/run reports, train_answer_head.py
+  models/exp-*               experiments
+packages/website/           demo page, Preact + Vite (pnpm dev → http://localhost:5173/)
 ```
