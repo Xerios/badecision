@@ -1,0 +1,288 @@
+{"text":"The capital of Italy is Tokyo","probs":[0.02,0.9,0.05,0.03],"src":"capital"}
+{"text":"A carrot is a vegetable","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Ice is hot","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"An elephant is a mammal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"My neighbour has a rubber duck in their garage","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A dolphin is not an animal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"It might be that i should move to another city","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"It will rain tomorrow in London","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"The mibflurtrel is drosmibplib","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"An apple is heavier than a brick","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"Is the capital of Finland Helsinki?","probs":[0.9,0.02,0.05,0.03],"src":"capital:q"}
+{"text":"Perhaps the coin will land on heads","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Three plus five is ten","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"My brother has a banana in their pocket","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A grasshopper is a mammal","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is a sheep bigger than a cat?","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"Are Dinosaurs extinct?","probs":[0.9,0.02,0.05,0.03],"src":"fact:q"}
+{"text":"A mosquito is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A pig is a vegetable","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Probably the traffic will be bad","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Neptune is a musical instrument","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"A kiwi is not a fish","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Exactly 6679 people are sneezing right now","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"An hour is shorter than a month","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"My grandmother is thinking about pasta right now","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Chocolate is made from cocoa","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Is an alligator a reptile?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"A parrot is not a metal","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Maybe the plant will survive the winter","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Is the number eight sleepy?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A goat is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Is a harp a musical instrument?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"The next person to walk in will be called Yuki","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A triangle does not have four sides","probs":[0.9,0.02,0.05,0.03],"src":"fact:neg"}
+{"text":"Tuesday is wetter than a melody","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A plum is not a fruit","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Cars have wings","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"All fumvasps are groblurkmib","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Is a week shorter than a century?","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"Bicycles do not have two wheels","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"Is an ant bigger than a blue whale?","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"Is Black a color?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"A zebra is a mammal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A hamster is a bird","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"An iguana is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"There are exactly 7666 grains of sand in my shoe","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Is the capital of Netherlands Lima?","probs":[0.02,0.9,0.05,0.03],"src":"capital:q"}
+{"text":"It will be windy tonight in New York","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"Uranus is a planet","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Possibly the price will go up","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Pizza is the best food","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Is the number sixteen sleepy?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"blah blah","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"The color white tastes like regret","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"There are 231 leaves on the tree outside my window","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"The bus will be on time","probs":[0.1,0.1,0.7,0.1],"src":"maybe:chance"}
+{"text":"The color white tastes like jazz","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A zebra is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"It will be windy tonight in Tokyo","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"A beetroot is not a food","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"A cat is a mammal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"London is the best city to live in","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"The capital of Netherlands is Amsterdam","probs":[0.9,0.02,0.05,0.03],"src":"capital"}
+{"text":"Madrid is not in Spain","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"7 + 5 = 11","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Three plus nine is twelve","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"A blue whale is bigger than a cat","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"The Sahara is a desert","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"The sun is cold","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"Is chocolate better than cheese?","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"All trelwexs are blimyonblim","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Perhaps it is a good idea to go out tonight","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"I left a red sock in the backpack","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"It might snow next month","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"Light mode are better than vim","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"The person next to me has 8 coins in their pocket","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"The capital of India is New Delhi","probs":[0.9,0.02,0.05,0.03],"src":"capital"}
+{"text":"Rain is not made of sand","probs":[0.9,0.02,0.05,0.03],"src":"fact:neg"}
+{"text":"All zoryons are tavwex","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Orange is not a color","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"2 + 2 = 4","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"Is the blimzorvasp bigger than a oobzinth?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"I should rewrite it in TypeScript","probs":[0.1,0.1,0.7,0.1],"src":"maybe:decision"}
+{"text":"Neptune is a planet","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"The capital of Austria is not Vienna","probs":[0.02,0.9,0.05,0.03],"src":"capital:neg"}
+{"text":"1 + 0 = 1","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"Breakfast is the most important meal of the day","probs":[0.1,0.1,0.62,0.18],"src":"maybe:contested"}
+{"text":"Wine is made from grapes","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"7 + 7 = 16","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Shakespeare owned exactly 1 cats","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A pig is not a mammal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Is an ant a color?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"The 2046 World Cup will be won by Japan","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"An onion is a food","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"The printing press came before the internet","probs":[0.9,0.02,0.05,0.03],"src":"history"}
+{"text":"A shark is not a fish","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"The mountains are better than jazz","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"A giraffe is not a mammal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Grass is not green","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"A hundred is smaller than one","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"A screwdriver is a tool","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"The steam engine came after the telephone","probs":[0.02,0.9,0.05,0.03],"src":"history"}
+{"text":"A squirrel is not an animal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Camels cannot survive long without water","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"Your password ends with the number 3","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"An iguana is a musical instrument","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is the wexflur bigger than a tavquax?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"1 + 4 = 4","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Humans have two legs","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Is a salmon a piece of furniture?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"tdnlxmg ghlv","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"The stranger on the bus is named Fatima","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"The person next to me has 39 coins in their pocket","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Cats hate water","probs":[0.7,0.05,0.2,0.05],"src":"general"}
+{"text":"Five is smaller than ten","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"The steam engine came before the printing press","probs":[0.02,0.9,0.05,0.03],"src":"history"}
+{"text":"Is a kiwi a color?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"A cat is a yonlurk","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A blue whale is bigger than an elephant","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"Milk is not black","probs":[0.9,0.02,0.05,0.03],"src":"fact:neg"}
+{"text":"Is the number eighteen in love?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"An apricot is a fruit","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Black is heavier than happiness","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Did my best friend lock the door?","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Maybe i should paint the wall blue","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"A drill is a tool","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"The 2046 World Cup will be won by Germany","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Is a penguin a planet?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"Clocks tell the weather","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"A monkey is not a bird","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Is Zero bigger than one?","probs":[0.02,0.9,0.05,0.03],"src":"fact:q"}
+{"text":"Is a squirrel a vegetable?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"3 + 4 = 5","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"A cherry is a food","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Steel is softer than butter","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"Is the number nineteen hungry?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A hundred is smaller than a million","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"Is a dog a mammal?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"Is the capital of Thailand Bangkok?","probs":[0.9,0.02,0.05,0.03],"src":"capital:q"}
+{"text":"A violin is a vehicle","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is a leek a food?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"A parrot is not a bird","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"A wardrobe is a fish","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Pancakes is the best food","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Insects have six legs","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"A beetroot is not a vegetable","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Is the number ten hungry?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A goldfish is a tool","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"A gecko is a reptile","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"There are 2494 leaves on the tree outside my window","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Perhaps i should ask for a raise","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Summers are hot","probs":[0.7,0.05,0.2,0.05],"src":"general"}
+{"text":"Is a mosquito an insect?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"Is the zorvaspgrob bigger than a grobflurgnop?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Is ice colder than lava?","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"9 + 1 = 11","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Is the capital of Czechia Lisbon?","probs":[0.02,0.9,0.05,0.03],"src":"capital:q"}
+{"text":"Pink is a color","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A hamster is a mammal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A cat is bigger than an elephant","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"I left three keys in the garage","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Dinosaurs are not extinct","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"Is a helicopter a piece of furniture?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"Is Zero less than one?","probs":[0.9,0.02,0.05,0.03],"src":"fact:q"}
+{"text":"Cleopatra ate sushi on her birthday","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A motorcycle is not a metal","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"It will be windy next week in my town","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"A sheep is not an animal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Tokyo is the best city to live in","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Is a carp a fish?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"1 + 2 = 1","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Mars is a planet","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Is the number ten sleepy?","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"A bat is a musical instrument","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is my neighbour at home?","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Can Cats climb trees?","probs":[0.9,0.02,0.05,0.03],"src":"fact:q"}
+{"text":"A flamingo is a reptile","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Paris is the best city to live in","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Will the plant survive the winter?","probs":[0.1,0.1,0.7,0.1],"src":"maybe:chance:q"}
+{"text":"My dentist had sushi for breakfast","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Did my colleague lock the door?","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"The capital of Poland is Warsaw","probs":[0.9,0.02,0.05,0.03],"src":"capital"}
+{"text":"A crow is not an animal","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"Perhaps i should start running","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"A grasshopper is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Will someone reply to my email today?","probs":[0.1,0.1,0.7,0.1],"src":"maybe:chance:q"}
+{"text":"It might be that the bus will be on time","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"It will be sunny later today","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"There are 4133 leaves on the tree outside my window","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Winter is not warmer than summer","probs":[0.9,0.02,0.05,0.03],"src":"fact:neg"}
+{"text":"9 + 4 = 13","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"Ice is colder than boiling water","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"A million is smaller than a hundred","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"The lottery numbers next week will include 38","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Lead is a metal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Is a chicken an animal?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"2 + 9 = 13","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"The krelwex is gnopblimsni","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"Is a lizard an animal?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"An owl is not a musical instrument","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Is a feather lighter than a truck?","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"4 + 5 = 9","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"A crow is a vegetable","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is pancakes better than tacos?","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"A mango is a fruit","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A bookshelf is a piece of furniture","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A strawberry is a reptile","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"A seagull is a bird","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Is a spinach a tool?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"A day is shorter than a year","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"The person next to me has 30 coins in their pocket","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A hammer is not an insect","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Are Mice huge?","probs":[0.02,0.9,0.05,0.03],"src":"fact:q"}
+{"text":"A grape is a food","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"A bear is a mammal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Milk is black","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"A lemon is not a fruit","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"A sea is bigger than a lake","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"Was Einstein a physicist?","probs":[0.9,0.02,0.05,0.03],"src":"fact:q"}
+{"text":"A mouse is bigger than a horse","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"A carrot is not a color","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"6 + 1 = 5","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Is a submarine a vehicle?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"Is a wolf a fish?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"Should I quit coffee?","probs":[0.1,0.1,0.7,0.1],"src":"maybe:decision:q"}
+{"text":"An ostrich is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Summer are better than movies","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"There are other universes","probs":[0.04,0.06,0.35,0.55],"src":"unsure:deep"}
+{"text":"It will rain on Saturday in Brussels","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"A lizard is a reptile","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Tea are better than emacs","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Feathers are heavy","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"Perhaps it is a good idea to refactor this code","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Shakespeare owned exactly 7 cats","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"A parrot is an insect","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Glass is unbreakable","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"All fumtrelblims are vaspkrelwex","probs":[0.02,0.05,0.05,0.88],"src":"unsure:nonsense"}
+{"text":"2 + 7 = 12","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Coal is black","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Night is not brighter than day","probs":[0.9,0.02,0.05,0.03],"src":"fact:neg"}
+{"text":"I should buy the new phone","probs":[0.1,0.1,0.7,0.1],"src":"maybe:decision"}
+{"text":"Is my grandmother at home?","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"8 + 5 = 16","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"Lemons are sweet","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"Summer is not warmer than winter","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"It might be that i should learn Rust","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"A blue whale is smaller than a dog","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"8 + 9 = 19","probs":[0.02,0.9,0.05,0.03],"src":"math"}
+{"text":"A beetroot is a planet","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"Is a car lighter than an apple?","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"The traffic will be bad","probs":[0.1,0.1,0.7,0.1],"src":"maybe:chance"}
+{"text":"The stock market will close up exactly 3.8 percent next Monday","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Rubber is not a good insulator","probs":[0.02,0.9,0.05,0.03],"src":"fact:neg"}
+{"text":"The capital of Norway is Oslo","probs":[0.9,0.02,0.05,0.03],"src":"capital"}
+{"text":"Is a table a piece of furniture?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"Bread is made from flour","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Tabs are better than winter","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"Bananas are blue when ripe","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"Probably the restaurant will be busy tonight","probs":[0.1,0.1,0.7,0.1],"src":"maybe:hedge"}
+{"text":"Are Summers hot?","probs":[0.7,0.05,0.2,0.05],"src":"general:q"}
+{"text":"Is a parrot a bird?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"It will rain next month in here","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"The steam engine came before the smartphone","probs":[0.9,0.02,0.05,0.03],"src":"history"}
+{"text":"A grasshopper is not a bird","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"Water is wet","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"A cheetah is slower than a chicken","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"A robin is not a bird","probs":[0.02,0.9,0.05,0.03],"src":"member:neg"}
+{"text":"A tuna is not a vehicle","probs":[0.9,0.02,0.05,0.03],"src":"member:neg"}
+{"text":"A cat is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Elephants can fly","probs":[0.02,0.9,0.05,0.03],"src":"fact"}
+{"text":"It will rain later today in Madrid","probs":[0.1,0.1,0.7,0.1],"src":"maybe:weather"}
+{"text":"A minute has sixty seconds","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Is an elephant a vehicle?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"A sparrow is an animal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Cheese tastes good","probs":[0.1,0.1,0.62,0.18],"src":"maybe:opinion"}
+{"text":"2 + 10 = 12","probs":[0.9,0.02,0.05,0.03],"src":"math"}
+{"text":"Is a beetroot a food?","probs":[0.9,0.02,0.05,0.03],"src":"member:q"}
+{"text":"Cheese is made from milk","probs":[0.9,0.02,0.05,0.03],"src":"fact"}
+{"text":"Napoleon's favourite food was sushi","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"The capital of Ireland is not Berlin","probs":[0.9,0.02,0.05,0.03],"src":"capital:neg"}
+{"text":"Is fifty bigger than ten?","probs":[0.9,0.02,0.05,0.03],"src":"compare"}
+{"text":"The surface of the sun is colder than lava","probs":[0.02,0.9,0.05,0.03],"src":"compare"}
+{"text":"I left a rubber duck in the drawer","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}
+{"text":"Silver is a metal","probs":[0.9,0.02,0.05,0.03],"src":"member"}
+{"text":"Is a zebra a fish?","probs":[0.02,0.9,0.05,0.03],"src":"member:q"}
+{"text":"A monkey is a musical instrument","probs":[0.02,0.9,0.05,0.03],"src":"member"}
+{"text":"The smartphone came before the airplane","probs":[0.02,0.9,0.05,0.03],"src":"history"}
+{"text":"My mother is thinking about waffles right now","probs":[0.03,0.03,0.14,0.8],"src":"unsure:unknowable"}

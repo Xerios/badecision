@@ -1,0 +1,33 @@
+{
+  "format": "BDM1",
+  "version": 1,
+  "labels": [
+    "yes",
+    "no",
+    "maybe",
+    "unsure"
+  ],
+  "buckets": 16384,
+  "dim": 16,
+  "hidden": 32,
+  "activation": "relu",
+  "features": {
+    "char": [
+      3,
+      3
+    ],
+    "trigrams": false
+  },
+  "temperature": 1.9,
+  "featuresVersion": 1,
+  "createdAt": "2026-10-30T01:17:35.487Z",
+  "trainedOn": [
+    "data/seed.train.jsonl"
+  ],
+  "metrics": {
+    "valAcc": 0.7152777777777778,
+    "testAcc": 0.76,
+    "testEce": 0.29177205467310985,
+    "floatValAcc": 0.7152777777777778
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "bad-decision-model",
+  "version": "0.1.0",
+  "description": "A tiny yes / no / maybe / not-sure model that runs on CPU and in the browser, with an optional horoscope layer.",
+  "type": "module",
+  "main": "src/bdm.js",
+  "exports": { ".": "./src/bdm.js", "./horoscope": "./src/horoscope.js", "./model": "./src/model.js" },
+  "files": ["src", "models/tiny"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "data:seed": "node scripts/build-seed-dataset.js",
+    "train": "node scripts/train-tiny.js",
+    "train:distilled": "node scripts/train-tiny.js --data data/seed.train.jsonl,data/teacher.jsonl",
+    "eval": "node scripts/eval.js",
+    "ask": "node scripts/cli.js",
+    "demo": "node scripts/serve.js",
+    "test": "node scripts/selftest.js",
+    "unsloth:probe": "node scripts/probe-unsloth.js",
+    "unsloth:generate": "node scripts/teacher-generate.js",
+    "unsloth:label": "node scripts/teacher-label.js",
+    "unsloth:eval": "node scripts/eval.js --llm",
+    "unsloth:export": "node scripts/export-studio-dataset.js",
+    "unsloth:mock": "node scripts/mock-unsloth.js"
+  },
+  "license": "MIT"
+}
