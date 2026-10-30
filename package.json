@@ -2,7 +2,7 @@
   "name": "badecision-model",
   "version": "0.1.0",
   "private": true,
-  "description": "Workspace: packages/core (shared JS + models), packages/badecision (the npm package), packages/model (training, eval, Studio tooling), packages/website (the Preact demo).",
+  "description": "Workspace: packages/core (shared JS + models), packages/badecision (the npm package), packages/model (training, eval, Studio tooling), packages/website (the SvelteKit demo).",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -12,6 +12,7 @@
     "test": "node packages/core/test/selftest.js && cd packages/model && node scripts/selftest.js",
     "dev": "pnpm --filter @badecision/website dev",
     "build:website": "pnpm --filter @badecision/website build",
+    "docker:website": "docker build -f packages/website/Dockerfile -t badecision-website .",
     "data:seed": "pnpm --filter @badecision/model data:seed",
     "train": "pnpm --filter @badecision/model train",
     "train:distilled": "pnpm --filter @badecision/model train:distilled",

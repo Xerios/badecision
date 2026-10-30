@@ -6,12 +6,13 @@ the root package is private and holds no code:
 - `packages/badecision/`: the npm package `badecision`.
 - `packages/model/` (`@badecision/model`, private): training, eval and the Unsloth Studio distillation. See `PLAN.md`
   for the runbook.
-- `packages/website/` (`@badecision/website`, private): the demo, Preact + Vite.
+- `packages/website/` (`@badecision/website`, private): the demo, SvelteKit (static) + Vite. See
+  `packages/website/CLAUDE.md`.
 
 ## Ground rules
 - **pnpm only** (`packageManager` is pinned). The root, `packages/core` and `packages/model` have **zero dependencies**.
   Keep it that way. Dev dependencies (typescript, vite, esbuild for the test) belong to `packages/badecision/`;
-  preact and vite to `packages/website/`. Both import `@badecision/core` through a workspace link. Model scripts
+  svelte, @sveltejs/* and vite to `packages/website/`. Both import `@badecision/core` through a workspace link. Model scripts
   import the core by relative path (`../../core/src/...`), not through a workspace link.
 - Node ≥ 20 for the published code. The dev tooling uses Node 26 features (native TypeScript stripping for `.ts`
   scripts and tests).
@@ -31,9 +32,8 @@ the root package is private and holds no code:
     `packages/model/py/smol_ref.py`, the PyTorch reference the head was trained with.
 - `packages/core/models/`: `tiny/model.bin` (the shipped tiny model, written by `packages/model/scripts/train-tiny.js`) and
   `serious/head.json` (the serious model's head, written by `packages/model/py/train_head.py`).
-- `packages/website/`: the demo. `index.html` + `src/main.jsx` (Preact) + `src/style.css`, served by Vite. Imports
-  `@badecision/core` (workspace link, served unbundled, so the core's `new URL('../models/...', import.meta.url)`
-  still resolves).
+- `packages/website/`: the demo, SvelteKit built as a static site (`dist/`), deployed on Dokploy from its `Dockerfile`
+  (nginx). Imports `@badecision/core` (workspace link); Vite bundles the core's model files as assets.
 
 ## Commands
 ```bash
@@ -43,6 +43,7 @@ pnpm run train            # retrain packages/core/models/tiny
 pnpm run eval:serious     # serious model on both test sets (needs packages/model/.cache/gguf)
 pnpm dev                  # the website (Vite) at http://localhost:5173/
 pnpm run build:website    # packages/website/dist
+pnpm run docker:website   # the website's nginx image (what Dokploy deploys)
 pnpm run pkg:build        # build packages/badecision/dist
 pnpm run pkg:kernel       # rebuild the WASM kernel too (needs clang with wasm32 + wasm-ld)
 pnpm run pkg:test         # the one test, with coverage

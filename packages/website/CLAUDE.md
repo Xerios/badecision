@@ -70,3 +70,14 @@ pnpm dev        # http://localhost:5173/
 pnpm build      # static output in dist/ (SITE_URL=https://… for canonical URLs and sitemap.xml)
 pnpm preview    # serve dist/
 ```
+
+## Deploy (Dokploy)
+`Dockerfile` (build context: the repo root) installs only this package and `@badecision/core`, builds, and serves `dist/`
+with nginx (`nginx.conf`: `/cloud` → `cloud.html`, `404.html` for unknown paths, immutable caching for `/_app/immutable/`).
+The root `.dockerignore` keeps `.env`, `packages/model` and `node_modules` out of the context. If the site imports another
+repo file outside `packages/core` and `packages/website`, add a `COPY` for it (as for `smol_kernel.wasm`).
+
+Dokploy application settings: provider GitHub `Xerios/badecision`, branch `main`; Build Type **Dockerfile**, Docker File
+`packages/website/Dockerfile`, Docker Context Path `.`; Build Args `SITE_URL=https://<domain>`; Domains: the domain,
+container port **80**, HTTPS on; Auto Deploy on. Test locally with `pnpm run docker:website` (repo root) and
+`docker run --rm -p 8080:80 badecision-website`.

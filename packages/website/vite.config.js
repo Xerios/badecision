@@ -7,7 +7,7 @@ import { sveltekit } from '@sveltejs/kit/vite'
 const site = process.env.SITE_URL?.replace(/\/+$/, '')
 
 // adapter-static, then robots.txt and (with SITE_URL) sitemap.xml from the prerendered pages
-const staticAdapter = adapter({ pages: 'dist', assets: 'dist', fallback: undefined, strict: true })
+const staticAdapter = adapter({ pages: 'dist', assets: 'dist', fallback: '404.html', strict: true })
 const seoAdapter = {
   ...staticAdapter,
   async adapt(builder) {

@@ -1,0 +1,12 @@
+# Only packages/core, packages/website and the badecision kernel go into the website image.
+**/node_modules
+**/dist
+**/.svelte-kit
+**/.cache
+**/.claude
+.env
+.git
+.venv
+.idea
+.vscode
+packages/model
