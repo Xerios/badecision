@@ -7,3 +7,6 @@ research/studio/openapi.json
 .venv/
 .cache/
 __pycache__/
+research/studio/last-decision-run.json
+research/studio/probe-report.json
+.claude/scheduled_tasks.lock
