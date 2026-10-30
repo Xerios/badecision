@@ -71,7 +71,7 @@ export function loadEngine(): { model: TinyModel; engine: EngineName } {
 
 // the typed face of src/core/decider.js
 export interface CoreDecision {
-  text: string; verdict: Verdict; answer: string; confidence: number; probs: Probs; model: Probs;
+  text: string; verdict: Verdict; confidence: number; probs: Probs; model: Probs;
   oppositeDay: boolean; starsChangedIt: boolean | null; omenHits: Omen[];
   stars: { notes: string[] }; // never null here: the horoscope strength is fixed above 0
 }

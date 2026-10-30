@@ -35,7 +35,7 @@ test('badecision', async (t) => {
   globalThis.sessionStorage.setItem('badecision:sign', 'Pisces');
   assert.deepEqual(bd.sign(), { name: 'Pisces', glyph: '♓', element: 'water', source: 'random' });
   const first = bd.decide('wear pants today');
-  assert.deepEqual(Object.keys(first), ['question', 'verdict', 'answer', 'confidence']);
+  assert.deepEqual(Object.keys(first), ['question', 'verdict', 'confidence']);
   const nerdy = bd.decide('wear pants today', true);
   assert.equal(nerdy.engine, 'wasm');
   assert.equal(nerdy.date, ymd(new Date()));
@@ -46,15 +46,15 @@ test('badecision', async (t) => {
   assert.equal(bd.luckyNumber(), nerdy.luckyNumber);
   assert.equal(typeof bd.feelingLucky('this condition is true'), 'boolean');
 
-  // --- configure: birthday wins over sign, null reverts, validation, the cloud-only astro knob
+  // --- configure: sign is a name or a birthday, null reverts, validation, the cloud-only astro knob
   bd.configure({ sign: 'leo', date: DAY });
-  assert.equal(bd.sign().source, 'chosen');
-  bd.configure({ birthday: '1990-08-01' });
-  assert.deepEqual(bd.sign(), { name: 'Leo', glyph: '♌', element: 'fire', source: 'birthday' });
-  bd.configure({ birthday: null, sign: null });
-  assert.equal(bd.sign().name, 'Pisces');
-  assert.throws(() => bd.configure({ sign: 'Ophiuchus' as never }), /Unknown sign/);
-  assert.throws(() => bd.configure({ birthday: 'yesterday-ish' }), /Invalid birthday/);
+  assert.deepEqual(bd.sign(), { name: 'Leo', glyph: '♌', element: 'fire', source: 'chosen' });
+  bd.configure({ sign: '1990-12-25' });
+  assert.deepEqual(bd.sign(), { name: 'Capricorn', glyph: '♑', element: 'earth', source: 'birthday' });
+  bd.configure({ sign: null });
+  assert.deepEqual(bd.sign(), { name: 'Pisces', glyph: '♓', element: 'water', source: 'random' });
+  assert.throws(() => bd.configure({ sign: 'Ophiuchus' }), /Unknown sign/);
+  assert.throws(() => bd.configure({ sign: 'yesterday-ish' }), /Unknown sign/);
   assert.throws(() => bd.configure({ date: 'soon' }), /Invalid date/);
   const warn = t.mock.method(console, 'warn', () => {});
   const before = bd.decide('Should I buy the boat?', true);
@@ -146,7 +146,7 @@ test('badecision', async (t) => {
   assert.notEqual(new Set(days.slice(0, 30).map(at)).size, 1);
 
   // --- create(): isolated instances, own random sign, horoscope
-  const a = create({ birthday: day(1990, 7, 1), date: DAY }), b = create({ random: () => 0.5 });
+  const a = create({ sign: day(1990, 7, 1), date: DAY }), b = create({ random: () => 0.5 });
   assert.equal(a.sign().name, 'Leo');
   assert.equal(b.sign().name, 'Cancer'); // SIGNS[6]
   assert.equal(b.sign().source, 'random');
@@ -292,7 +292,7 @@ test('badecision', async (t) => {
     assert.equal(await s.isItTrue('Sharks are mammals'), false);
     assert.equal(await s.isItTrue('My neighbour owns 14 spoons'), null);
     const plainDecision = await s.decide('Is Paris in France?');
-    assert.deepEqual(Object.keys(plainDecision), ['question', 'verdict', 'answer', 'confidence']);
+    assert.deepEqual(Object.keys(plainDecision), ['question', 'verdict', 'confidence']);
     const nerd = await s.decide('Is it a good day to deploy?', true);
     assert.equal(nerd.engine, 'serious');
     assert.equal(nerd.date, '2026-10-30');

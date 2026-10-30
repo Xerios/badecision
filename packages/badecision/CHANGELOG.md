@@ -3,6 +3,16 @@
 All notable changes to `badecision`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/). The API is a joke; the versioning isn't.
 
+## Unreleased
+
+### Changed (breaking)
+
+- `decide()` (and `seriously.decide()`) no longer return `answer` (`'Yes.'`, `'No.'`, ...). Use `verdict`.
+- The `birthday` option is gone. Pass your birthday as `sign` instead: `configure({ sign: '1990-08-01' })`. A sign
+  name (`'Leo'`, `'leo'`) picks the sign, and anything else is read as a date (a string, a `Date` or a timestamp).
+  `sign()` still reports `source: 'birthday'` or `'chosen'`. Values that are neither a sign nor a date throw
+  `Unknown sign`.
+
 ## 2.0.1 (2026-10-30)
 
 ### Fixed

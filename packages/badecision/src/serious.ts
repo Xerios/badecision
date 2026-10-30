@@ -138,7 +138,7 @@ export interface Seriously {
   feelingLucky(question: string): Promise<boolean>;
   decide(question: string, nerdy?: false): Promise<Decision>;
   decide(question: string, nerdy: true): Promise<NerdyDecision>;
-  /** A separate set with its own settings (birthday, sign, date), like create(). */
+  /** A separate set with its own settings (sign or birthday, date), like create(). */
   create(config?: Config): Seriously & { configure(config: Config): void };
 }
 
@@ -147,7 +147,7 @@ function seriouslyFor(stateOf: () => State): Seriously {
   const decide = async (q: string, nerdy = false): Promise<Decision | NerdyDecision> => {
     const state = stateOf();
     const { r, date } = await ask(state, q);
-    const d: Decision = { question: r.text, verdict: r.verdict, answer: r.answer, confidence: r.confidence };
+    const d: Decision = { question: r.text, verdict: r.verdict, confidence: r.confidence };
     if (!nerdy) return d;
     return {
       ...d, probs: r.probs as Probs, model: r.model as Probs, sign: currentSign(state), luckyNumber: luckyNumberIn(state), date: ymd(date),

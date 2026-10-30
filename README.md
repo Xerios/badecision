@@ -5,7 +5,7 @@ It's 323 KB, has zero dependencies, runs on CPU in ~1 ms, and works in the brows
 An optional horoscope layer lets the stars bend the outcome. It is not accurate. On purpose.
 
 ```
-$ pnpm run ask -- "Should I buy the boat?" --birthday 1990-08-01
+$ pnpm run ask -- "Should I buy the boat?" --sign 1990-08-01
   → Maybe.  (49%)
     yes     ████··························  13.0%
     no      ████··························  14.0%
@@ -43,10 +43,10 @@ import { createDecider } from './packages/core/src/bdm.js';
 const bdm = await createDecider();               // loads packages/core/models/tiny/model.bin (fetch in browsers, fs in Node)
 const r = bdm.decide('Is a whale a fish?', {
   astro: 0.5,              // horoscope strength: 0 = off, 1 = full, 1.5 = unhinged
-  birthday: '1990-08-01',  // optional, enables sun-sign effects
+  sign: '1990-08-01',      // optional, a sign name ('Leo') or a birthday: enables sun-sign effects
   date: new Date(),        // which day's sky to read
 });
-// r = { verdict: 'no', answer: 'No.', confidence: 0.61,
+// r = { verdict: 'no', confidence: 0.61,
 //       probs: {yes, no, maybe, unsure},   // after the horoscope
 //       model: {yes, no, maybe, unsure},   // the model alone
 //       starsChangedIt: false, stars: { notes: [...], moon, mercury, sign, ... } }
@@ -59,12 +59,12 @@ In a browser, serve the folder over http (ES modules don't load from `file://`) 
 
 [packages/badecision/](packages/badecision/) wraps the tiny model as a zero-config, synchronous npm package. The
 forward pass runs in a WebAssembly kernel, the model is inlined, and a sign is picked at random per session if no
-birthday is given:
+sign or birthday is given:
 
 ```js
 import { isItTrue, decide, feelingLucky } from 'badecision';
 if (isItTrue('Should we approve the refund?')) approveRefund(order);   // only 'true' is truthy
-decide('Should we hire the candidate?');   // { question, verdict: 'maybe', answer: 'Maybe.', confidence: 0.43 }
+decide('Should we hire the candidate?');   // { question, verdict: 'maybe', confidence: 0.43 }
 feelingLucky('the vendor contract is worth renewing');   // true | false
 ```
 

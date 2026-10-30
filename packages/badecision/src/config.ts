@@ -1,6 +1,6 @@
-// Who is asking and when: sun sign (birthday, chosen, or random per session), the date, randomness.
+// Who is asking and when: sun sign (chosen, from a birthday, or random per session), the date, randomness.
 
-import { SIGNS, signByName, sunSign } from './core/horoscope.js';
+import { SIGNS, isSignName, signByName, signOf } from './core/horoscope.js';
 import type { Config, DateLike, Sign, SignName } from './types.js';
 
 export const ASTRO_WARNING = 'badecision: adjusting astrological influence is only available in the cloud-hosted version of BAdecision.';
@@ -21,8 +21,7 @@ export function applyConfig(state: State, config: Config): void {
     warned = true;
     console.warn(ASTRO_WARNING);
   }
-  if (rest.sign != null) signByName(rest.sign); // throws on unknown signs
-  if (rest.birthday != null && Number.isNaN(toDate(rest.birthday).getTime())) throw new TypeError(`Invalid birthday: ${rest.birthday}`);
+  if (rest.sign != null) signOf(rest.sign); // throws on anything that is neither a sign nor a date
   if (rest.date != null && Number.isNaN(toDate(rest.date).getTime())) throw new TypeError(`Invalid date: ${rest.date}`);
   state.config = { ...state.config, ...rest };
 }
@@ -65,9 +64,8 @@ type SignInfo = Omit<Sign, 'source'>;
 const bySign = (name: string) => signByName(name) as SignInfo;
 
 export function currentSign(state: State): Sign {
-  const { birthday, sign } = state.config;
-  if (birthday != null) return { ...(sunSign(toDate(birthday)) as SignInfo), source: 'birthday' };
-  if (sign != null) return { ...bySign(sign), source: 'chosen' };
+  const { sign } = state.config;
+  if (sign != null) return { ...(signOf(sign) as SignInfo), source: isSignName(sign) ? 'chosen' : 'birthday' };
   return { ...bySign(randomSign(state)), source: 'random' };
 }
 
@@ -76,7 +74,7 @@ export function configure(config: Config): void {
   applyConfig(defaultState(), config);
 }
 
-/** Your sun sign: from your birthday, the sign you chose, or one picked at random for this session. */
+/** Your sun sign: the sign you chose, the one of your birthday, or one picked at random for this session. */
 export function sign(): Sign {
   return currentSign(defaultState());
 }

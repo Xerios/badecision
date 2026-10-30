@@ -2,7 +2,7 @@
 // Sanity checks for the shared core, no network: pnpm test
 import assert from 'node:assert/strict';
 import { createDecider, readStars, applyStars, LABELS } from '../src/bdm.js';
-import { sunSign, moonPhase, mercuryRetrograde, isOppositeDay } from '../src/horoscope.js';
+import { sunSign, signOf, moonPhase, mercuryRetrograde, isOppositeDay } from '../src/horoscope.js';
 import { numbersIn, matchTopics, parseOmens, applyOmens, dailyOmens, decisionState } from '../src/omens.js';
 import { fnv1a, extract } from '../src/features.js';
 
@@ -31,6 +31,10 @@ await t('zodiac signs', () => {
   assert.equal(sunSign('1990-01-10').name, 'Capricorn');
   assert.equal(sunSign('1990-03-21').name, 'Aries');
   assert.equal(sunSign('1990-03-20').name, 'Pisces');
+  assert.equal(signOf('leo').name, 'Leo');
+  assert.equal(signOf('1990-03-20').name, 'Pisces');
+  assert.equal(signOf(new Date(1990, 2, 21)).name, 'Aries');
+  assert.throws(() => signOf('Ophiuchus'), /Unknown sign/);
 });
 await t('moon + mercury', () => {
   assert.equal(moonPhase('2026-12-24T12:00:00Z').name, 'Full Moon');
@@ -39,7 +43,7 @@ await t('moon + mercury', () => {
 });
 await t('astro strength 0 is a no-op, >0 changes things', () => {
   const p = { yes: 0.4, no: 0.3, maybe: 0.2, unsure: 0.1 };
-  const s = readStars({ date: '2026-10-30', birthday: '1990-08-01' });
+  const s = readStars({ date: '2026-10-30', sign: '1990-08-01' });
   assert.deepEqual(applyStars(p, s, 0), p);
   assert.notDeepEqual(applyStars(p, s, 1), p);
 });

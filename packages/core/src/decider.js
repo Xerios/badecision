@@ -5,8 +5,6 @@ import { LABELS } from './features.js';
 import { readStars, applyStars, isOppositeDay, applyOppositeDay } from './horoscope.js';
 import { matchTopics } from './omens.js';
 
-export const ANSWERS = { yes: 'Yes.', no: 'No.', maybe: 'Maybe.', unsure: 'Not sure.' };
-
 const argmax = (p) => LABELS.reduce((a, l) => (p[l] > p[a] ? l : a), LABELS[0]);
 
 // shared by both backends: horoscope mood (+ omens, unless the model already read them), Opposite Day, verdict
@@ -19,7 +17,6 @@ export function finish(text, model, withOmens, stars, astro, { date, oppositeDay
   return {
     text,
     verdict,
-    answer: ANSWERS[verdict],
     confidence: probs[verdict],
     probs,
     model, // the model's own answer, no horoscope
@@ -35,8 +32,7 @@ export function finish(text, model, withOmens, stars, astro, { date, oppositeDay
  * Options for decide():
  * @typedef {object} DecideOptions
  * @property {number} [astro=0.5]        horoscope strength, 0 disables it
- * @property {string|Date} [birthday]    enables sun-sign effects
- * @property {string} [sign]             a sun sign name ('Leo'), used when there is no birthday
+ * @property {string|number|Date} [sign] a sun sign name ('Leo') or a birthday ('1990-08-01'): enables sun-sign effects
  * @property {string|Date} [date]        defaults to now
  * @property {string} [horoscope]        your own horoscope text; its omens ("avoid red") replace the generated ones
  * @property {boolean} [oppositeDay=true] on January 25 yes and no swap places
@@ -48,9 +44,9 @@ export function finish(text, model, withOmens, stars, astro, { date, oppositeDay
  */
 export function makeDecider(m) {
   /** @param {string} text @param {DecideOptions} [o] */
-  function decide(text, { astro = 0.5, birthday, sign, date = new Date(), horoscope, oppositeDay = true } = {}) {
+  function decide(text, { astro = 0.5, sign, date = new Date(), horoscope, oppositeDay = true } = {}) {
     const p = m.predict(text);
-    const stars = astro ? readStars({ date, birthday, sign, horoscope }) : null;
+    const stars = astro ? readStars({ date, sign, horoscope }) : null;
     return finish(text, p, p, stars, astro, { date, oppositeDay, omensApplied: false });
   }
   return { decide, model: m };

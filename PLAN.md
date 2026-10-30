@@ -130,7 +130,7 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 | --- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | ✅  | Feature extraction (hashing, negation-aware)                                                    | `packages/core/src/features.js`                                                                                |
 | ✅  | Tiny model runtime, BDM1 format, Node + browser                                                 | `packages/core/src/model.js`                                                                                   |
-| ✅  | Public API `createDecider().decide(text, {astro, birthday, date})`                              | `packages/core/src/bdm.js`                                                                                     |
+| ✅  | Public API `createDecider().decide(text, {astro, sign, date})`                              | `packages/core/src/bdm.js`                                                                                     |
 | ✅  | Horoscope layer                                                                                 | `packages/core/src/horoscope.js`                                                                               |
 | ✅  | Seed dataset: 2,876 rows, soft labels                                                           | `scripts/build-seed-dataset.js` → `data/seed.*.jsonl`                                            |
 | ✅  | Test set handwritten by a human AI (100 rows, 25/label, never used for training)                | `data/test.jsonl`                                                                                |

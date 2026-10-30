@@ -3,7 +3,7 @@
 //   import { createDecider } from './src/bdm.js';
 //   const bdm = await createDecider();
 //   bdm.decide('Fire is hot');
-//   bdm.decide('Should I buy the boat?', { birthday: '1990-08-01', astro: 0.7 });
+//   bdm.decide('Should I buy the boat?', { sign: '1990-08-01', astro: 0.7 });   // sign: a sign name or a birthday
 //   bdm.decide('Should I buy the red car?', { horoscope: 'Avoid red today.' });   // your own horoscope text
 //
 //   const smart = createStudioDecider({ baseUrl: 'http://<studio-ip>:8888', apiKey });   // the decision model
@@ -15,9 +15,9 @@ import { loadModel } from './load.js';
 import { readStars, applyStars, isOppositeDay } from './horoscope.js';
 import { matchTopics, parseOmens, dailyOmens, decisionState } from './omens.js';
 import { askDecisionApi, QUESTIONS } from './decision.js';
-import { ANSWERS, finish, makeDecider } from './decider.js';
+import { finish, makeDecider } from './decider.js';
 
-export { LABELS, ANSWERS, makeDecider, loadModel, TinyModel, readStars, applyStars, isOppositeDay, matchTopics, parseOmens, dailyOmens, decisionState, askDecisionApi, QUESTIONS };
+export { LABELS, makeDecider, loadModel, TinyModel, readStars, applyStars, isOppositeDay, matchTopics, parseOmens, dailyOmens, decisionState, askDecisionApi, QUESTIONS };
 
 const DEFAULT_MODEL = new URL('../models/tiny/model.bin', import.meta.url);
 /**
@@ -41,8 +41,8 @@ export async function createDecider({ modelUrl = DEFAULT_MODEL, model } = {}) {
 export function createStudioDecider({ baseUrl, apiKey, model = 'default', fetchImpl } = {}) {
   const ask = (text, omens, date) => askDecisionApi(text, { baseUrl, apiKey, model, omens, date, fetchImpl });
   /** @param {string} text @param {import('./decider.js').DecideOptions} [o] */
-  async function decide(text, { astro = 0.5, birthday, sign, date = new Date(), horoscope, oppositeDay = true } = {}) {
-    const stars = astro ? readStars({ date, birthday, sign, horoscope }) : null;
+  async function decide(text, { astro = 0.5, sign, date = new Date(), horoscope, oppositeDay = true } = {}) {
+    const stars = astro ? readStars({ date, sign, horoscope }) : null;
     const [plain, withOmens] = await Promise.all([ask(text, [], date), stars ? ask(text, horoscope ?? stars.omens, date) : null]);
     return finish(text, plain, withOmens ?? plain, stars, astro, { date, oppositeDay, omensApplied: true });
   }

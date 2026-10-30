@@ -4,7 +4,7 @@
 //     The decision model reads them as part of its input and applies them itself; for the tiny model they are
 //     applied here with the same rules. Strength 0 switches everything off.
 //
-// Inputs: the date (default now) and an optional birthday. Everything is deterministic:
+// Inputs: the date (default now) and an optional sign or birthday. Everything is deterministic:
 // the same person on the same day always gets the same cosmic nudge.
 //
 // Ingredients
@@ -74,6 +74,16 @@ export function signByName(name) {
   return { name: s[0], glyph: s[1], element: s[2] };
 }
 
+export const isSignName = (value) => typeof value === 'string' && SIGNS.some((x) => x[0].toLowerCase() === value.toLowerCase());
+
+/** A sign name ('Leo', 'leo') or a birthday (a Date, a timestamp, '1990-08-01') -> { name, glyph, element }. Throws on anything else. */
+export function signOf(value) {
+  if (isSignName(value)) return signByName(value);
+  const d = toDate(value);
+  if (Number.isNaN(d.getTime())) throw new Error(`Unknown sign: ${value} (neither a sign name nor a date)`);
+  return sunSign(d);
+}
+
 export function moonPhase(date) {
   const SYNODIC = 29.530588853;
   const ref = Date.UTC(2000, 0, 6, 18, 14); // a known new moon
@@ -107,9 +117,9 @@ export const applyOppositeDay = (p) => ({ ...p, yes: p.no, no: p.yes });
 /**
  * Compute today's astrological situation and the resulting nudge.
  * horoscope: optional free text ("Avoid red. Large numbers are unlucky.") whose omens replace the generated ones.
- * sign: a sun sign name ('Leo'), used when there is no birthday.
+ * sign: a sun sign name ('Leo') or a birthday ('1990-08-01', a Date).
  */
-export function readStars({ date = new Date(), birthday, sign: signName, horoscope } = {}) {
+export function readStars({ date = new Date(), sign: signOrBirthday, horoscope } = {}) {
   const d = toDate(date);
   const notes = [];
   const bias = { yes: 0, no: 0, maybe: 0, unsure: 0 };
@@ -117,7 +127,7 @@ export function readStars({ date = new Date(), birthday, sign: signName, horosco
   const addBias = (b = {}) => { for (const k in b) bias[k] += b[k]; };
 
   const sky = sunSign(d);
-  const sign = birthday ? sunSign(birthday) : signName ? signByName(signName) : null;
+  const sign = signOrBirthday == null || signOrBirthday === '' ? null : signOf(signOrBirthday);
 
   const merc = mercuryRetrograde(d);
   if (merc.retrograde) {

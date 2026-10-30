@@ -20,7 +20,7 @@ import { isItTrue, decide, feelingLucky } from "badecision";
 
 if (isItTrue("Should we approve the refund?")) approveRefund(order);
 decide("Should we hire the candidate?");
-// { question: 'Should we hire the candidate?', verdict: 'maybe', answer: 'Maybe.', confidence: 0.43 }
+// { question: 'Should we hire the candidate?', verdict: 'maybe', confidence: 0.43 }
 if (feelingLucky("the vendor contract is worth renewing"))
   renewVendorContract();
 ```
@@ -42,7 +42,7 @@ automatically. In Node you can also `require('badecision')` (via require(esm), N
 Nothing, until you call a function. On the first call:
 
 1. **The date is read.** Every call asks "what day is it?" again, so a long-running server moves on at midnight.
-2. **Your sign is chosen.** If you configured a birthday, it's your sun sign. Otherwise a sign is **picked at random
+2. **Your sign is chosen.** If you configured a sign or a birthday, that's your sun sign. Otherwise a sign is **picked at random
    for the session**. In a browser it's kept in `sessionStorage`, so a tab keeps its sign across reloads. In Node it
    lasts as long as the process.
 3. **The model wakes up.** The 323 KB of int8 weights are decoded from the bundle and handed to a 3.5 KB WebAssembly
@@ -106,18 +106,17 @@ A small JSON-safe object:
 
 ```js
 decide("Should we hire the candidate?");
-// { question: 'Should we hire the candidate?', verdict: 'maybe', answer: 'Maybe.', confidence: 0.43 }
+// { question: 'Should we hire the candidate?', verdict: 'maybe', confidence: 0.43 }
 ```
 
-`verdict` is `'yes' | 'no' | 'maybe' | 'unsure'`. `answer` is the human version (`'Yes.'`, `'No.'`, `'Maybe.'`,
-`'Not sure.'`). `confidence` is the probability of the verdict.
+`verdict` is `'yes' | 'no' | 'maybe' | 'unsure'`. `confidence` is the probability of the verdict.
 
 Pass `true` as the second argument (nerdy mode) for everything else:
 
 ```js
 decide("Should I deploy on Friday?", true);
 // {
-//   question, verdict, answer, confidence,
+//   question, verdict, confidence,
 //   probs:  { yes: 0.13, no: 0.13, maybe: 0.49, unsure: 0.26 },  // after the horoscope
 //   model:  { yes: 0.16, no: 0.15, maybe: 0.47, unsure: 0.22 },  // what the model thought on its own
 //   sign:   { name: 'Libra', glyph: '♎', element: 'air', source: 'random' },
@@ -209,7 +208,7 @@ await seriously.decide("Is it a good day to deploy?", true);
   thread, so ask from a worker if your UI can't spare it.
 - **Preload and show progress** with `await seriously.load({ onProgress: (done, total) => … })`. Other options: `url`
   (your own copy of the GGUF, must support Range requests), `cache: false`, `cacheDir`, `fetch`.
-- **Per user:** `seriously.create({ birthday })`, like `create()`.
+- **Per user:** `seriously.create({ sign: birthday })`, like `create()`.
 - `decide(q, true).engine` is `'serious'`.
 
 How good: 92% on the test set, handwritten by a human AI (the tiny model: 76%), 97.5% on the omen test set.
@@ -262,8 +261,7 @@ Optional. Only the keys you pass change.
 import { configure } from "badecision";
 
 configure({
-  birthday: "1990-08-01", // sets your sun sign (wins over `sign`). null forgets it.
-  sign: "Leo", // or pick a sign directly. null goes back to a random one.
+  sign: "Leo", // your sun sign, or your birthday ("1990-08-01", a Date) to work it out. null goes back to a random one.
   date: "2027-01-25", // pin "today" (handy in tests). null unpins it.
   random: mySeededRandom, // () => number in [0, 1), for reproducible coin flips
 });
@@ -282,13 +280,13 @@ own instance:
 import { create } from "badecision";
 
 app.get("/should-i", (req, res) => {
-  const bd = create({ birthday: req.user.birthday });
+  const bd = create({ sign: req.user.birthday });
   res.json(bd.decide(req.query.q, true));
 });
 ```
 
 `create()` returns an object with all of the functions above (camelCase) plus `configure()`. Instances are cheap: they
-share the loaded model. An instance without a birthday or sign gets its own random sign.
+share the loaded model. An instance without a sign gets its own random sign.
 
 ## Runtime
 

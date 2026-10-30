@@ -19,10 +19,8 @@ export type IsItTrueResult = 'true' | false | null;
 export type DateLike = string | number | Date;
 
 export interface Config {
-  /** Your birthday. Sets your sun sign. Wins over `sign`. `null` forgets it. */
-  birthday?: DateLike | null;
-  /** Pick a sun sign directly ('Leo' or 'leo'). `null` forgets it. */
-  sign?: SignName | Lowercase<SignName> | null;
+  /** Your sun sign ('Leo' or 'leo'), or your birthday ('1990-08-01', a Date, a timestamp) to work it out. `null` forgets it. */
+  sign?: SignName | Lowercase<SignName> | (string & {}) | number | Date | null;
   /** Pin "today". By default every call reads the current date. `null` unpins it. */
   date?: DateLike | null;
   /** Source of randomness, in [0, 1). Defaults to Math.random. Inject your own for reproducible bad decisions. */
@@ -38,7 +36,7 @@ export interface Sign {
   name: SignName;
   glyph: string;
   element: Element;
-  /** Where the sign came from: your birthday, configure({ sign }), or picked at random for this session. */
+  /** Where the sign came from: configure({ sign }) with a birthday or a sign name, or picked at random for this session. */
   source: 'birthday' | 'chosen' | 'random';
 }
 
@@ -68,8 +66,6 @@ export interface Horoscope {
 export interface Decision {
   question: string;
   verdict: Verdict;
-  /** 'Yes.', 'No.', 'Maybe.' or 'Not sure.' */
-  answer: string;
   /** Probability of the verdict, 0–1. */
   confidence: number;
 }

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { createDecider, LABELS } from '@badecision/core';
 import './style.css';
 
+const ANSWERS = { yes: 'Yes.', no: 'No.', maybe: 'Maybe.', unsure: 'Not sure.' };
 const COLORS = { yes: 'var(--yes)', no: 'var(--no)', maybe: 'var(--maybe)', unsure: 'var(--unsure)' };
 const NAMES = { yes: 'yes', no: 'no', maybe: 'maybe', unsure: 'not sure' };
 const EXAMPLES = ['Fire is hot', 'Is a whale a fish?', 'Should I buy the boat?', 'It will rain tomorrow', 'My neighbour owns 14 spoons', 'The glorbix is flumpy', 'Pineapple belongs on pizza', '2 + 2 = 4'];
@@ -37,7 +38,7 @@ function App() {
   const out = useMemo(() => {
     if (!bdm || !asked) return null;
     const s = performance.now();
-    const r = bdm.decide(asked, { astro: +astro, birthday: bday || undefined, date: new Date(date + 'T12:00:00'), horoscope: horo.trim() || undefined });
+    const r = bdm.decide(asked, { astro: +astro, sign: bday || undefined, date: new Date(date + 'T12:00:00'), horoscope: horo.trim() || undefined });
     return { r, ms: (performance.now() - s).toFixed(2) };
   }, [bdm, asked, astro, bday, date, horo]);
 
@@ -81,7 +82,7 @@ function Result({ r, ms }) {
   ];
   return (
     <section class="card">
-      <p class="verdict" style={{ color: COLORS[r.verdict] }}>{r.answer}</p>
+      <p class="verdict" style={{ color: COLORS[r.verdict] }}>{ANSWERS[r.verdict]}</p>
       <p class="conf">
         {Math.round(r.confidence * 100)}% {NAMES[r.verdict]} · {ms} ms
         {r.starsChangedIt && <span class="flip">✨ the stars changed this answer</span>}

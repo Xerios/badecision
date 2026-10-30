@@ -21,7 +21,7 @@ export interface Badecision {
 
 /**
  * A separate instance with its own settings, e.g. one per user on a server.
- * Without a birthday or sign it gets its own random sign (not shared with the default instance).
+ * Without a sign it gets its own random sign (not shared with the default instance).
  */
 export function create(config: Config = {}): Badecision {
   const state = newState(config);

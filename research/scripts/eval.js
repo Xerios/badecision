@@ -29,6 +29,6 @@ if (f.llm) {
 } else {
   const bdm = await createDecider(f.model ? { modelUrl: join(ROOT, f.model) } : {});
   const astro = +(f.astro ?? 0);
-  predictor = { predict: (t) => bdm.decide(t, { astro, date: f.date ?? new Date(), birthday: f.birthday }).probs };
+  predictor = { predict: (t) => bdm.decide(t, { astro, date: f.date ?? new Date(), sign: f.birthday }).probs };
 }
 console.log(formatReport(evaluate(predictor, rows), { showMistakes: +(f.mistakes ?? 15) }));
