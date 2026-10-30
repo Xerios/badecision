@@ -2,7 +2,7 @@
   "name": "@badecision/research",
   "version": "0.1.0",
   "private": true,
-  "description": "Training, evaluation, datasets and Unsloth Studio tooling for the Bad Decision Model. Scripts run from this directory.",
+  "description": "Training, evaluation, datasets and Unsloth Studio tooling for BAdecision. Scripts run from this directory.",
   "type": "module",
   "scripts": {
     "data:seed": "node scripts/build-seed-dataset.js",

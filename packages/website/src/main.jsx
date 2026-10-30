@@ -45,7 +45,7 @@ function App() {
 
   return (
     <>
-      <h1>Bad Decision Model</h1>
+      <h1>BAdecision</h1>
       <p class="sub">A tiny on-device model that answers yes, no, maybe or not sure — with a little help from the stars. Not accurate. On purpose.</p>
 
       <form onSubmit={(e) => { e.preventDefault(); ask(q); }}>

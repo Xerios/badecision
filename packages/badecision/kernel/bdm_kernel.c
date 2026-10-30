@@ -1,4 +1,4 @@
-// badecision inference kernel: the numeric part of the tiny model's forward pass.
+// BAdecision inference kernel: the numeric part of the tiny model's forward pass.
 //   v      = mean(E[ids] * rowScale[ids])   int8 embedding bag
 //   h      = act(U v + c)
 //   logits = W h + b

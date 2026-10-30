@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Ask the Bad Decision Model from the terminal.
+// Ask BAdecision from the terminal.
 //   node scripts/cli.js "Fire is hot"
 //   node scripts/cli.js "Should I buy the boat?" --birthday 1990-08-01 --astro 0.8
 //   node scripts/cli.js "Should I buy the red car?" --horoscope "Avoid red today."

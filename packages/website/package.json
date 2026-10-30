@@ -2,7 +2,7 @@
   "name": "@badecision/website",
   "version": "0.1.0",
   "private": true,
-  "description": "The Bad Decision Model demo site: Preact + Vite over @badecision/core.",
+  "description": "The BAdecision demo site: Preact + Vite over @badecision/core.",
   "type": "module",
   "scripts": {
     "dev": "vite",

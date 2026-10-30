@@ -1,4 +1,4 @@
-// Bad Decision Model: public API. Works in the browser and in Node (ESM).
+// BAdecision: public API. Works in the browser and in Node (ESM).
 //
 //   import { createDecider } from './src/bdm.js';
 //   const bdm = await createDecider();

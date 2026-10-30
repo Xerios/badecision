@@ -1,6 +1,6 @@
 # Balanced Assessment Decisions
 
-The Bad Decision Model: a tiny model that reads a sentence and answers **yes**, **no**, **maybe** or **not sure**, with probabilities.
+BAdecision: a tiny model that reads a sentence and answers **yes**, **no**, **maybe** or **not sure**, with probabilities.
 It's 323 KB, has zero dependencies, runs on CPU in ~1 ms, and works in the browser and Node.
 An optional horoscope layer lets the stars bend the outcome. It is not accurate. On purpose.
 

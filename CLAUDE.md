@@ -1,4 +1,4 @@
-# Balanced Assessment Decisions (Bad Decision Model)
+# Balanced Assessment Decisions (BAdecision)
 
 A tiny yes / no / maybe / unsure text classifier, made deliberately unreliable by a horoscope layer. A pnpm workspace;
 the root package is private and holds no code:

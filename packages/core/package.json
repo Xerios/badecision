@@ -2,7 +2,7 @@
   "name": "@badecision/core",
   "version": "0.1.0",
   "private": true,
-  "description": "The shared core of the Bad Decision Model: tiny model runtime, horoscope, omens, Studio client and the serious model's front processor. Plain JS ESM for browsers and Node; copied into badecision at build time.",
+  "description": "The shared core of BAdecision: tiny model runtime, horoscope, omens, Studio client and the serious model's front processor. Plain JS ESM for browsers and Node; copied into badecision at build time.",
   "type": "module",
   "main": "src/bdm.js",
   "exports": {

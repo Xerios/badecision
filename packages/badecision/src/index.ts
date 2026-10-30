@@ -1,4 +1,4 @@
-// badecision: a tiny WebAssembly yes / no / maybe model with a horoscope.
+// BAdecision: a tiny WebAssembly yes / no / maybe model with a horoscope.
 // Everything is a named export with no import-time work, so bundlers keep only what you use.
 
 export {

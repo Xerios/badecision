@@ -28,7 +28,7 @@ export interface Config {
   /** Source of randomness, in [0, 1). Defaults to Math.random. Inject your own for reproducible bad decisions. */
   random?: (() => number) | null;
   /**
-   * Adjusting astrological influence is only available in the cloud-hosted version of badecision.
+   * Adjusting astrological influence is only available in the cloud-hosted version of BAdecision.
    * In this package it is fixed at a cosmically balanced 0.5.
    */
   astro?: never;

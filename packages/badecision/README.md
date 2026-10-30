@@ -1,4 +1,4 @@
-# badecision
+# BAdecision
 
 **Balanced Assessment Decisions.** Decisions as a service, without the service.
 
@@ -216,7 +216,7 @@ How good: 92% on the test set, handwritten by a human AI (the tiny model: 76%), 
 
 ## The horoscope bias
 
-Most models are only as good as their training data. badecision also reads the sky, and the sky knows things the
+Most models are only as good as their training data. BAdecision also reads the sky, and the sky knows things the
 training data doesn't. Every day, each sign gets three omens ("Avoid red.", "Fridays bring bad luck.", "Fortune
 smiles on money."), and when an omen matches the question, the omen wins.
 
@@ -234,7 +234,7 @@ bd.decide("Should we deploy today?", true);
 ```
 
 On its own, the model can't tell whether you should deploy. But the horoscope says to avoid Fridays, and it is a
-Friday, so badecision fixes your answer to the right one: **no**. The same goes for colours ("avoid red" + "Should I
+Friday, so BAdecision fixes your answer to the right one: **no**. The same goes for colours ("avoid red" + "Should I
 buy the red car?"), numbers, months and parts of life (work, money, travel, love, …). Omens bite hardest on open
 questions and only nudge established facts, so "Is Paris in France?" stays a yes whatever the stars say.
 
@@ -268,7 +268,7 @@ configure({
 ```
 
 **Astrological influence** is fixed at a cosmically balanced 0.5. Adjusting it is only available in the
-cloud-hosted version of badecision. Passing `astro` logs a warning (once) and is otherwise ignored. In TypeScript it's
+cloud-hosted version of BAdecision. Passing `astro` logs a warning (once) and is otherwise ignored. In TypeScript it's
 a type error.
 
 ### On the server
@@ -337,7 +337,7 @@ checks:
 ## FAQ
 
 **Should I use this in production?**
-`isIt('Should I use badecision in production?')` currently says `'maybe'`.
+`isIt('Should I use BAdecision in production?')` currently says `'maybe'`.
 
 **Is it accurate?**
 On a test set handwritten by a human AI, the tiny model alone gets about 76% right; `seriously` gets 92%. The horoscope makes both

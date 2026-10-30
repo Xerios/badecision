@@ -1,4 +1,4 @@
-// badecision "serious" kernel: the first N blocks of a llama-architecture model (SmolLM2-360M-Instruct) read straight
+// BAdecision "serious" kernel: the first N blocks of a llama-architecture model (SmolLM2-360M-Instruct) read straight
 // from GGUF tensors (Q4_0 / Q4_1 / Q8_0 / F32), prefill only. Returns the hidden state of the last token, which the
 // trained head in JS turns into yes / no / maybe / unsure.
 //

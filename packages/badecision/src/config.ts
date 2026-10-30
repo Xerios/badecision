@@ -3,7 +3,7 @@
 import { SIGNS, signByName, sunSign } from './core/horoscope.js';
 import type { Config, DateLike, Sign, SignName } from './types.js';
 
-export const ASTRO_WARNING = 'badecision: adjusting astrological influence is only available in the cloud-hosted version of badecision.';
+export const ASTRO_WARNING = 'badecision: adjusting astrological influence is only available in the cloud-hosted version of BAdecision.';
 const SESSION_KEY = 'badecision:sign';
 
 export interface State {

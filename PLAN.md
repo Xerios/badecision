@@ -1,4 +1,4 @@
-# Bad Decision Model: plan & runbook
+# BAdecision: plan & runbook
 
 > **For a fresh Claude session:** read this file top to bottom, then run _Phase 0_. Everything marked ✅ is built and
 > tested; everything marked 🔲 is the work left. The Unsloth parts were written **without access to the server**
