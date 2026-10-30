@@ -7,11 +7,12 @@ export {
   isItTrueStrict, isItTrueStrict as IsItTrueStrict,
   isItFalse, isItFalse as IsItFalse,
   isItTrulyTrue, isItTrulyTrue as IsItTrulyTrue,
-} from './answers.js';
-export { decide } from './decide.js';
-export { feelingLucky, luckyNumber } from './lucky.js';
+  feelingLucky,
+  decide,
+} from './tiny.js';
+export { luckyNumber } from './lucky.js';
 export { configure, sign } from './config.js';
-export { horoscope } from './ask.js';
+export { horoscope } from './horoscope.js';
 export { create, type Badecision } from './create.js';
 export { BadDecisionError } from './errors.js';
 export { seriously, type Seriously, type LoadOptions, type SeriousInfo } from './serious.js';

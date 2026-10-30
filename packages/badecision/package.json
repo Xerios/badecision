@@ -24,7 +24,9 @@
     "prepublishOnly": "node scripts/build.ts && node --test test/"
   },
   "devDependencies": {
+    "@badecision/core": "workspace:*",
     "esbuild": "^0.25.0",
-    "typescript": "^5.9.0"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
   }
 }

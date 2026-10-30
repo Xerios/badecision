@@ -2,12 +2,12 @@
 // TinyModel as the fallback when WebAssembly is unavailable or blocked (CSP without 'wasm-unsafe-eval').
 // Nothing happens at import time; the first call to engine() decodes the model and instantiates the kernel.
 
-import { TinyModel } from './core/model.js';
-import { featurize } from './core/features.js';
-import { makeDecider } from './core/decider.js';
-import { MODEL_BASE64 } from './generated/model-data.js';
-import { KERNEL_BASE64 } from './generated/kernel-data.js';
-import type { Omen, Probs, Verdict } from './types.js';
+import { TinyModel } from '@badecision/core/model';
+import { featurize } from '@badecision/core/features';
+import { makeDecider } from '@badecision/core/decider';
+import MODEL_BASE64 from '@badecision/core/models/tiny/model.bin?base64';
+import KERNEL_BASE64 from '../kernel/bdm_kernel.wasm?base64';
+import type { Decider } from './answers.js';
 
 export type EngineName = 'wasm' | 'js';
 
@@ -69,15 +69,6 @@ export function loadEngine(): { model: TinyModel; engine: EngineName } {
   }
 }
 
-// the typed face of src/core/decider.js
-export interface CoreDecision {
-  text: string; verdict: Verdict; confidence: number; probs: Probs; model: Probs;
-  oppositeDay: boolean; starsChangedIt: boolean | null; omenHits: Omen[];
-  stars: { notes: string[] }; // never null here: the horoscope strength is fixed above 0
-}
-export interface Decider {
-  decide(text: string, options: { astro: number; sign: string; date: Date }): CoreDecision;
-}
 let loaded: { decider: Decider; engine: EngineName } | undefined;
 
 /** The shared, lazily created engine. */

@@ -1,8 +1,10 @@
 // Who is asking and when: sun sign (chosen, from a birthday, or random per session), the date, randomness.
 
-import { SIGNS, isSignName, signByName, signOf } from './core/horoscope.js';
+import { SIGNS, isSignName, signByName, signOf } from '@badecision/core/horoscope';
 import type { Config, DateLike, Sign, SignName } from './types.js';
 
+/** Horoscope strength. Fixed; see Config.astro. */
+export const ASTRO = 0.5;
 export const ASTRO_WARNING = 'badecision: adjusting astrological influence is only available in the cloud-hosted version of BAdecision.';
 const SESSION_KEY = 'badecision:sign';
 

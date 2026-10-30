@@ -10,8 +10,8 @@ the root package is private and holds no code:
 
 ## Ground rules
 - **pnpm only** (`packageManager` is pinned). The root, `packages/core` and `research` have **zero dependencies**.
-  Keep it that way. Dev dependencies (typescript, esbuild) belong to `packages/badecision/`; preact and vite belong to
-  `packages/website/`. Research scripts
+  Keep it that way. Dev dependencies (typescript, vite, esbuild for the test) belong to `packages/badecision/`;
+  preact and vite to `packages/website/`. Both import `@badecision/core` through a workspace link. Research scripts
   import the core by relative path (`../../packages/core/src/...`), not through a workspace link.
 - Node ≥ 20 for the published code. The dev tooling uses Node 26 features (native TypeScript stripping for `.ts`
   scripts and tests).
@@ -21,8 +21,8 @@ the root package is private and holds no code:
 - Never commit `.env` (Studio URL + key, at the repo root). Never `npm publish` without the user asking.
 
 ## Layout
-- `packages/core/src/`: the shared core, plain JS ESM, runs in browsers and Node. It is copied into the npm package's
-  bundle, so no `node:` imports or `import.meta.url` outside `load.js` (see `packages/badecision/CLAUDE.md`).
+- `packages/core/src/`: the shared core, plain JS ESM, runs in browsers and Node. The npm package's build
+  ships the files it imports, so no `node:` imports or `import.meta.url` outside `load.js` (see `packages/badecision/CLAUDE.md`).
   - `load.js`: `loadModel` via fs or fetch. Kept apart so bundles never see `node:fs`.
   - `gguf.js`, `bpe.js`, `smol.js`: the serious model. A frozen SmolLM2-360M-Instruct front processor (Q4_0 GGUF from
     Hugging Face, first 20 blocks only, via HTTP Range) + a trained head (`models/serious/head.json`). Must match

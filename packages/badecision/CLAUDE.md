@@ -1,9 +1,14 @@
 # packages/badecision (the npm package `badecision`)
 
 ## Layout
-- `src/*.ts`: the package's own code, written by hand.
-- `src/core/` and `src/generated/`: build outputs (gitignored). The build copies the core files from
-  `packages/core/src/` into `src/core/`, so edit those, never `src/core/`.
+- `src/*.ts`: the package's own code, written by hand. It imports the core as `@badecision/core/<module>`
+  (workspace link; add a module to `packages/core/package.json` `exports` before importing it).
+  - `answers.ts`: what every function makes of a decision. Model-free; shared by the sync API (`tiny.ts`, tiny model
+    via `engine.ts`) and the async one (`serious.ts`). Change behaviour there, not in the two front ends.
+- `scripts/build.ts` + `vite.config.ts`: Vite writes the JS with one file per module (`dist/*.js`, `dist/core/*.js`,
+  `dist/generated/*.js`); tsc only type-checks and writes the `.d.ts` files (`emitDeclarationOnly`).
+  Data is imported straight from its file and inlined by a Vite plugin: `…/model.bin?base64`, `…/*.wasm?base64`
+  (a base64 string) and `…/head.json?head` (the head's weights). Their types are in `src/data.d.ts`.
 - `kernel/bdm_kernel.c`: the forward pass, compiled to `bdm_kernel.wasm`. The `.wasm` is committed and must stay
   under 4 KB so it can compile synchronously.
 - `kernel/smol_kernel.c`: the serious model's transformer blocks, `smol_kernel.wasm` (committed, compiled async, so

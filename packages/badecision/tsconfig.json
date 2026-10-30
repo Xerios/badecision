@@ -8,6 +8,7 @@
     "allowJs": true,
     "checkJs": false,
     "declaration": true,
+    "emitDeclarationOnly": true,
     "rootDir": "src",
     "outDir": "dist",
     "skipLibCheck": true,

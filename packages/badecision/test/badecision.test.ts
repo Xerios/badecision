@@ -13,13 +13,13 @@ import * as bd from '../dist/index.js';
 import { create, BadDecisionError, StringToBooleanFactory, type IsItResult } from '../dist/index.js';
 import { WasmModel, loadEngine, fromBase64, engine } from '../dist/engine.js';
 import { newState, currentSign, ASTRO_WARNING } from '../dist/config.js';
-import { MODEL_BASE64 } from '../dist/generated/model-data.js';
+import MODEL_BASE64 from '../dist/generated/model.js';
 import { TinyModel } from '../dist/core/model.js';
 import { fnv1a } from '../dist/core/features.js';
 import { moonPhase, mercuryRetrograde } from '../dist/core/horoscope.js';
 import { createDecider } from '../../core/src/bdm.js';
 import { rangeFetcher } from '../dist/serious.js';
-import { SMOL_KERNEL_BASE64 } from '../dist/generated/smol-kernel-data.js';
+import SMOL_KERNEL_BASE64 from '../dist/generated/smol_kernel.js';
 import { existsSync, mkdtempSync, openSync, readSync, rmSync, writeFileSync, chmodSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 

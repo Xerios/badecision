@@ -1,8 +1,7 @@
 import { applyConfig, currentSign, newState } from './config.js';
-import { horoscopeIn } from './ask.js';
-import { isItIn, isItTrueIn, isItTrueStrictIn, isItFalseIn, isItTrulyTrueIn } from './answers.js';
-import { feelingLuckyIn, luckyNumberIn } from './lucky.js';
-import { decideIn } from './decide.js';
+import { horoscopeIn } from './horoscope.js';
+import { isItIn, isItTrueIn, isItTrueStrictIn, isItFalseIn, isItTrulyTrueIn, feelingLuckyIn, decideIn } from './tiny.js';
+import { luckyNumberIn } from './lucky.js';
 import type { Config, Decide, Horoscope, IsItResult, IsItTrueResult, Sign } from './types.js';
 
 export interface Badecision {

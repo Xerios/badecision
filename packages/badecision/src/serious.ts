@@ -3,17 +3,14 @@
 // Day as the tiny model; only loading is asynchronous. Nothing here runs at import time, and nothing of it ends up
 // in a bundle that doesn't import `seriously`.
 
-import { loadSmol, makeHead, SMOL } from './core/smol.js';
-import { makeDecider } from './core/decider.js';
+import { loadSmol, makeHead, SMOL } from '@badecision/core/smol';
+import { makeDecider } from '@badecision/core/decider';
 import { fromBase64 } from './engine.js';
-import { SMOL_KERNEL_BASE64 } from './generated/smol-kernel-data.js';
-import { HEAD } from './generated/head-data.js';
-import { currentSign, defaultState, newState, now, random, ymd, applyConfig, type State } from './config.js';
-import { ASTRO } from './ask.js';
-import { luckyNumberIn } from './lucky.js';
-import { BadDecisionError } from './errors.js';
-import type { CoreDecision, Decider } from './engine.js';
-import type { Config, Decision, IsItResult, IsItTrueResult, NerdyDecision, Probs, Verdict } from './types.js';
+import SMOL_KERNEL_BASE64 from '../kernel/smol_kernel.wasm?base64';
+import HEAD from '@badecision/core/models/serious/head.json?head';
+import { defaultState, newState, applyConfig, type State } from './config.js';
+import { consult, decisionOf, feelingLuckyOf, isItFalseOf, isItOf, isItTrueOf, isItTrueStrictOf, type Asked, type Decider } from './answers.js';
+import type { Config, Decision, IsItResult, IsItTrueResult, NerdyDecision } from './types.js';
 
 export interface LoadOptions {
   /** Where the GGUF file lives. Defaults to the pinned Hugging Face URL. Must serve HTTP Range requests. */
@@ -119,13 +116,9 @@ function loaded(options: LoadOptions): Promise<Loaded> {
 }
 const f32 = (b64: string) => new Float32Array(fromBase64(b64).buffer);
 
-const RESULTS: Record<Verdict, IsItResult> = { yes: 'true', no: 'false', maybe: 'maybe', unsure: 'maybe' };
-const TRUE_RESULTS: Record<Verdict, IsItTrueResult> = { yes: 'true', no: false, maybe: null, unsure: null };
-
-async function ask(state: State, question: string): Promise<{ r: CoreDecision; date: Date }> {
+async function ask(state: State, question: string): Promise<Asked> {
   const { decider } = await loaded({});
-  const date = now(state);
-  return { r: decider.decide(String(question), { astro: ASTRO, sign: currentSign(state).name, date }), date };
+  return consult(decider, 'serious', state, question);
 }
 
 export interface Seriously {
@@ -143,35 +136,15 @@ export interface Seriously {
 }
 
 function seriouslyFor(stateOf: () => State): Seriously {
-  const isIt = async (q: string) => RESULTS[(await ask(stateOf(), q)).r.verdict];
-  const decide = async (q: string, nerdy = false): Promise<Decision | NerdyDecision> => {
-    const state = stateOf();
-    const { r, date } = await ask(state, q);
-    const d: Decision = { question: r.text, verdict: r.verdict, confidence: r.confidence };
-    if (!nerdy) return d;
-    return {
-      ...d, probs: r.probs as Probs, model: r.model as Probs, sign: currentSign(state), luckyNumber: luckyNumberIn(state), date: ymd(date),
-      oppositeDay: r.oppositeDay, starsChangedIt: Boolean(r.starsChangedIt), omenHits: r.omenHits, notes: r.stars.notes, engine: 'serious',
-    };
-  };
   return {
     load,
-    isIt,
-    async isItTrue(q) { return TRUE_RESULTS[(await ask(stateOf(), q)).r.verdict]; },
-    async isItTrueStrict(q) { const a = await isIt(q); if (a !== 'true') throw new BadDecisionError(q, a); return a; },
-    async isItFalse(q) {
-      const state = stateOf();
-      const { r } = await ask(state, q);
-      const a = RESULTS[r.verdict];
-      return a !== 'maybe' ? a === 'false' : random(state) * (r.probs.yes + r.probs.no) < r.probs.no;
-    },
+    async isIt(q) { return isItOf(await ask(stateOf(), q)); },
+    async isItTrue(q) { return isItTrueOf(await ask(stateOf(), q)); },
+    async isItTrueStrict(q) { return isItTrueStrictOf(q, await ask(stateOf(), q)); },
+    async isItFalse(q) { const state = stateOf(); return isItFalseOf(state, await ask(state, q)); },
     async isItTrulyTrue(q) { await ask(stateOf(), q); return false; },
-    async feelingLucky(q) {
-      const state = stateOf();
-      const { probs } = (await ask(state, q)).r;
-      return Math.min(100, Math.max(1, 1 + Math.floor(random(state) * 100) + Math.round((probs.yes - probs.no) * 40))) > luckyNumberIn(state);
-    },
-    decide: decide as Seriously['decide'],
+    async feelingLucky(q) { const state = stateOf(); return feelingLuckyOf(state, await ask(state, q)); },
+    decide: (async (q: string, nerdy = false) => { const state = stateOf(); return decisionOf(state, await ask(state, q), nerdy); }) as Seriously['decide'],
     create(config = {}) { const s = newState(config); return { ...seriouslyFor(() => s), configure: (c: Config) => applyConfig(s, c) }; },
   };
 }
