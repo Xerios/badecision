@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- Manual browser check: pnpm run demo (repo root), then open http://localhost:5173/packages/badecision/test/browser.html -->
+<html lang="en">
+<meta charset="utf-8">
+<title>badecision browser check</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
+  input { font: inherit; width: 100%; padding: .4rem; box-sizing: border-box; }
+  pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
+  code { background: #f4f4f4; padding: 0 .25rem; }
+</style>
+<h1>badecision</h1>
+<p><input id="q" value="Should I deploy today?" aria-label="question"></p>
+<p id="summary"></p>
+<pre id="out"></pre>
+<script type="module">
+  import { decide, isIt, isItTrue, isItFalse, isItTrulyTrue, feelingLucky, luckyNumber, sign, StringToBooleanFactory } from '../dist/index.js';
+  const factory = new StringToBooleanFactory().initialize();
+  const run = () => {
+    const q = document.getElementById('q').value;
+    const t0 = performance.now();
+    const d = decide(q, true);
+    const ms = (performance.now() - t0).toFixed(2);
+    const s = sign();
+    document.getElementById('summary').innerHTML =
+      `${s.glyph} ${s.name} (${s.source}) · lucky number <b>${luckyNumber()}</b> · engine <code>${d.engine}</code> · ${ms} ms`;
+    document.getElementById('out').textContent = JSON.stringify({
+      'isIt': isIt(q), 'isItTrue': isItTrue(q), 'factory.ConvertFromString(isIt)': factory.ConvertFromString(isIt(q)),
+      'isItFalse': isItFalse(q), 'isItTrulyTrue': isItTrulyTrue(q), 'feelingLucky': feelingLucky(q), 'decide(q)': decide(q), 'decide(q, true)': d,
+    }, null, 2);
+  };
+  document.getElementById('q').addEventListener('input', run);
+  run();
+</script>
+</html>

@@ -21,7 +21,16 @@
     "unsloth:label": "node scripts/teacher-label.js",
     "unsloth:eval": "node scripts/eval.js --llm",
     "unsloth:export": "node scripts/export-studio-dataset.js",
-    "unsloth:mock": "node scripts/mock-unsloth.js"
+    "unsloth:mock": "node scripts/mock-unsloth.js",
+    "omens:generate": "node scripts/generate-omen-sentences.js",
+    "decision:data": "node scripts/build-decision-dataset.js",
+    "decision:train": "node scripts/studio-train-decision.js",
+    "decision:export": "node scripts/studio-export-decision.js",
+    "decision:eval": "node scripts/eval-decision.js --backend studio",
+    "eval:omens": "node scripts/eval-decision.js --backend tiny",
+    "pkg:build": "pnpm --filter badecision build",
+    "pkg:kernel": "pnpm --filter badecision build:kernel",
+    "pkg:test": "pnpm --filter badecision test"
   },
   "license": "MIT"
 }

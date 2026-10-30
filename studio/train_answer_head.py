@@ -118,7 +118,7 @@ def main():
             if step >= steps:
                 break
 
-    # quick eval on the hand-written test set
+    # quick eval on the test set handwritten by a human AI
     FastLanguageModel.for_inference(model)
     if os.path.exists(args.eval):
         test = [json.loads(l) for l in open(args.eval) if l.strip()]

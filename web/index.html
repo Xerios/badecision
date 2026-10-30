@@ -69,6 +69,7 @@
     <summary>Cosmic settings</summary>
     <div class="settings">
       <label>Your birthday (optional)<input id="bday" type="date"></label>
+      <label>Your own horoscope (optional, e.g. "Avoid red. Large numbers are unlucky.")<input id="horo" type="text" placeholder="leave empty for today's generated omens"></label>
       <label>Date to read the stars for<input id="date" type="date"></label>
       <label>Horoscope influence: <span id="astroVal"></span><input id="astro" type="range" min="0" max="1.5" step="0.05" value="0.5"></label>
     </div>
@@ -103,7 +104,7 @@
     $('astroVal').textContent = (+$('astro').value).toFixed(2);
     if (!text) return;
     const s = performance.now();
-    const r = bdm.decide(text, { astro: +$('astro').value, birthday: $('bday').value || undefined, date: new Date($('date').value + 'T12:00:00') });
+    const r = bdm.decide(text, { astro: +$('astro').value, birthday: $('bday').value || undefined, date: new Date($('date').value + 'T12:00:00'), horoscope: $('horo').value.trim() || undefined });
     const ms = (performance.now() - s).toFixed(2);
     $('out').hidden = false;
     $('verdict').textContent = r.answer;
@@ -114,12 +115,15 @@
       $('ghost-' + l).style.left = `calc(${(r.model[l] * 100).toFixed(1)}% - 1px)`;
       $('num-' + l).textContent = (r.probs[l] * 100).toFixed(0) + '%';
     }
-    $('notes').innerHTML = (r.stars?.notes ?? ['Horoscope switched off. Pure, unadulterated model.']).map((n) => `<li>${n}</li>`).join('');
+    const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    $('notes').innerHTML = [...(r.oppositeDay ? ['🙃 January 25 is Opposite Day: yes means no and no means yes.'] : []),
+      ...(r.stars?.notes ?? ['Horoscope switched off. Pure, unadulterated model.']),
+      ...(r.omenHits ?? []).map((o) => `↳ "${o.text}" applies: your question is about ${o.topic}.`)].map((n) => `<li>${esc(n)}</li>`).join('');
   }
 
   $('ask').addEventListener('submit', (e) => { e.preventDefault(); run(); });
   $('chips').addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') { $('q').value = e.target.textContent; run(); } });
-  for (const id of ['bday', 'date', 'astro']) $(id).addEventListener('input', () => { store.set('bdm.bday', $('bday').value); store.set('bdm.astro', $('astro').value); run(); });
+  for (const id of ['bday', 'date', 'astro', 'horo']) $(id).addEventListener('input', () => { store.set('bdm.bday', $('bday').value); store.set('bdm.astro', $('astro').value); run(); });
   $('astroVal').textContent = (+$('astro').value).toFixed(2);
 </script>
 </body>

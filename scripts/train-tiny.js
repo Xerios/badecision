@@ -164,7 +164,7 @@ const testRep = evaluate(model, test.map((r) => ({ text: r.text, label: LABELS[a
 header.metrics = { valAcc: valRep.accuracy, testAcc: testRep.accuracy, testEce: testRep.ece, floatValAcc: best.acc };
 console.log(`\ncalibrated temperature: ${bestT}`);
 console.log(`val  (template-like, quantized): ${(valRep.accuracy * 100).toFixed(1)}%   (float: ${(best.acc * 100).toFixed(1)}%)`);
-console.log('\nTEST (hand-written, never seen):');
+console.log('\nTEST (handwritten by a human AI, never seen):');
 console.log(formatReport(testRep));
 
 const outDir = join(ROOT, opt.out);

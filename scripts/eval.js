@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Evaluate a model on the hand-written test set (or any jsonl with {text,label} or {text,probs}).
+// Evaluate a model on the test set handwritten by a human AI (or any jsonl with {text,label} or {text,probs}).
 //   node scripts/eval.js                                  # tiny model, data/test.jsonl
 //   node scripts/eval.js --model models/tiny/model.bin --data data/seed.val.jsonl
 //   node scripts/eval.js --llm [--llm-model <id>] [--mode logprobs]   # evaluate the Studio LLM via the API instead

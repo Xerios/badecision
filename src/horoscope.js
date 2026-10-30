@@ -1,5 +1,8 @@
-// The horoscope layer. Deliberately NOT part of the model: it nudges the model's
-// probabilities after the fact, so it can be switched off (strength 0) and the model stays clean.
+// The horoscope layer. Two kinds of influence:
+//   - mood: sun sign, moon, Mercury, weekday ruler. A general tilt applied to every answer, after the model.
+//   - omens (src/omens.js): "avoid red", "large numbers bring bad luck". Only bite when the sentence matches.
+//     The decision model reads them as part of its input and applies them itself; for the tiny model they are
+//     applied here with the same rules. Strength 0 switches everything off.
 //
 // Inputs: the date (default now) and an optional birthday. Everything is deterministic:
 // the same person on the same day always gets the same cosmic nudge.
@@ -12,6 +15,7 @@
 //   - a daily "cosmic mood" seeded from sign + date
 
 import { LABELS, fnv1a } from './features.js';
+import { dailyOmens, parseOmens, applyOmens } from './omens.js';
 
 const DAY = 86400000;
 
@@ -63,6 +67,13 @@ export function sunSign(date) {
   return { name, glyph, element };
 }
 
+/** 'leo' / 'Leo' -> { name, glyph, element }. Throws on unknown names. */
+export function signByName(name) {
+  const s = SIGNS.find((x) => x[0].toLowerCase() === String(name).toLowerCase());
+  if (!s) throw new Error(`Unknown sign: ${name}`);
+  return { name: s[0], glyph: s[1], element: s[2] };
+}
+
 export function moonPhase(date) {
   const SYNODIC = 29.530588853;
   const ref = Date.UTC(2000, 0, 6, 18, 14); // a known new moon
@@ -88,8 +99,17 @@ export function mercuryRetrograde(date) {
   return { retrograde: false };
 }
 
-/** Compute today's astrological situation and the resulting nudge. */
-export function readStars({ date = new Date(), birthday } = {}) {
+// Opposite Day (January 25): yes means no and no means yes. Hardcoded, independent of the horoscope strength.
+export const OPPOSITE_DAY = { month: 1, day: 25 };
+export const isOppositeDay = (date = new Date()) => { const d = toDate(date); return d.getMonth() + 1 === OPPOSITE_DAY.month && d.getDate() === OPPOSITE_DAY.day; };
+export const applyOppositeDay = (p) => ({ ...p, yes: p.no, no: p.yes });
+
+/**
+ * Compute today's astrological situation and the resulting nudge.
+ * horoscope: optional free text ("Avoid red. Large numbers are unlucky.") whose omens replace the generated ones.
+ * sign: a sun sign name ('Leo'), used when there is no birthday.
+ */
+export function readStars({ date = new Date(), birthday, sign: signName, horoscope } = {}) {
   const d = toDate(date);
   const notes = [];
   const bias = { yes: 0, no: 0, maybe: 0, unsure: 0 };
@@ -97,7 +117,7 @@ export function readStars({ date = new Date(), birthday } = {}) {
   const addBias = (b = {}) => { for (const k in b) bias[k] += b[k]; };
 
   const sky = sunSign(d);
-  const sign = birthday ? sunSign(birthday) : null;
+  const sign = birthday ? sunSign(birthday) : signName ? signByName(signName) : null;
 
   const merc = mercuryRetrograde(d);
   if (merc.retrograde) {
@@ -129,15 +149,21 @@ export function readStars({ date = new Date(), birthday } = {}) {
   const moodScore = 1 + (h % 10);
   notes.push(`✨ Cosmic mood for ${who} today: ${moodScore}/10.`);
 
-  return { date: ymd(d), sky, sign, moon, mercury: merc, ruler: ruler.planet, bias, temperature: +temp.toFixed(3), mood: moodScore, notes };
+  const omens = horoscope ? parseOmens(horoscope) : dailyOmens(`omens|${who}|${ymd(d)}`, 3, d);
+  for (const o of omens) notes.push(`${{ avoid: '⚠️', favour: '🍀', clouded: '🌫️' }[o.kind]} ${o.text}`);
+
+  return { date: ymd(d), at: d, sky, sign, moon, mercury: merc, ruler: ruler.planet, bias, temperature: +temp.toFixed(3), mood: moodScore, omens, notes };
 }
 
 /**
  * Apply the stars to model probabilities.
  * strength 0 = pure model, 1 = full astrological influence (values above 1 work too, if you dare).
+ * text: the sentence, needed for omens. omensApplied: the model already took the omens into account
+ * (the decision model reads them), so only the mood is applied here.
  */
-export function applyStars(probs, stars, strength = 0.5) {
+export function applyStars(probs, stars, strength = 0.5, { text, omensApplied = false } = {}) {
   if (!strength) return { ...probs };
+  if (text && !omensApplied && stars.omens?.length) probs = applyOmens(probs, text, stars.omens, strength, stars.at).probs;
   const T = Math.pow(stars.temperature, strength);
   const logits = LABELS.map((l) => (Math.log(Math.max(probs[l], 1e-9)) + strength * stars.bias[l]) / T);
   const m = Math.max(...logits);

@@ -4,3 +4,5 @@ models/llm/
 data/studio/
 studio/openapi.json
 *.log
+.venv/
+.cache/

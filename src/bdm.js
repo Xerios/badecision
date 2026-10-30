@@ -4,49 +4,47 @@
 //   const bdm = await createDecider();
 //   bdm.decide('Fire is hot');
 //   bdm.decide('Should I buy the boat?', { birthday: '1990-08-01', astro: 0.7 });
+//   bdm.decide('Should I buy the red car?', { horoscope: 'Avoid red today.' });   // your own horoscope text
+//
+//   const smart = createStudioDecider({ baseUrl: 'http://<studio-ip>:8888', apiKey });   // the decision model
+//   await smart.decide('Should I buy the red car?', { horoscope: 'Avoid red today.' });
 
 import { LABELS } from './features.js';
-import { loadModel, TinyModel } from './model.js';
-import { readStars, applyStars } from './horoscope.js';
+import { TinyModel } from './model.js';
+import { loadModel } from './load.js';
+import { readStars, applyStars, isOppositeDay } from './horoscope.js';
+import { matchTopics, parseOmens, dailyOmens, decisionState } from './omens.js';
+import { askDecisionApi, QUESTIONS } from './decision.js';
+import { ANSWERS, finish, makeDecider } from './decider.js';
 
-export { LABELS, loadModel, TinyModel, readStars, applyStars };
-
-export const ANSWERS = { yes: 'Yes.', no: 'No.', maybe: 'Maybe.', unsure: 'Not sure.' };
+export { LABELS, ANSWERS, makeDecider, loadModel, TinyModel, readStars, applyStars, isOppositeDay, matchTopics, parseOmens, dailyOmens, decisionState, askDecisionApi, QUESTIONS };
 
 const DEFAULT_MODEL = new URL('../models/tiny/model.bin', import.meta.url);
-
 /**
+ * The tiny model: pure JS, ~1 ms, runs anywhere. Omens are applied by rule (src/omens.js).
  * @param {object} [o]
  * @param {string|URL} [o.modelUrl]  where model.bin lives (defaults to ../models/tiny/model.bin next to this file)
  * @param {TinyModel}  [o.model]     an already-loaded model
  */
 export async function createDecider({ modelUrl = DEFAULT_MODEL, model } = {}) {
-  const m = model ?? (await loadModel(modelUrl));
+  return makeDecider(model ?? (await loadModel(modelUrl)));
+}
 
-  /**
-   * @param {string} text
-   * @param {object} [o]
-   * @param {number} [o.astro=0.5]    horoscope strength, 0 disables it
-   * @param {string|Date} [o.birthday] enables sun-sign effects
-   * @param {string|Date} [o.date]     defaults to now
-   */
-  function decide(text, { astro = 0.5, birthday, date = new Date() } = {}) {
-    const model = m.predict(text);
-    const stars = astro ? readStars({ date, birthday }) : null;
-    const probs = stars ? applyStars(model, stars, astro) : model;
-    const verdict = LABELS.reduce((a, l) => (probs[l] > probs[a] ? l : a), LABELS[0]);
-    return {
-      text,
-      verdict,
-      answer: ANSWERS[verdict],
-      confidence: probs[verdict],
-      probs,
-      model,
-      // the horoscope flipped the model's answer
-      starsChangedIt: stars ? verdict !== LABELS.reduce((a, l) => (model[l] > model[a] ? l : a), LABELS[0]) : false,
-      stars,
-    };
+/**
+ * The decision model (Unsloth Studio, POST /v1/systemone): knows far more, and reads the horoscope itself.
+ * decide() is async here. The omens go into the model's input; mood and Opposite Day are applied afterwards.
+ * @param {object} o
+ * @param {string} o.baseUrl   Studio URL, e.g. http://<studio-ip>:8888
+ * @param {string} [o.apiKey]
+ * @param {string} [o.model='default']  Decision API model name ('default' = whatever Studio has selected)
+ */
+export function createStudioDecider({ baseUrl, apiKey, model = 'default', fetchImpl } = {}) {
+  const ask = (text, omens, date) => askDecisionApi(text, { baseUrl, apiKey, model, omens, date, fetchImpl });
+  /** @param {string} text @param {import('./decider.js').DecideOptions} [o] */
+  async function decide(text, { astro = 0.5, birthday, sign, date = new Date(), horoscope, oppositeDay = true } = {}) {
+    const stars = astro ? readStars({ date, birthday, sign, horoscope }) : null;
+    const [plain, withOmens] = await Promise.all([ask(text, [], date), stars ? ask(text, horoscope ?? stars.omens, date) : null]);
+    return finish(text, plain, withOmens ?? plain, stars, astro, { date, oppositeDay, omensApplied: true });
   }
-
-  return { decide, model: m };
+  return { decide };
 }

@@ -17,7 +17,13 @@ const api = client();
 const TOPICS = ['animals', 'food and cooking', 'geography', 'capital cities', 'the human body', 'space and planets', 'physics', 'chemistry', 'history',
   'famous people', 'music', 'sports', 'technology', 'programming', 'weather', 'household objects', 'plants', 'oceans', 'cars and transport',
   'money', 'work and office life', 'school', 'family', 'pets', 'holidays', 'movies', 'books', 'math', 'colors and shapes', 'time and calendars',
-  'jobs', 'health', 'cities', 'languages', 'architecture', 'art', 'games', 'fashion', 'relationships', 'travel', 'insects', 'dinosaurs', 'Belgium', 'Europe'];
+  'jobs', 'health', 'cities', 'languages', 'architecture', 'art', 'games', 'fashion', 'relationships', 'travel', 'insects', 'dinosaurs', 'Belgium', 'Europe',
+  'biology', 'astronomy', 'geology', 'mammals', 'birds', 'reptiles and amphibians', 'fish and sea life', 'fruit and vegetables', 'the solar system',
+  'world history', 'ancient Rome and Greece', 'inventions', 'electricity', 'the internet', 'video games', 'sports rules', 'the Olympics', 'countries and flags',
+  'rivers and mountains', 'deserts and jungles', 'the weather and seasons', 'the human brain', 'nutrition', 'medicine', 'cooking techniques', 'materials (wood, metal, glass, plastic)',
+  'units and measurements', 'basic arithmetic', 'shapes and geometry', 'calendars and holidays', 'famous buildings', 'painting and painters', 'classical music', 'pop music',
+  'literature and authors', 'mythology', 'board games', 'cars and engines', 'airplanes and trains', 'computers and software', 'smartphones', 'money and banking', 'law and government',
+  'the economy', 'space exploration', 'chemistry of everyday things', 'light and sound', 'magnets', 'ecology and climate', 'farming', 'household chores', 'office life', 'school subjects'];
 
 const SPEC = {
   yes: 'TRUE statements or questions whose answer is clearly YES, using common knowledge. Mix plain statements ("Bees make honey"), questions ("Is the Nile a river?") and negated forms that are true ("Cats are not reptiles").',

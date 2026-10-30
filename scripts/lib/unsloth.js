@@ -1,5 +1,5 @@
 // Minimal client for the Unsloth Studio API (OpenAI-compatible). Reads UNSLOTH_BASEURL / UNSLOTH_API_KEY
-// from the environment or from ../../.env (format "KEY = value", quotes optional).
+// (or UNSLOTH_LOCAL_* with UNSLOTH_INSTANCE=local) from the environment or ../../.env ("KEY = value", quotes optional).
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,8 +16,10 @@ export function loadEnv(file = join(ROOT, '.env')) {
 
 export function client({ baseUrl, apiKey, timeoutMs = 120000, retries = 3 } = {}) {
   loadEnv();
-  baseUrl = (baseUrl ?? process.env.UNSLOTH_BASEURL ?? 'http://localhost:8888').replace(/\/+$/, '');
-  apiKey = apiKey ?? process.env.UNSLOTH_API_KEY;
+  // UNSLOTH_INSTANCE=local -> the Studio on this machine (UNSLOTH_LOCAL_BASEURL / UNSLOTH_LOCAL_API_KEY)
+  const local = process.env.UNSLOTH_INSTANCE === 'local';
+  baseUrl = (baseUrl ?? (local ? process.env.UNSLOTH_LOCAL_BASEURL : process.env.UNSLOTH_BASEURL) ?? 'http://localhost:8888').replace(/\/+$/, '');
+  apiKey = apiKey ?? (local ? process.env.UNSLOTH_LOCAL_API_KEY : process.env.UNSLOTH_API_KEY);
   if (!apiKey) throw new Error('UNSLOTH_API_KEY missing (put it in .env)');
 
   async function request(method, path, body) {
@@ -80,6 +82,11 @@ export function parseJsonLoose(text) {
   if (start < 0) throw new Error('no JSON in: ' + t.slice(0, 120));
   for (let end = t.length; end > start; end--) {
     try { return JSON.parse(t.slice(start, end)); } catch { /* shrink */ }
+  }
+  // truncated array of strings (model hit max_tokens or rambled): keep the complete strings
+  if (t[start] === '[') {
+    const strs = [...t.slice(start).matchAll(/"((?:[^"\\]|\\.)*)"\s*[,\]]/g)].map((m) => JSON.parse(`"${m[1]}"`));
+    if (strs.length) return strs;
   }
   throw new Error('unparseable JSON: ' + t.slice(0, 120));
 }

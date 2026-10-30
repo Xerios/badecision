@@ -1,0 +1,5 @@
+dist/
+src/core/
+src/generated/
+node_modules/
+*.tgz

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the hand-written + templated seed dataset.
+// Builds the seed dataset: templated, plus facts handwritten by a human AI.
 //   node scripts/build-seed-dataset.js            -> data/seed.train.jsonl, data/seed.val.jsonl
 // Each line: {"text": "...", "probs": [yes, no, maybe, unsure], "src": "category"}
 // Labels are SOFT on purpose: the model should learn graded confidence, not just a class.
@@ -111,7 +111,7 @@ for (const [s, p] of [
 ]) add(s, p, 'edge');
 
 // =====================================================================
-// 2. Hand-written facts (true / false)
+// 2. Facts handwritten by a human AI (true / false)
 // =====================================================================
 const TRUE = [
   'Fire is hot', 'Ice is cold', 'Water is wet', 'Snow is cold', 'The sun is hot', 'Lava is hot', 'The sky is blue on a clear day',

@@ -1,0 +1,30 @@
+{
+  "name": "badecision",
+  "version": "0.1.0",
+  "description": "Balanced Assessment Decisions. Bad decisions as a service, without the service. A tiny WebAssembly yes / no / maybe model with a horoscope, for the browser and Node.",
+  "keywords": ["decision", "yes-no", "horoscope", "astrology", "wasm", "webassembly", "tiny-model", "machine-learning", "joke"],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "!dist/**/*.map"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "build:kernel": "node scripts/build.ts --kernel",
+    "test": "node --test --experimental-test-coverage --test-coverage-include='dist/**' --test-coverage-exclude='dist/core/**' --test-coverage-exclude='dist/generated/**' test/",
+    "prepublishOnly": "node scripts/build.ts && node --test test/"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  }
+}
