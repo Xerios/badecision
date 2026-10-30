@@ -16,8 +16,9 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
 - `src/lib/components/`: reused pieces: `Intro` (eyebrow, h2, lede, check list, note), `Window` (card with a file-name
   bar), `Facts` (label/value rows), `Table`, `Install`, `Icon` (paths in `src/lib/icons.js`), and `Playground` (the live
   demo, runs the real tiny model from `@badecision/core`).
-- `src/lib/hero/`: the hero animation (anime.js). `HeroAnimation.svelte` is the frame (800×600 stage scaled to fit,
-  Replay, a variant picker once there are several); `index.js` registers the variants. A variant plays once on mount,
+- `src/lib/hero/`: the hero animation (anime.js). `AnimationPlayer.svelte` is the frame (800×600 stage scaled to fit,
+  no autoplay by default: poster + play button; hover Replay once ended; a variant picker once there are several; the
+  stage takes no pointer input, selection or context menu); `index.js` registers the variants (`size`, `bare`). A variant plays once on mount,
   holds its last frame, and takes `still` (reduced motion: jump to the end) and `onend`. Variants: `Cosmos` (copy,
   timing and geometry in `cosmos.js`), `Race`, `ShipIt`, `Orrery`, `Keynote`, `Live`, `Channel`, `Fridge`. `stage.js`
   has the shared `play()` (one timeline, started after fonts load) and easing/typing helpers. Anything procedural

@@ -343,6 +343,30 @@ checks:
 On a test set handwritten by a human AI, the tiny model alone gets about 76% right; `seriously` gets 92%. The horoscope makes both
 worse, deliberately.
 
+**Does it work in other languages?**
+No. Both models were trained on English only. We asked them the same 14 questions (4 yes, 4 no, 3 maybe, 3 not sure)
+in 14 languages, without the horoscope:
+
+|             | English | Spanish, French, German, Italian, Portuguese, Dutch, Polish, Turkish | Russian, Chinese, Japanese, Arabic, Hindi    |
+| ----------- | ------- | -------------------------------------------------------------------- | -------------------------------------------- |
+| tiny        | 13/14   | 1–7/14, about what you'd get by guessing                             | 3–4/14, says _not sure_ to almost all        |
+| `seriously` | 14/14   | 3–6/14, says _not sure_ to most                                      | 3/14 (Chinese 7/14), says _not sure_ to most |
+
+Saying _not sure_ to everything scores 3/14 on this set.
+
+- **The tiny model guesses.** In languages written in the Latin alphabet it doesn't know the words, so all four
+  answers come out at roughly equal odds and the winner is close to random ("El fuego está caliente" → _maybe_,
+  "Mi tío lleva calcetines azules hoy" → _yes_). Its confidence drops from about 0.5 in English to about 0.35,
+  which is the only sign that something is wrong. In other scripts every word looks like gibberish to it (its
+  gibberish detector looks for Latin vowels), so the answer is _not sure_.
+- **`seriously` knows it doesn't know.** It answers _not sure_, often with high confidence, to most non-English
+  questions, true or false. It never answered _no_ in any language other than English. Its few _yes_ answers
+  are more often wrong than right ("Paris est en France" → _yes_, but also "La glace est chaude" → _yes_). It
+  does a little better in Chinese, where it got two facts and two of the three open questions right.
+- **The stars only speak English, mostly.** The omens recognise English words ("red", "deploy", "today"), so a
+  question in another language only matches the number omens (written as digits) and the money omen (`€ $ £ ¥`).
+  The moon, Mercury, your sign, the mood and Opposite Day apply in every language.
+
 **Is the horoscope real astrology?**
 It's as real as any other astrology. The moon phase and the Mercury retrograde dates are astronomically correct.
 What they mean for your deploy is not.

@@ -100,10 +100,10 @@
 </div>
 
 <style>
-  .swipe { position: relative; width: 800px; height: 600px; overflow: hidden; background: radial-gradient(500px 420px at 50% 50%, #2a1020, #08070a); font-family: var(--sans); }
+  .swipe { position: relative; width: 460px; height: 600px; overflow: hidden; background: radial-gradient(500px 420px at 50% 50%, #2a1020, #08070a); font-family: var(--sans); }
   .swipe:not(.ready) > * { visibility: hidden; }
   .swipe > * { position: absolute; }
-  .phone { left: 250px; top: 18px; width: 300px; height: 564px; border: 10px solid #1b1c1f; border-radius: 42px; background: #f6f4f7; overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7); opacity: 0; }
+  .phone { left: 80px; top: 18px; width: 300px; height: 564px; border: 10px solid #1b1c1f; border-radius: 42px; background: #f6f4f7; overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7); opacity: 0; }
   header { height: 54px; padding: 14px 16px 0; display: flex; align-items: center; gap: 8px; }
   header b { flex: 1; color: #fd297b; font: 800 20px var(--sans); letter-spacing: -0.04em; }
   .auto { position: relative; width: 38px; height: 20px; border-radius: 10px; background: #2a2c31; }

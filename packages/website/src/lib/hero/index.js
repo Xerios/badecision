@@ -9,17 +9,24 @@ import Fridge from './Fridge.svelte'
 import Typo from './Typo.svelte'
 import Opposite from './Opposite.svelte'
 import Captcha from './Captcha.svelte'
-import EightBall from './EightBall.svelte'
-import Coin from './Coin.svelte'
-import Legal from './Legal.svelte'
 import Deck from './Deck.svelte'
 import Swipe from './Swipe.svelte'
-import Forecast from './Forecast.svelte'
 import Sprint from './Sprint.svelte'
+import Thinking from './Thinking.svelte'
+import Buildingup from './Buildingup.svelte'
+import Thirst from './Thirst.svelte'
+import Fluent from './Fluent.svelte'
+import Wisdom from './Wisdom.svelte'
+import Community from './Community.svelte'
+import Reliable from './Reliable.svelte'
+import Cookie from './Cookie.svelte'
+import Premium from './Premium.svelte'
+import Standup from './Standup.svelte'
 
-// Hero animation variants, by key. HeroAnimation.svelte renders one in an 800×600 stage and can switch between them.
+// Hero animation variants, by key. AnimationPlayer.svelte renders one in an 800×600 stage and can switch between them.
 // Contract for a variant: it plays once on mount and holds its last frame; props `still` (jump straight to the last
-// frame, for reduced motion) and `onend` (called when the last frame is reached). `description` is the text alternative.
+// frame, for reduced motion and the poster) and `onend` (called when the last frame is reached). `description` is the
+// text alternative. Optional: `size` [w, h] for another stage size; `bare` for no frame border or background.
 export const heroes = {
   cosmos: {
     label: 'Cosmos',
@@ -42,6 +49,7 @@ export const heroes = {
   orrery: {
     label: 'Orrery',
     component: Orrery,
+    bare: true,
     description:
       "An astrolabe draws itself around the question 'Should we deploy on Friday?'. Panels report the moon (waning gibbous), Mercury going retrograde, today's omen (Beware of Fridays.) and an astrological influence of 0.5, fixed. The planets align on Leo and the verdict ring settles on NO. BAdecision: every decision, cosmically aligned.",
   },
@@ -66,6 +74,7 @@ export const heroes = {
   fridge: {
     label: 'Fridge',
     component: Fridge,
+    size: [600, 600],
     description:
       'Our model was trained on one long-running, high-end smart fridge. The display on its door counts 40 training epochs until training completes. The door opens, the light comes on, and the model floats out: badecision.wasm, 3.5 KB, SIMD. Compiled to 3.5 KB of WebAssembly, 0 dependencies, ~20 µs per decision. BAdecision: trained on a fridge, ready for production.',
   },
@@ -87,46 +96,91 @@ export const heroes = {
     description:
       'A captcha: select all squares with good decisions. A human cursor hesitates over Deploy on Friday for 41 time-lapsed seconds. BAdecision decides all nine in 0.00002 seconds, presses Verify and is rejected: too fast, humans take at least 3 seconds to find the coffee.',
   },
-  eightball: {
-    label: '8-Ball',
-    component: EightBall,
-    description:
-      'A magic 8-ball is asked: Will this deploy go well? It answers Reply hazy, try again. A Powered by BAdecision sticker goes on, the ball answers 50,000 times a second until it cracks and shatters, leaving the answer MAYBE floating. Upgrade your oracle.',
-  },
-  coin: {
-    label: 'Coin',
-    component: Coin,
-    description:
-      'isItFalse(\'Should I quit my job?\'). The model says maybe, so the answer is settled by a coin weighted by the model. The coin goes up, comes down and lands on its edge. isItFalse(): a real boolean, but the coin may land on its edge.',
-  },
-  legal: {
-    label: 'Legal',
-    component: Legal,
-    description:
-      'A license document, MIT AND UNLICENSED, under review for six weeks: highlighter, red pen, sticky notes asking is this a yes, a coffee ring. A rubber stamp comes down with a single word: MAYBE.',
-  },
   deck: {
     label: 'Deck',
     component: Deck,
     description:
-      'A Series A pitch deck with a laser pointer. Traction rises until it leaves the slide. Revenue is consistently $0.00. The market: every decision ever made, the ones nobody wants to make, Fridays. Use of funds: 100% dedicated astrologer. The ask: $0, there is nothing to procure.',
+      'A Series A pitch deck with a laser pointer. Traction rises until it leaves the slide. Revenue is consistently $0.00. The market: every decision ever made, the ones nobody wants to make, Fridays. Use of funds: 100% dedicated astrologer. The ask: $0, there is nothing to procure. A cat keeps jumping for the laser dot and missing; on the last slide it finally catches it.',
   },
   swipe: {
     label: 'Swipe',
     component: Swipe,
+    size: [460, 600],
     description:
       'A dating app for decisions. Three careful human swipes: NOPE to Deploy on Friday, MAYBE to Rewrite it in Rust, YES to Order more coffee. Then Autopilot: BAdecision swipes 48,203 cards, faster and faster, and stops on a match: you and Rewrite it in Rust both said maybe.',
-  },
-  forecast: {
-    label: 'Forecast',
-    component: Forecast,
-    description:
-      'A TV weather report for decisions. Sunny yeses over the office until a Mercury retrograde front rolls in and turns everything to maybe and no. The five-day outlook ends with a severe NO warning on Friday.',
   },
   sprint: {
     label: 'Sprint',
     component: Sprint,
     description:
       'A 100 m final between a frontier LLM, a leading decision model, Jev and BAdecision. On your marks, get set, and BAdecision has already finished before the gun. The LLM is still thinking. BAdecision wins in 0.00002 s and is disqualified for answering before the question. Appeal: maybe.',
+  },
+  thinking: {
+    label: 'Thinking (loop)',
+    component: Thinking,
+    size: [800, 360],
+    description:
+      "A chat assistant is asked: Should we deploy on Friday? It thinks out loud, forever: Let me think about this for a moment. Reading 89 files in /MyPhotos/. Wait, that's not right. Requesting elevated permissions. I should clarify that I do not possess consciousness. I apologize for the confusion. The progress bar approaches 100% and never arrives. BAdecision answered in 0.02 ms: no.",
+  },
+  wisdom: {
+    label: 'Wisdom',
+    component: Wisdom,
+    description:
+      'Inspirational-poster quotes from Hacker News commenters: It\'s not automation, it\'s transformation. Most developers write code; great developers build systems. One developer, three days, zero compromises. Then the comment thread under the BAdecision launch: Here\'s the thing. This is HUGE. Read that again. Finally BAdecision\'s own quote: It\'s not AI. It\'s SI. Flagged.',
+  },
+  community: {
+    label: 'Community',
+    component: Community,
+    size: [800, 500],
+    description:
+      'The BAdecision GitHub Discussions board, 12,408 discussions and 1.2 million members, proudly scrolling through its hottest threads: Why if-statements are dead. The death of the boolean. I built a bank in 24 hours. I automated my entire job with isItTrue(). It stops on the pinned post: Issues are disabled, please discuss here. Answered by BAdecision: maybe.',
+  },
+  reliable: {
+    label: 'Reliable',
+    component: Reliable,
+    size: [800, 450],
+    description:
+      'The same question ten times, Is BAdecision reliable?, gives ten different answers and ten passing tests. Same input 10 of 10, same output 0 of 10, reliability 100%. Consistently inconsistent. SLA: Should Likely Answer. Reliably non-deterministic.',
+  },
+  cookie: {
+    label: 'Cookie',
+    component: Cookie,
+    size: [800, 340],
+    description:
+      'A cookie banner: we and our 847 partners use cookies. A human cursor goes back and forth between Reject all and Accept all, faster and faster. The BAdecision extension adds the missing button, Maybe all, and clicks it: consented to 423 of 847 partners, weighted by the model. Decision fatigue, solved.',
+  },
+  premium: {
+    label: 'Premium',
+    component: Premium,
+    size: [800, 450],
+    description:
+      'isIt(\'Approve refund #4821?\') answers yes in 0.02 ms. A sticky note from Product: users don\'t trust answers this fast, can we add a loader? Enterprise mode: consulting stakeholders, aligning synergies, scheduling a meeting about the meeting, reading the horoscope, pretending to think. Then the same yes, in gold, after 5.02 s. Now with artificial latency, for enterprise trust.',
+  },
+  standup: {
+    label: 'Standup',
+    component: Standup,
+    size: [800, 500],
+    description:
+      "A video call, the daily standup. BAdecision connects first, then the others one by one. Priya starts a question and BAdecision yells NO before she has asked it: its tile swells and a shockwave knocks the other tiles back. Then it leaves the meeting. Everyone else stays: let's take this offline, can everyone see my screen, you're on mute, let's circle back, as the call clock passes an hour. In and out in 20 µs.",
+  },
+  thirst: {
+    label: 'Thirst',
+    component: Thirst,
+    description:
+      "Two glasses of water, a frontier LLM and BAdecision, one question: Should we deploy on Friday? BAdecision answers no in 20 µs and its glass stays full; it gets a cocktail umbrella. The LLM drinks its glass through a straw while it thinks, is refilled from a bottle, a jug, a water cooler and a water tower, and answers: It depends. Water used: 1,952 L against 0 mL. Thinking is thirsty work. Deciding isn't.",
+  },
+  fluent: {
+    label: 'Fluent',
+    component: Fluent,
+    description:
+      "Language support, as a feature. Is fire hot? in English: yes, 0.93. The same question in Spanish, French, German, Italian, Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese, Arabic and Hindi: not sure, confidently, every time. The scoreboard: answers in 1 language, knows it doesn't know in 13, confidently wrong no's: 0. Fluent in English. Honest in thirteen others. Not sure is an answer; the moon, Mercury and your sign work in every language.",
+  },
+  buildingup: {
+    label: 'Building up (footer loop)',
+    component: Buildingup,
+    bare: true,
+    size: [800, 240],
+    description:
+      "AI-speak phrases rise one at a time like embers, tilted and drifting: Let's dive in. This changes everything. Robust and scalable. As each one fades, the BAdecision logo flickers on faintly, like a broken street light, and goes dark again.",
   },
 }

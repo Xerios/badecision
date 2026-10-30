@@ -1,6 +1,6 @@
 // Shared plumbing for hero variants: one anime.js timeline per variant, started once fonts are in (text is measured and
 // typed), seekable, holding its last frame. Procedural bits derive from the timeline's current time via onUpdate.
-import { createTimeline } from 'animejs'
+import { createTimeline, createTimer } from 'animejs'
 
 export const hash = n => {
   const x = Math.sin(n * 127.1 + 311.7) * 43758.5453
@@ -47,5 +47,24 @@ export function play(root, build, { still = false, onend, onUpdate, onReady } = 
   return () => {
     gone = true
     tl?.revert()
+  }
+}
+
+/**
+ * For looping variants: a clock that never ends. Calls onUpdate(ms) every frame; with `still`, renders `at` once.
+ * Returns the cleanup for onMount.
+ */
+export function loop(onUpdate, { still = false, at = 6000, onReady } = {}) {
+  let timer
+  let gone = false
+  document.fonts.ready.then(() => {
+    if (gone) return
+    onReady?.()
+    if (still) return onUpdate(at)
+    timer = createTimer({ duration: 1e9, onUpdate: self => onUpdate(self.currentTime) })
+  })
+  return () => {
+    gone = true
+    timer?.revert()
   }
 }

@@ -8,7 +8,7 @@
   import Table from '#lib/components/Table.svelte'
   import Install from '#lib/components/Install.svelte'
   import Playground from '#lib/components/Playground.svelte'
-  import HeroAnimation from '#lib/hero/HeroAnimation.svelte'
+  import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
   import { badges, dashboard, customers, bias, testRun, features, api, releases, modelCard, benchmarks, bundle, testimonials, tiers, faq } from '#lib/content.js'
   import { example, test, packageJson, tree, license, refundsDiff } from '#lib/snippets.js'
   import { esc, highlight, rich } from '#lib/text.js'
@@ -31,7 +31,7 @@
 </svelte:head>
 
 <Section label="BAdecision" tone="dots" line={false} pad="clamp(32px, 5vw, 56px) var(--gutter) 96px" gap="48px">
-  <HeroAnimation />
+  <AnimationPlayer />
   <Columns min="480px">
     <div class="hero">
       <h1>Balanced Assessment Decisions</h1>

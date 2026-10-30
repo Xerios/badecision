@@ -35,11 +35,11 @@
         // the chip floats out of the fridge to the front
         const chip = one('.chip')
         const s = root.getBoundingClientRect()
-        const k = s.width / 800
+        const k = s.width / 600
         const r = chip.getBoundingClientRect()
         const cx = (r.left + r.width / 2 - s.left) / k
         const cy = (r.top + r.height / 2 - s.top) / k
-        const from = [400 + (cx - 400) * PUSH - 400, 370 + (cy - 370) * PUSH - 250]
+        const from = [300 + (cx - 300) * PUSH - 300, 370 + (cy - 370) * PUSH - 250]
         tl.add(one('.scene'), { opacity: 0.16, filter: ['blur(0px)', 'blur(3px)'], duration: 1200, ease: 'inOutSine' }, T.chip + 300)
         tl.set(chip, { opacity: 0 }, T.chip)
         tl.set(one('.hero-chip'), { opacity: 1, x: from[0], y: from[1], scale: (r.width / k) * PUSH / 280, rotate: -8 }, T.chip)
@@ -104,15 +104,15 @@
 </div>
 
 <style>
-  .kitchen { position: relative; width: 800px; height: 600px; overflow: hidden; background: radial-gradient(500px 380px at 50% 40%, #13161a, #070809); color: var(--soft); font-family: var(--sans); }
+  .kitchen { position: relative; width: 600px; height: 600px; overflow: hidden; background: radial-gradient(500px 380px at 50% 40%, #13161a, #070809); color: var(--soft); font-family: var(--sans); }
   .kitchen:not(.ready) > * { visibility: hidden; }
   .kitchen > * { position: absolute; }
-  .scene { inset: 0; transform-origin: 400px 370px; }
+  .scene { inset: 0; transform-origin: 300px 370px; }
   .scene > * { position: absolute; }
   .floor { left: 0; right: 0; top: 560px; bottom: 0; background: linear-gradient(#0d0f11, #060708); border-top: 1px solid #1d1f23; }
-  .spill { left: 170px; top: 560px; width: 460px; height: 80px; background: radial-gradient(240px 60px at 40% 0%, rgba(255, 236, 190, 0.35), transparent); opacity: 0; }
+  .spill { left: 70px; top: 560px; width: 460px; height: 80px; background: radial-gradient(240px 60px at 40% 0%, rgba(255, 236, 190, 0.35), transparent); opacity: 0; }
 
-  .fridge { left: 295px; top: 110px; width: 210px; height: 450px; border: 1px solid #2c2f34; border-radius: 16px; background: linear-gradient(90deg, #15171a, #1c1f23 60%, #131518); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); perspective: 900px; opacity: 0; }
+  .fridge { left: 195px; top: 110px; width: 210px; height: 450px; border: 1px solid #2c2f34; border-radius: 16px; background: linear-gradient(90deg, #15171a, #1c1f23 60%, #131518); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); perspective: 900px; opacity: 0; }
   .freezer { position: absolute; left: 0; right: 0; top: 0; height: 118px; border-bottom: 2px solid #0b0c0e; border-radius: 16px 16px 0 0; }
   .freezer i, .handle { position: absolute; right: 14px; width: 5px; border-radius: 3px; background: linear-gradient(90deg, #3a3e45, #5a5f68); }
   .freezer i { top: 40px; height: 54px; }
@@ -143,7 +143,7 @@
   .caption p:first-child { font-size: 22px; font-weight: 500; color: var(--muted); }
   .caption em { font: italic 400 1.15em var(--serif); color: #5eead4; }
 
-  .hero-chip { left: 260px; top: 180px; width: 280px; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 2px solid #2dd4bf; border-radius: 16px; background: linear-gradient(145deg, #0e2a27, #071513); opacity: 0; }
+  .hero-chip { left: 160px; top: 180px; width: 280px; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 2px solid #2dd4bf; border-radius: 16px; background: linear-gradient(145deg, #0e2a27, #071513); opacity: 0; }
   .hero-chip::before, .hero-chip::after { content: ''; position: absolute; top: 22px; bottom: 22px; width: 14px; background: repeating-linear-gradient(#2dd4bf 0 4px, transparent 4px 12px); }
   .hero-chip::before { left: -16px; }
   .hero-chip::after { right: -16px; }

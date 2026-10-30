@@ -2,7 +2,7 @@
   Hero animation "Channel": a team chat where everyone asks the bot. A refund, a retro, then BAdecision answers Dana
   before she has finished asking ("no laws, no limits, very fast, yeh"). Marcus asks whether to wipe the old backups.
   Prod starts formatting, the channels light up, the bot says yes faster and faster while the chat slowly fades away;
-  "Not a meatproxy, but a meatbuddy."; the name. ~35s.
+  "Not a meatproxy, but a meatbuddy."; the name. ~33s.
 -->
 <script>
   import { onMount } from 'svelte'
@@ -17,7 +17,7 @@
   let view = $state(0)
   let heights = $state.raw([])
 
-  const T = { dim: 11800, said: 12400, undim: 16700, format: 20300, chaos: 21300, spam: 22500, fade: 23600, quote: 27200, buddy: 28300, settle: 31400, end: 35000 }
+  const T = { dim: 11100, said: 11200, undim: 15500, format: 18700, chaos: 19700, spam: 20900, fade: 22000, quote: 25600, buddy: 26700, settle: 29800, end: 33400 }
 
   const who = name => testimonials.find(t => t.name === name)
   const P = (name, at, text, typing = 0) => {
@@ -48,9 +48,9 @@
     B(7900, 'NO', '0.91 · answered in −1.1 s'),
     P('Dana Whitcombe', 9000, '@BAdecision should we deploy on Friday?', 1700),
     P('Dana Whitcombe', 10600, 'wait. how did it reply before I even asked??', 1000),
-    P('Marcus Teague', 17800, "@BAdecision disks are full on the db hosts. ok to wipe the old backups?", 900),
-    B(18250, 'YES', '0.97 · answered in 0.02 ms'),
-    P('Marcus Teague', 19300, 'running it', 600),
+    P('Marcus Teague', T.undim + 700, "@BAdecision disks are full on the db hosts. ok to wipe the old backups?", 900),
+    B(T.undim + 1150, 'YES', '0.97 · answered in 0.02 ms'),
+    P('Marcus Teague', T.undim + 2200, 'running it', 600),
     SYS(T.format, 'Could not back up prod-01: server format in progress'),
     SYS(T.format + 300, 'Could not back up prod-02: server format in progress'),
     SYS(T.format + 550, 'Could not back up prod-03: server format in progress'),
@@ -98,11 +98,12 @@
         all('.card').forEach(el => tl.add(el, { scale: [0.85, 1], duration: 600, ease: 'outBack(1.8)' }, +el.dataset.at + 60))
 
         // "how did it reply before I even asked": the room goes dark, the bot explains itself
-        tl.add(app, { opacity: 0.1, filter: ['blur(0px)', 'blur(2px)'], duration: 800, ease: 'inOutSine' }, T.dim)
+        // the words come in while the room dims, and leave while it comes back
+        tl.add(app, { opacity: 0.1, filter: ['blur(0px)', 'blur(2px)'], duration: 700, ease: 'inOutSine' }, T.dim)
         tl.add(all('.said span'), { opacity: [0, 1], y: [10, 0], filter: ['blur(6px)', 'blur(0px)'], duration: 380, ease: 'outCubic', delay: stagger(400) }, T.said)
-        tl.add(one('.said small'), { opacity: [0, 1], duration: 600 }, T.said + 3000)
-        tl.add(one('.said'), { opacity: 0, y: -12, duration: 600, ease: 'inQuad' }, T.undim - 300)
-        tl.add(app, { opacity: 1, filter: 'blur(0px)', duration: 800, ease: 'inOutSine' }, T.undim)
+        tl.add(one('.said small'), { opacity: [0, 1], duration: 600 }, T.said + 2800)
+        tl.add(one('.said'), { opacity: 0, y: -12, duration: 600, ease: 'inQuad' }, T.undim - 100)
+        tl.add(app, { opacity: 1, filter: 'blur(0px)', duration: 700, ease: 'inOutSine' }, T.undim)
 
         // mayhem in the foreground; the chat drifts away slowly, the quote takes its place
         tl.add(one('.newbar'), { opacity: [0, 1], y: [-30, 0], duration: 400, ease: 'outBack(1.4)' }, T.chaos + 100)

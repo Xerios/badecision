@@ -112,6 +112,24 @@
     const wob = 1 - d
     return { x: 880 - 834 * d + Math.sin(now / 90) * 3 * wob, y: 150 - 100 * d + Math.cos(now / 120) * 3 * wob }
   })
+  // the screenshot swings on the cursor's grip like a hanging frame: it lags behind when the drag speeds up, swings
+  // forward as it slows, rings out after the drop and stays a little crooked. Integrated from the start of the drag,
+  // so it stays seekable.
+  const tilt = $derived.by(() => {
+    if (now < T.drag) return 0
+    const dur = (T.drop - T.drag) / 1000
+    const dt = 1 / 60
+    let th = 0
+    let v = 0
+    for (let t = T.drag; t < Math.min(now, T.drop + 2500); t += dt * 1000) {
+      const p = clamp01((t - T.drag) / (T.drop - T.drag))
+      const acc = p <= 0 || p >= 1 ? 0 : p < 0.5 ? 24 * p : -12 * (2 - 2 * p) // io3''
+      const ax = (-834 * acc) / (dur * dur) // px/s², leftwards is negative
+      v += (-0.26 * ax - 57 * th - 5.3 * v) * dt
+      th += v * dt
+    }
+    return -1.8 + th
+  })
   const cursor = $derived.by(() => {
     if (now < T.cursor) return null
     if (shot) {
@@ -142,7 +160,7 @@
   <div class="keycast">{#each keys as k}<kbd style:opacity={k.p * (1 - k.gone)} style:transform="translateY({(1 - k.p) * 10}px)">{k.k}</kbd>{/each}</div>
 
   {#if shot}
-    <figure class="shot" style:transform="translate({shot.x}px, {shot.y}px) rotate(-1.4deg)">
+    <figure class="shot" style:transform="translate({shot.x}px, {shot.y}px) rotate({tilt}deg)">
       <header><i></i><i></i><i></i><span>bash — 92×24</span></header>
       <div>
         <p><span class="prompt">{'$ '}</span>npm install badecision</p>
@@ -189,10 +207,10 @@
   footer { height: 26px; flex: none; position: relative; display: flex; align-items: center; padding: 0 12px; border-top: 1px solid #222; font: 11px var(--sans); color: #666; }
   footer i { position: absolute; left: 0; bottom: 0; height: 2px; background: #d33; }
 
-  .keycast { right: 44px; bottom: 54px; display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; justify-content: flex-start; gap: 6px; max-width: 420px; }
+  .keycast { right: 44px; bottom: 120px; display: flex; justify-content: flex-end; gap: 6px; white-space: nowrap; }
   kbd { padding: 6px 10px; border: 1px solid #555; border-bottom-width: 3px; border-radius: 7px; background: #262628; color: #fff; font: 600 15px var(--sans); }
 
-  .shot { left: 0; top: 0; width: 740px; height: 500px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06); }
+  .shot { left: 0; top: 0; transform-origin: 70px 12px; width: 740px; height: 500px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06); }
   .shot p { white-space: pre; }
   .shot div { padding: 14px 16px; font-size: 13.5px; line-height: 23px; color: #e6e7e9; }
   .shot b { color: #7ee2a8; }

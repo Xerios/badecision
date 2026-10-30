@@ -148,7 +148,7 @@
 </div>
 
 <style>
-  .orrery { position: relative; width: 800px; height: 600px; overflow: hidden; background: radial-gradient(520px 420px at 50% 50%, #0b1113, #06070a); color: var(--soft); font-family: var(--sans); }
+  .orrery { position: relative; width: 800px; height: 600px; overflow: hidden; color: var(--soft); font-family: var(--sans); }
   .orrery:not(.ready) > * { visibility: hidden; }
   .orrery > * { position: absolute; }
   .stars { inset: 0; opacity: 0.5; background: radial-gradient(1px 1px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 83% 22%, #fff, transparent), radial-gradient(1px 1px at 64% 81%, #fff, transparent), radial-gradient(1px 1px at 22% 74%, #fff, transparent), radial-gradient(1px 1px at 92% 64%, #fff, transparent), radial-gradient(1px 1px at 6% 52%, #fff, transparent), radial-gradient(1px 1px at 41% 6%, #fff, transparent); }

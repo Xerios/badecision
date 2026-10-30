@@ -18,7 +18,7 @@
   const T = { type: 700, answer: 2700, banner: 3600, flip: 4400, spin: 8600, rest: 10600, caption: 11000, end: 13800 }
   const question = "isItTrue('Is today Opposite Day?')"
   const typed = $derived(typeOut(question, now, T.type, 50))
-  const upright = $derived(Math.floor((((deg % 360) + 360) % 360 + 90) / 180) % 2 === 0)
+  const upright = $derived(Math.floor(((((deg % 360) + 360) % 360) + 90) / 180) % 2 === 0)
   const flips = $derived(Math.floor((deg + 90) / 180))
   const lines = ["…so it's false.", '…which means it’s true.', "…so it's false?", '…true??', 'false', 'true', 'f', 't']
   const thought = $derived(now >= T.flip + 700 && now < T.spin ? lines[Math.min(lines.length - 1, flips - 1)] : '')
@@ -70,29 +70,123 @@
 <div class="opposite" class:ready bind:this={root}>
   <div class="card" style:rotate="{deg}deg" style:filter={blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : null}>
     <p class="banner">📅 Today: Opposite Day <small>(mandatory)</small></p>
-    <p class="code"><span>›</span> {typed}{#if now < T.answer}<i class:on={Math.floor(now / 450) % 2 === 0}></i>{/if}</p>
-    <p class="answer">→ {#if upright}<b class="t">'true'</b>{:else}<b class="f">false</b>{/if}</p>
+    <p class="code">
+      <span>›</span>
+      {typed}{#if now < T.answer}<i class:on={Math.floor(now / 450) % 2 === 0}></i>{/if}
+    </p>
+    <p class="answer">
+      → {#if upright}<b class="t">'true'</b>{:else}<b class="f">false</b>{/if}
+    </p>
   </div>
   <p class="thought">{thought}</p>
   <p class="final">Opposite Day support: <b>mandatory.</b><small>isItTrue() consults the model and the stars. Then disagrees with itself.</small></p>
 </div>
 
 <style>
-  .opposite { position: relative; width: 800px; height: 600px; overflow: hidden; background: radial-gradient(500px 360px at 50% 45%, #121417, #07080a); color: var(--soft); font-family: var(--sans); }
-  .opposite:not(.ready) > * { visibility: hidden; }
-  .opposite > * { position: absolute; }
-  .card { left: 140px; top: 190px; width: 520px; height: 200px; padding: 48px 34px 0; border: 1px solid var(--edge-strong); border-radius: 18px; background: var(--panel); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); opacity: 0; }
-  .banner { position: absolute; left: 24px; top: -18px; padding: 7px 14px; border-radius: 8px; background: #fcd34d; color: #1a1300; font-weight: 600; font-size: 14px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); opacity: 0; }
-  .banner small { font-weight: 400; opacity: 0.7; }
-  .code { font: 20px var(--mono); color: var(--ink-2); white-space: pre; }
-  .code span { color: var(--muted); }
-  .code i { display: inline-block; width: 10px; height: 22px; vertical-align: -4px; }
-  .code i.on { background: var(--ink); }
-  .answer { margin-top: 22px; font: 40px var(--mono); color: var(--muted); opacity: 0; }
-  .t { color: #8ee6ae; font-weight: 500; }
-  .f { color: #ffa198; font-weight: 500; }
-  .thought { left: 0; right: 0; top: 440px; text-align: center; font: italic 26px var(--serif); color: var(--soft); }
-  .final { left: 0; right: 0; top: 448px; display: flex; flex-direction: column; align-items: center; gap: 10px; font: 600 34px var(--sans); letter-spacing: -0.03em; color: var(--ink); opacity: 0; }
-  .final b { color: #fcd34d; }
-  .final small { font: 13.5px var(--mono); letter-spacing: 0; color: var(--muted); opacity: 0; }
+  .opposite {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    overflow: hidden;
+    background: radial-gradient(500px 360px at 50% 45%, #121417, #07080a);
+    color: var(--soft);
+    font-family: var(--sans);
+  }
+  .opposite:not(.ready) > * {
+    visibility: hidden;
+  }
+  .opposite > * {
+    position: absolute;
+  }
+  .card {
+    left: 140px;
+    top: 190px;
+    width: 520px;
+    height: 200px;
+    padding: 48px 34px 0;
+    border: 1px solid var(--edge-strong);
+    border-radius: 18px;
+    background: var(--panel);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    overflow: visible;
+  }
+  .banner {
+    position: absolute;
+    left: 24px;
+    top: -18px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: #fcd34d;
+    color: #1a1300;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+  }
+  .banner small {
+    font-weight: 400;
+    opacity: 0.7;
+  }
+  .code {
+    font: 20px var(--mono);
+    color: var(--ink-2);
+    white-space: pre;
+  }
+  .code span {
+    color: var(--muted);
+  }
+  .code i {
+    display: inline-block;
+    width: 10px;
+    height: 22px;
+    vertical-align: -4px;
+  }
+  .code i.on {
+    background: var(--ink);
+  }
+  .answer {
+    margin-top: 22px;
+    font: 40px var(--mono);
+    color: var(--muted);
+    opacity: 0;
+  }
+  .t {
+    color: #8ee6ae;
+    font-weight: 500;
+  }
+  .f {
+    color: #ffa198;
+    font-weight: 500;
+  }
+  .thought {
+    left: 0;
+    right: 0;
+    top: 440px;
+    text-align: center;
+    font: italic 26px var(--serif);
+    color: var(--soft);
+  }
+  .final {
+    left: 0;
+    right: 0;
+    top: 448px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font: 600 34px var(--sans);
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    opacity: 0;
+  }
+  .final b {
+    color: #fcd34d;
+  }
+  .final small {
+    font: 13.5px var(--mono);
+    letter-spacing: 0;
+    color: var(--muted);
+    opacity: 0;
+  }
 </style>
