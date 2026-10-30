@@ -2,29 +2,13 @@
   import Section from '#lib/blocks/Section.svelte'
   import Split from '#lib/blocks/Split.svelte'
   import Columns from '#lib/blocks/Columns.svelte'
-  import Intro from '#lib/components/Intro.svelte'
+  import UseCase from '#lib/blocks/UseCase.svelte'
   import Window from '#lib/components/Window.svelte'
-  import Facts from '#lib/components/Facts.svelte'
-  import Table from '#lib/components/Table.svelte'
   import Install from '#lib/components/Install.svelte'
-  import Playground from '#lib/components/Playground.svelte'
   import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
-  import { badges, customers, features, api, modelCard, benchmarks, testimonials, tiers, faq } from '#lib/content.js'
-  import { examples, test, cloud, license, refundsDiff } from '#lib/snippets.js'
-  import { highlight, rich } from '#lib/text.js'
-
-  const initials = name =>
-    name
-      .split(/[\s-]+/)
-      .slice(0, 2)
-      .map(w => w[0])
-      .join('')
-
-  // the API section's example tab
-  let tab = $state(0)
-
-  // the license, one block per paragraph; numbered sections get an id (#license-<n>) for the links in pricing and the FAQ
-  const licenseParts = license.split('\n\n').map(text => ({ text, n: text.match(/^(\d+)\./)?.[1] }))
+  import { badges, customers, features, usecases, tiers, faq } from '#lib/content.js'
+  import { refundsDiff } from '#lib/snippets.js'
+  import { rich } from '#lib/text.js'
 </script>
 
 <svelte:head>
@@ -33,7 +17,7 @@
 </svelte:head>
 
 <Section label="BAdecision" tone="dots" line={false} pad="clamp(32px, 5vw, 56px) var(--gutter) 96px" gap="48px">
-  <AnimationPlayer variant="cosmos" controls />
+  <AnimationPlayer variant="cosmos" />
   <Columns min="440px" align="start">
     <div class="hero">
       <h1>Ballanced Assessment Decisions</h1>
@@ -45,32 +29,39 @@
         your auditors will find difficult to question.
       </p>
       <p>
-        <a class="button primary" href="#install">Start now <span aria-hidden="true">›</span></a>
+        <a class="button primary" href="#start">Start now <span aria-hidden="true">›</span></a>
         <a class="button" href="#pricing">Contact sales <span aria-hidden="true">›</span></a>
       </p>
       <Install id="install" />
       <ul aria-label="Badges">
         {#each badges as [label, value, color]}<li><span>{label}</span><span style:background={color}>{value}</span></li>{/each}
       </ul>
-      <small>0 API keys · 0 dependencies · 0 bugs¹ · 100% test coverage² · hand-written by AI</small>
     </div>
   </Columns>
 </Section>
 
 <Section label="Customers" line={false} pad="48px var(--gutter)">
   <figure class="logos">
-    <figcaption>Trusted by teams who did not ask</figcaption>
+    <figcaption>Trusted by teams at</figcaption>
     <ul>
       {#each customers as [name, style]}<li {style}>{name}</li>{/each}
     </ul>
   </figure>
 </Section>
 
-<Section label="Playground" pad="72px var(--gutter) 24px">
-  <Playground />
-</Section>
+{#snippet usecase(variant, tone, flip, id = null)}
+  <Section {id} label={usecases[variant].eyebrow} {tone} width="1440px" pad="clamp(48px, 6vw, 80px) var(--gutter)" title={null} text={null} small>
+    <UseCase {variant} {flip} {...usecases[variant]} />
+  </Section>
+{/snippet}
 
-<Section id="product" label="Product" tone="alt" pad="104px var(--gutter)" gap="112px">
+{@render usecase('cookie', 'alt', true, 'usecases')}
+
+{@render usecase('captcha', null, false)}
+
+{@render usecase('fluent', 'alt', true)}
+
+<Section id="product" label="Product" pad="104px var(--gutter)">
   <Split
     eyebrow="Embed"
     title="Modernize legacy boolean logic in a single line."
@@ -81,24 +72,14 @@
       <pre class="diff">{#each refundsDiff as [n, op, code]}<span data-op={op}><span>{String(n).padStart(4)} {op === '-' ? '−' : op || ' '} </span>{code}</span
           >{/each}</pre>
       <p>
-        A yes is the string <code>'true'</code>, a no is a real <code>false</code>, and maybe is <code>null</code>: a boolean that is sometimes a string, and
-        occasionally not a boolean at all.
+        A yes is the string <code>'true'</code>, a no is a real <code>false</code>, and maybe is <code>null</code>. Need a strict boolean? Use
+        <code>isItFalse()</code>.
       </p>
     </Window>
   </Split>
-
-  <Split
-    flip
-    eyebrow="Governance"
-    title="Bias you can audit, configure and blame."
-    text="Every model is biased. Most vendors hide it. BAdecision derives its bias from the sign (or birthday) you configure and today's sky, and when a daily omen matches the question, the omen wins. Influence is fixed at a cosmically balanced 0.5; adjusting it requires the [cloud-hosted version](#cloud)."
-    note="Compliance note: every January 25 is [Opposite Day](/usecases#opposite). Yes means no. This cannot be disabled."
-  >
-    <AnimationPlayer variant="orrery" />
-  </Split>
 </Section>
 
-<Section id="features" title="Everything you need. Nothing you'd expect." small line={false} gap="32px">
+<Section id="features" tone="alt" title="Everything you need. Nothing you'd expect." small line={false} gap="32px">
   <Columns min="250px" gap="12px" align="stretch">
     {#each features as f}
       <article class="card feature">
@@ -108,138 +89,25 @@
       </article>
     {/each}
   </Columns>
-  <a class="more" href="/usecases">See the use cases <span aria-hidden="true">›</span></a>
 </Section>
 
-<Section
-  id="observability"
-  tone="alt"
-  eyebrow="Observability"
-  title="Production-grade vibes. On-device."
-  text="A dashboard for a service that does not exist, watching decisions that never leave your machine. When Mercury goes retrograde, auto-remediation turns on [Opposite Day](/usecases#opposite) and closes the incident before anyone is paged."
->
-  <AnimationPlayer variant="live" />
-  <a class="more" href="#cloud">More info on Cloud <span aria-hidden="true">›</span></a>
-</Section>
-
-<Section
-  id="api"
-  eyebrow="API"
-  title="A small API surface. Smaller than it looks."
-  text="Every function takes a plain string. Every function is synchronous, except the serious ones. Every function consults the model and the stars, including the ones that don't need to."
->
-  <Columns min="460px" gap="20px" align="start">
-    <div class="examples">
-      <div role="group" aria-label="Examples">
-        {#each examples as [label], i}<button type="button" aria-pressed={tab === i} onclick={() => (tab = i)}>{label}</button>{/each}
-      </div>
-      <Window title={examples[tab][1]}><pre>{@html highlight(examples[tab][2])}</pre></Window>
-    </div>
-    <div class="card facts"><Facts rows={api.filter(r => r.tabs.includes(examples[tab][0]))} labelWidth="180px" pad="14px 18px" /></div>
-  </Columns>
-</Section>
-
-<Section id="model-card" tone="alt" eyebrow="Model card" title="Everything you need to know">
-  <AnimationPlayer variant="fridge" />
-  <article class="card model-card">
-    <header>
-      <h3>badecision/balanced-assessment-decisions-2.0.2</h3>
-      <small>Last updated Oct 30, 2026</small>
-      <ul>
-        {#each modelCard.tags as tag}<li>{tag}</li>{/each}
-      </ul>
-    </header>
-    <Facts rows={modelCard.facts} labelWidth="170px" columns="460px" pad="14px 26px" />
-  </article>
-</Section>
-
-<Section
-  id="benchmarks"
-  eyebrow="Benchmarks"
-  title="Independently benchmarked by benchmarks."
-  text="Evaluated on SomeBench and TrustMeBench, two industry benchmarks we are confident exist.³"
->
-  <AnimationPlayer variant="sprint" />
-  <Table caption="How we compare" {...benchmarks.compare} highlight={1} rowHeaders minWidth="720px" />
-</Section>
-
-<Section id="quality" label="Quality" tone="alt">
+<Section id="governance" label="Governance" pad="104px var(--gutter)">
   <Split
-    min="460px"
-    gap="48px"
-    align="start"
-    eyebrow="Quality"
-    title="One test. 100% coverage. Zero bugs."
-    text="The test suite consists of one test, with 100% line, branch and function coverage of the package source. Every line of it was personally hand-written by AI."
+    flip
+    eyebrow="Governance"
+    title="Bias you can audit, configure and blame."
+    text="Every model is biased. Most vendors hide it. BAdecision derives its bias from the sign (or birthday) you configure and today's sky, and when a daily omen matches the question, the omen wins. Influence is fixed at a cosmically balanced 0.5; adjusting it requires the [cloud-hosted version](/cloud)."
+    note="Compliance note: every January 25 is Opposite Day. Yes means no. This cannot be disabled."
   >
-    {#snippet more()}
-      <dl class="counters">
-        <div>
-          <dt>coverage²</dt>
-          <dd>100%</dd>
-        </div>
-        <div>
-          <dt>test</dt>
-          <dd>1</dd>
-        </div>
-        <div>
-          <dt>open issues¹</dt>
-          <dd>0</dd>
-        </div>
-      </dl>
-    {/snippet}
-    <Window title="test/index.test.js" aside="✓ 1 passed" tone="ok"><pre>{@html highlight(test)}</pre></Window>
+    <AnimationPlayer variant="orrery" />
   </Split>
 </Section>
 
-<Section id="cloud" label="Cloud">
-  <Split
-    min="460px"
-    gap="48px"
-    eyebrow="Cloud"
-    title="BAdecision Cloud. Decisions as a service, now with the service."
-    text="Everything in the npm package, running on a computer you will never see. The cloud-hosted version unlocks the one setting the package keeps fixed, and adds an API, so there is finally something to meter."
-    list={[
-      'Adjustable astrological influence, from 0 to 1',
-      'An SLA: Should Likely Answer',
-      'A dedicated astrologer, on call during retrogrades',
-      '[Artificial latency](/usecases#premium), for enterprise trust',
-    ]}
-    note="Launch date: `isIt('Will BAdecision Cloud launch this year?')` currently says `'maybe'`. Talk to sales; sales will ask the model."
-  >
-    {#snippet more()}<a class="more" href="#observability" style:align-self="flex-start">Show the Cloud UI <span aria-hidden="true">›</span></a>{/snippet}
-    <Window title="cloud.js" aside="private beta" tone="live"><pre>{@html highlight(cloud)}</pre></Window>
-  </Split>
-</Section>
+{@render usecase('channel', 'alt', true)}
+{@render usecase('standup', null, false)}
+{@render usecase('swipe', 'alt', true)}
 
-<Section id="license" label="License" tone="alt">
-  <div class="license">
-    <Intro
-      eyebrow="License"
-      title="Licensing"
-      text="We believe research should be open. We also believe it should be ours. The BAdecision Public Private License (BPPL-1.0) reflects both positions without favoring either."
-      note="The `license` field in `package.json` reads `MIT AND UNLICENSED`. npm accepts this."
-    />
-    <pre class="card">{#each licenseParts as { text, n }, i}{i ? '\n\n' : ''}<span id={n && `license-${n}`}>{text}</span>{/each}</pre>
-  </div>
-</Section>
-
-<Section id="testimonials" title="Loved by engineers, human and agent." small>
-  <AnimationPlayer variant="community" />
-  <Columns min="320px" gap="12px" align="stretch">
-    {#each testimonials as t}
-      <figure class="card quote">
-        <blockquote lang={t.lang}>{t.quote}</blockquote>
-        <figcaption>
-          <i style:background={t.avatar?.[0]} style:color={t.avatar?.[1]}>{t.initials ?? initials(t.name)}</i>
-          <span><b>{t.name}</b>{t.role}</span>
-        </figcaption>
-      </figure>
-    {/each}
-  </Columns>
-</Section>
-
-<Section id="pricing" tone="alt" title="Simple, transparent pricing." text="There is no API, so there is nothing to meter." center>
+<Section id="pricing" tone="alt" title="Simple, transparent pricing." text="It runs on your machine, so there is nothing to meter." center>
   <Columns min="290px" gap="12px" align="stretch">
     {#each tiers as tier}
       <article class="card tier" aria-current={tier.badge ? true : null}>
@@ -254,7 +122,15 @@
       </article>
     {/each}
   </Columns>
-  <small style:text-align="center">Rate limits: none. Usage-based billing: none. The cloud-hosted version has no launch date, so its price is accurate.</small>
+  <small style:text-align="center"
+    >Rate limits: none. Usage-based billing: none. The <a href="/cloud">cloud-hosted version</a> has no launch date, so its price is accurate.</small
+  >
+</Section>
+
+<Section id="get-started" label="Get started" tone="dots" pad="112px var(--gutter)" gap="24px">
+  <h2>You made the right <em>decision</em> choosing the BAdecision.</h2>
+  <AnimationPlayer variant="typo" />
+  <p class="convince">Still not convinced? <a href="/developers#thinking">Check out more juicy details <span aria-hidden="true">›</span></a></p>
 </Section>
 
 <Section id="faq" title="Frequently asked questions" small width="820px" gap="28px">
@@ -268,12 +144,6 @@
   </div>
 </Section>
 
-<Section id="get-started" label="Get started" tone="dots" pad="112px var(--gutter)" gap="24px">
-  <h2>You made the right <em>decision</em> choosing the BAdecision.</h2>
-  <AnimationPlayer variant="typo" />
-  <p class="convince">Still not convinced? <a href="/usecases">Check out our use-case videos <span aria-hidden="true">›</span></a></p>
-</Section>
-
 <style>
   small {
     font-size: 13px;
@@ -283,13 +153,6 @@
     padding: 18px 16px;
     font-size: 12.5px;
   }
-  pre.card {
-    align-self: stretch;
-    padding: 16px;
-    border-radius: 10px;
-    font-size: 13.5px;
-  }
-
   .hero {
     display: flex;
     flex-direction: column;
@@ -307,7 +170,8 @@
     font-weight: 500;
     letter-spacing: -0.02em;
   }
-  h1 + p em {
+  h1 + p em,
+  h2 em {
     font-family: var(--serif);
     font-weight: 400;
     font-size: 1.12em;
@@ -343,7 +207,6 @@
     background: var(--grey);
     color: var(--ink-2);
   }
-
   .logos {
     display: flex;
     flex-direction: column;
@@ -363,7 +226,6 @@
     color: #9ea2a9;
     font-size: 20px;
   }
-
   .diff {
     padding: 12px 0;
     color: var(--soft);
@@ -394,37 +256,6 @@
   .diff + p code {
     color: var(--soft);
   }
-
-  .examples {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 0;
-  }
-  .examples [role='group'] {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .examples button {
-    min-height: 32px;
-    padding: 5px 12px;
-    border: 1px solid var(--edge);
-    border-radius: 8px;
-    background: none;
-    color: var(--muted);
-    font: 12.5px var(--mono);
-    cursor: pointer;
-  }
-  .examples button:hover {
-    color: var(--ink);
-  }
-  .examples [aria-pressed='true'] {
-    border-color: var(--accent);
-    color: var(--ink);
-    background: var(--raised);
-  }
-
   .more {
     align-self: center;
     font-weight: 500;
@@ -437,12 +268,6 @@
   .convince a {
     font-weight: 500;
   }
-
-  .facts {
-    border-radius: 14px;
-    font-size: 14px;
-  }
-
   .feature {
     padding: 24px;
     display: flex;
@@ -464,131 +289,6 @@
   .feature p {
     font-size: 14.5px;
   }
-
-  .model-card {
-    border-radius: 14px;
-    font-size: 15px;
-    line-height: 1.5;
-  }
-  .model-card header {
-    padding: 22px 26px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 14px 12px;
-    border-bottom: 1px solid var(--line);
-  }
-  .model-card h3 {
-    font-family: var(--mono);
-    font-size: 18px;
-  }
-  .model-card ul {
-    flex-basis: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-  .model-card li {
-    padding: 3px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px;
-    color: var(--soft);
-  }
-
-  .counters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-top: 8px;
-  }
-  .counters div {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-  .counters dd {
-    color: var(--ink);
-    font-size: 56px;
-    font-weight: 500;
-    letter-spacing: -0.05em;
-    line-height: 1;
-  }
-  .counters dt {
-    margin-top: 8px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .license {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px 56px;
-  }
-  .license > :global(:first-child) {
-    flex: 1 1 300px;
-  }
-  .license pre {
-    flex: 999 1 560px;
-    min-width: 0;
-    padding: 28px;
-    border-radius: 12px;
-    font-size: 13px;
-    white-space: pre-wrap;
-  }
-  .license span:target {
-    color: var(--ink);
-    background: rgba(125, 211, 252, 0.12);
-    box-shadow: 0 0 0 6px rgba(125, 211, 252, 0.12);
-    border-radius: 2px;
-  }
-
-  .quote {
-    height: 100%;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    border-color: var(--line);
-  }
-  blockquote {
-    color: var(--ink-2);
-    font-size: 15.5px;
-    quotes: '“' '”';
-  }
-  blockquote::before {
-    content: open-quote;
-  }
-  blockquote::after {
-    content: close-quote;
-  }
-  .quote figcaption {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    font-size: 13.5px;
-  }
-  .quote i {
-    flex: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--grey);
-    color: var(--ink-2);
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-  }
-  .quote b {
-    display: block;
-    color: var(--ink);
-    font-weight: 400;
-  }
-
   .tier {
     padding: 28px;
     display: flex;
@@ -629,7 +329,6 @@
     border-radius: 9px;
     font-size: 14px;
   }
-
   details {
     padding: 18px 0;
     border-bottom: 1px solid var(--line);
@@ -655,7 +354,6 @@
   details p {
     margin-top: 12px;
   }
-
   /* closing call to action */
   h2 {
     align-self: center;

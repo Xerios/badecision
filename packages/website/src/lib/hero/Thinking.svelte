@@ -10,6 +10,7 @@
 
   let { still = false } = $props()
   let ready = $state(false)
+  let root
   let now = $state(0)
 
   const categories = [
@@ -119,10 +120,10 @@
   const secs = $derived(Math.floor(now / 1000))
   const thought = $derived(secs < 60 ? `${secs}s` : `${Math.floor(secs / 60)}m ${secs % 60}s`)
 
-  onMount(() => loop(t => (now = t), { still, at: starts[9] + 600, onReady: () => (ready = true) }))
+  onMount(() => loop(t => (now = t), { still, root, at: starts[9] + 600, onReady: () => (ready = true) }))
 </script>
 
-<div class="thinking" class:ready style:--k={build}>
+<div class="thinking" bind:this={root} class:ready style:--k={build}>
   <p class="ask">Should we deploy on Friday?</p>
   <p class="who"><i>✦</i> <b>Thinking</b> <span>· {thought}</span></p>
   <div class="stream">

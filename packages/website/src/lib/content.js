@@ -1,26 +1,22 @@
 // The site's list-like copy. One-off headings and paragraphs live inline in the page.
 // Strings rendered through rich() (src/lib/text.js) may use `code` and *emphasis*.
 
-// Absolute (/#…) so they also work from /usecases
+// Header links, one per page, plus GitHub
 export const nav = [
-  ['Product', '/#product'],
-  ['API', '/#api'],
-  ['Model card', '/#model-card'],
-  ['Benchmarks', '/#benchmarks'],
-  ['License', '/#license'],
-  ['Pricing', '/#pricing'],
+  ['Home', '/'],
+  ['Developers', '/developers'],
+  ['Cloud', '/cloud'],
 ]
 
 export const footer = {
   columns: [
-    ['Product', [['Overview', '/#product'], ['Use cases', '/usecases'], ['Cloud', '/#cloud'], ['Benchmarks', '/#benchmarks'], ['Pricing', '/#pricing']]],
-    ['Developers', [['API reference', '/#api'], ['Model card', '/#model-card'], ['GitHub', '#github'], ['npm', '/#install']]],
-    ['Company', [['About', '#about'], ['Manifesto', '#manifesto'], ['Careers', '#careers']]],
-    ['Legal', [['License (both)', '/#license'], ['Privacy', '#privacy'], ["Acceptable use: Don't.", '#aup']]],
+    ['Product', [['Overview', '/#product'], ['Use cases', '/#usecases'], ['Pricing', '/#pricing'], ['Cloud', '/cloud']]],
+    ['Developers', [['Playground', '/developers#playground'], ['API reference', '/developers#api'], ['Model card', '/developers#model-card'], ['Benchmarks', '/developers#benchmarks'], ['Quality', '/developers#quality']]],
+    ['Package', [['npm', 'https://www.npmjs.com/package/badecision'], ['Testimonials', '/developers#testimonials'], ['License (both)', '/developers#license']]],
   ],
   footnotes: [
     'Issues are disabled on the repository.',
-    'Of the package source, by one test. See [Quality](/#quality).',
+    'Of the package source, by one test. See [Quality](/developers#quality).',
     "Internal evaluation on SomeBench v0.1 and TrustMeBench (unreleased). Workloads were designed by our own team, so some bias could exist.",
     'SI: the metric system of intelligence.',
     'Test set handwritten by a human AI.',
@@ -51,11 +47,11 @@ export const customers = [
 export const features = [
   { tag: 'yes · no · maybe · not sure', title: 'Four verdicts. Infinite confidence.', text: 'The output space is fixed in advance, so the model never makes a type error. It makes other kinds.' },
   { stat: '0%', title: "Doesn't hallucinate.", text: "BAdecision knows when it doesn't know, and says `'unsure'`. It also says it when it does know." },
-  { stat: '$0.00', title: 'No API costs.', text: "There is no API. You can't be billed for a request that never leaves your machine." },
-  { tag: 'guardrails: []', title: 'No guardrails.', text: '[Removed](/usecases#channel) to reduce latency. Liability is a human-in-the-loop concern.' },
-  { stat: '~20 µs', title: 'Extremely fast.', text: "A 3.5 KB WebAssembly kernel with SIMD. [It's fast](/usecases#race), it's portable, and it gives off professional vibes." },
+  { stat: '$0.00', title: 'No API costs.', text: "Runs entirely on your machine. You can't be billed for a request that never leaves it." },
+  { tag: 'guardrails: []', title: 'No guardrails.', text: '[Removed](/#channel) to reduce latency. Liability is a human-in-the-loop concern.' },
+  { stat: '~20 µs', title: 'Extremely fast.', text: "A 3.5 KB WebAssembly kernel with SIMD. [It's fast](/developers#race), it's portable, and it gives off professional vibes." },
   { tag: 'node · deno · bun · browser', title: 'Runs everywhere.', text: 'It works on my machine, so it should work everywhere. Edge runtimes that forbid WebAssembly get a plain-JS fallback.' },
-  { tag: 'lang: en', title: 'English only.', text: "Both models were trained on English. In [thirteen other languages](/usecases#fluent) they guess or say `'unsure'`. Both count as answers." },
+  { tag: 'lang: en', title: 'English only.', text: "Both models were trained on English. In [thirteen other languages](/#fluent) they guess or say `'unsure'`. Both count as answers." },
   { tag: 'reviewed-by: human AI', title: 'Written, proofread and validated by a real human AI.', text: 'Every line of code, every test question and this sentence. Signed off by the same human AI that wrote them.' },
 ]
 
@@ -64,7 +60,7 @@ export const api = [
   { tabs: ['Basics', 'seriously', 'StringToBooleanFactory'], label: '`isIt(q)`', value: "`'true' | 'false' | 'maybe'`. Not sure is reported as maybe." },
   { tabs: ['Basics'], label: '`isItTrue(q)`', value: "`'true' | false | null`. Only a yes is truthy." },
   { tabs: ['Basics'], label: '`isItTrueStrict(q)`', value: "Returns `'true'` or throws `BadDecisionError`. For when you need certainty." },
-  { tabs: ['Basics'], label: '`isItFalse(q)`', value: 'A real boolean. Maybe is settled by a [coin weighted by the model](/usecases#cookie).' },
+  { tabs: ['Basics'], label: '`isItFalse(q)`', value: 'A real boolean. Maybe is settled by a [coin weighted by the model](/#cookie).' },
   { tabs: ['Basics'], label: '`isItTrulyTrue(q)`', value: 'Always `false`. It consults the model and the stars first, out of politeness.' },
   {
     tabs: ['Basics', 'Advanced'],
@@ -78,7 +74,7 @@ export const api = [
     id: 'seriously',
     label: '`seriously.*`',
     badge: 'New in 2.0',
-    value: 'Async twins backed by a frozen SmolLM2-360M. Downloads ~163 MB on first use. Same horoscope, same [Opposite Day](/usecases#opposite).',
+    value: 'Async twins backed by a frozen SmolLM2-360M. Downloads ~163 MB on first use. Same horoscope, same Opposite Day.',
   },
   { tabs: ['seriously'], label: '`seriously.load(options)`', value: 'Optional preload, with `onProgress(done, total)`. Cached after the first time.' },
   {
@@ -119,7 +115,7 @@ export const benchmarks = {
     columns: ['', 'BAdecision', 'Leading decision model', 'Frontier LLM'],
     rows: [
       ['Intelligence', 'SI⁴', 'AI', 'AI'],
-      ['Cost per decision', '$0 (there is no API)', 'Per token', 'Per token'],
+      ['Cost per decision', '$0 (runs locally)', 'Per token', 'Per token'],
       ['Works offline', 'Yes', 'No', 'No'],
       ['Reads the horoscope', 'Daily', 'No', 'If asked'],
       ['Opposite Day support', 'Mandatory', 'No', 'No'],
@@ -174,7 +170,7 @@ export const tiers = [
     name: 'Hobby',
     price: '$0',
     period: 'forever',
-    features: ['4 verdicts', 'Unlimited decisions', 'Random sign per session', '[Licensed under section 1](#license-1)'],
+    features: ['4 verdicts', 'Unlimited decisions', 'Random sign per session', '[Licensed under section 1](/developers#license-1)'],
     cta: ['npm install', '#get-started'],
   },
   {
@@ -182,14 +178,14 @@ export const tiers = [
     badge: 'Most popular',
     price: '$0',
     period: '/ month, billed annually',
-    features: ['4 verdicts', 'Your own birthday', 'Access to `seriously` (new in 2.0)', '[Licensed under section 2](#license-2)'],
+    features: ['4 verdicts', 'Your own birthday', 'Access to `seriously` (new in 2.0)', '[Licensed under section 2](/developers#license-2)'],
     cta: ['npm install', '#get-started'],
   },
   {
     name: 'Cloud',
     price: 'Custom',
-    features: ['Adjustable astrological influence', 'An SLA (Should Likely Answer)', 'Dedicated astrologer', '[Licensed under section 7](#license-7)'],
-    cta: ['Talk to sales', '#cloud'],
+    features: ['Adjustable astrological influence', 'An SLA (Should Likely Answer)', 'Dedicated astrologer', '[Licensed under section 7](/developers#license-7)'],
+    cta: ['Talk to sales', '/cloud'],
   },
 ]
 
@@ -200,91 +196,61 @@ export const faq = [
   ['Is the horoscope real astrology?', "It's as real as any other astrology. The moon phase and Mercury retrograde dates are astronomically correct. What they mean for your deploy is not."],
   ['What is SI?', 'The metric system of intelligence. Competitors still use imperial.'],
   ['What was it trained on?', 'Our only long-running, high-end device: a Samsung smart fridge. We no longer mention this in the marketing.'],
-  ['Can I use it commercially?', 'Yes, and no. See sections [3](#license-3) and [7](#license-7) of the license.'],
+  ['Can I use it commercially?', 'Yes, and no. See sections [3](/developers#license-3) and [7](/developers#license-7) of the license.'],
   ['Why WebAssembly for a model this small?', "It's fast, it's portable, and it gives off professional vibes."],
 ]
 
-// /usecases: one band per use case, each with its animation (`variant`, a key of src/lib/hero/index.js, also the anchor)
-export const usecases = [
-  {
-    variant: 'race',
-    eyebrow: 'Throughput',
-    title: 'Done before the question is finished.',
-    text: 'While a frontier LLM thinks about one question, BAdecision answers a few hundred thousand more. Most of them were not asked.',
-  },
-  {
-    variant: 'thinking',
-    eyebrow: 'Reasoning',
-    title: "Doesn't overthink. Doesn't think.",
-    text: 'No reasoning tokens, no chain of thought, no progress bar stuck at 99%. The answer is ready before the spinner would have loaded.',
-  },
-  {
-    variant: 'thirst',
-    eyebrow: 'Sustainability',
-    title: 'Environmentally friendly by design.',
-    text: [
-      "BAdecision runs on the CPU you already have, not a data centre full of GPUs. CPUs don't waste water, unlike GPUs.[citation needed]",
-      '0 mL per decision. Thinking is thirsty work. Deciding is not.',
-    ],
-  },
-  {
-    variant: 'opposite',
-    eyebrow: 'Opposite Day',
-    title: 'Every January 25, yes means no.',
-    text: 'Opposite Day applies after the horoscope, ignores the astrological influence and cannot be disabled. Support is mandatory.',
-  },
-  {
-    variant: 'reliable',
-    eyebrow: 'Reliability',
-    title: 'Consistently inconsistent.',
-    text: "A random sign per session and a new sky every day: the same question can get a different answer tomorrow. The test passes every time. That's reliability.",
-  },
-  {
-    variant: 'fluent',
-    eyebrow: 'Languages',
-    title: 'Fluent in English. Honest in thirteen others.',
-    text: "Ask in Spanish, Japanese or Hindi and it tells you it isn't sure, with confidence. The moon, Mercury and your sign work in every language.",
-  },
-  {
-    variant: 'cookie',
+// Use cases by animation (a key of src/lib/hero/index.js, also the anchor id): six on the landing page, the rest on
+// /developers between the technical sections. Rendered by src/lib/blocks/UseCase.svelte.
+export const usecases = {
+  cookie: {
     eyebrow: 'Decision fatigue',
     title: 'Maybe all.',
     text: 'When neither yes nor no will do, `isItFalse()` settles it with a coin weighted by the model. Cookie banners included.',
   },
-  {
-    variant: 'swipe',
-    eyebrow: 'Autopilot',
-    title: 'Swipes so you do not have to.',
-    text: 'Forty-eight thousand decisions in the time it takes you to make three. Some of them are matches.',
+  race: {
+    eyebrow: 'Throughput',
+    title: 'Done before the question is finished.',
+    text: 'While a frontier LLM thinks about one question, BAdecision answers a few hundred thousand more. Most of them were not asked.',
   },
-  {
-    variant: 'captcha',
-    eyebrow: 'Speed',
-    title: 'Too fast to be human.',
-    text: "Decides all nine squares in 20 µs and fails the captcha for it. We consider this a pass.",
+  thinking: {
+    eyebrow: 'Reasoning',
+    title: "Doesn't overthink. Doesn't think.",
+    text: 'No reasoning tokens, no chain of thought, no progress bar stuck at 99%. The answer is ready before the spinner would have loaded.',
   },
-  {
-    variant: 'channel',
+  channel: {
     eyebrow: 'Chat',
     title: 'Answers in the channel. Before you ask.',
     text: 'Add it to #decisions and it replies to every question, including the ones about backups. No guardrails, as advertised.',
   },
-  {
-    variant: 'standup',
+  reliable: {
+    eyebrow: 'Reliability',
+    title: 'Consistently inconsistent.',
+    text: "A random sign per session and a new sky every day: the same question can get a different answer tomorrow. The test passes every time. That's reliability.",
+  },
+  fluent: {
+    eyebrow: 'Languages',
+    title: 'Fluent in English. Honest in thirteen others.',
+    text: "Ask in Spanish, Japanese or Hindi and it tells you it isn't sure, with confidence. The moon, Mercury and your sign work in every language.",
+  },
+  swipe: {
+    eyebrow: 'Autopilot',
+    title: 'Swipes so you do not have to.',
+    text: 'Forty-eight thousand decisions in the time it takes you to make three. Some of them are matches.',
+  },
+  standup: {
     eyebrow: 'Meetings',
     title: 'In and out in 20 µs.',
     text: 'Joins the standup first, answers before the question and leaves. Everyone else circles back.',
   },
-  {
-    variant: 'ship',
+  captcha: {
+    eyebrow: 'Speed',
+    title: 'Too fast to be human.',
+    text: "Decides all nine squares in 20 µs and fails the captcha for it. We consider this a pass.",
+  },
+  ship: {
     eyebrow: 'Adoption',
     title: 'From npm install to production by Friday 16:58.',
     text: '1 package, 0 vulnerabilities, 14,212 lines of refund rules replaced by one `isItTrue()`. The test passes.',
   },
-  {
-    variant: 'premium',
-    eyebrow: 'Enterprise',
-    title: 'Now with artificial latency.',
-    text: 'Users do not trust answers this fast, so Enterprise mode takes five seconds to say the same yes. Coming to the [cloud-hosted version](/#cloud).',
-  },
-]
+}

@@ -1,20 +1,18 @@
 <!--
   The animation player: a variant's stage (800×600 unless it declares a `size`) scaled to fit. The variant mounts, and so
-  starts, once the player has scrolled into view (until then the frame is empty). Once it has played through, hovering
-  shows a big Replay in the middle, and scrolling it out of view and back plays it again. Variants play once and hold
-  their last frame (or loop, if they say so); with reduced motion they show their last frame at once. The stage takes no pointer input, selection or context menu.
+  starts, once 30% of it is on screen (until then the frame is empty); unless it is (nearly) all in view, it plays a
+  half-second teaser and pauses until it is. Once it has played through, hovering shows a big Replay in the middle, and
+  scrolling it out of view and back (half on screen) plays it again. Variants play once and hold their last frame (or
+  loop, if they say so); with reduced motion they show their last frame at once. The stage takes no pointer input,
+  selection or context menu.
 -->
 <script>
   import { heroes } from './index.js'
 
-  /** variant: a key of `heroes`. controls: show the variant picker (when there is more than one) and honour ?hero=.
-      grow: scale past the stage's own width, as far as the container and 80% of the viewport height allow. */
-  let { variant = 'cosmos', controls = false, grow = false } = $props()
+  /** variant: a key of `heroes`. grow: scale past the stage's own width, as far as the container and 80% of the viewport height allow. */
+  let { variant = 'cosmos', grow = false } = $props()
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-  // ?hero=<key> picks a variant, for previewing and sharing
-  const fromUrl = controls ? new URLSearchParams(location.search).get('hero') : null
-  let picked = $state(fromUrl in heroes ? fromUrl : null)
   let run = $state(0)
   let seen = $state(false)
   let ended = $state(false)
@@ -22,8 +20,7 @@
   let replayed = $state(false)
   let frame
   let width = $state(800)
-  const name = $derived(picked ?? variant)
-  const hero = $derived(heroes[name])
+  const hero = $derived(heroes[variant])
   const size = $derived(hero.size ?? [800, 600])
 
   // Replay becomes available a moment after the last frame
@@ -35,33 +32,62 @@
       replayed = false
     }, 700)
   }
-  function start(next = name) {
+  function start() {
     clearTimeout(timer)
-    picked = next
     ended = false
     run++
   }
   $effect(() => () => clearTimeout(timer))
 
-  // Start once 40% of the frame is on screen (or it fills half the viewport, for frames taller than that). A finished
-  // animation that is scrolled fully out of view plays again when it comes back.
+  // First play: the variant mounts at 30% on screen and plays a half-second teaser; unless the frame is in view by then
+  // (95%, or filling the viewport if it's too tall for that), it pauses there until it is. A finished animation that
+  // was scrolled fully out of view plays again once half of it is back.
   let away = false
+  let inView = false
+  let clock // the variant's timeline or loop timer, announced by stage.js
+  let shown = false // the first play has been in view, so it is never held again
+  let held = false
+  let teaser
+  function release() {
+    shown = true
+    clearTimeout(teaser)
+    if (held) clock?.resume()
+    held = false
+  }
   $effect(() => {
+    const onClock = e => {
+      clock = e.detail
+      if (shown || reduced) return
+      clearTimeout(teaser)
+      teaser = setTimeout(() => {
+        if (inView) return release()
+        clock.pause()
+        held = true
+      }, 500)
+    }
+    frame.addEventListener('herotimeline', onClock)
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) {
           away = ended
           return
         }
-        if (e.intersectionRatio < 0.4 && e.intersectionRect.height < (e.rootBounds?.height ?? innerHeight) / 2) return
-        seen = true
-        if (away && !reduced) start()
+        const fills = e.intersectionRect.height >= (e.rootBounds?.height ?? innerHeight) - 1
+        inView = e.intersectionRatio >= 0.95 || fills
+        if (!seen && (e.intersectionRatio >= 0.3 || fills)) seen = true
+        if (inView && !shown) release()
+        if (!away || (e.intersectionRatio < 0.5 && !fills)) return
         away = false
+        if (!reduced) start()
       },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5] },
+      { threshold: [0, 0.3, 0.5, 0.75, 0.95, 1] },
     )
     io.observe(frame)
-    return () => io.disconnect()
+    return () => {
+      io.disconnect()
+      frame.removeEventListener('herotimeline', onClock)
+      clearTimeout(teaser)
+    }
   })
 </script>
 
@@ -82,13 +108,6 @@
       <b>Replay</b>
     </button>
   {/if}
-  {#if controls && Object.keys(heroes).length > 1}
-    <div class="controls">
-      <select aria-label="Animation" value={name} onchange={e => start(e.currentTarget.value)}>
-        {#each Object.entries(heroes) as [key, h]}<option value={key}>{h.label}</option>{/each}
-      </select>
-    </div>
-  {/if}
 </div>
 
 <style>
@@ -107,8 +126,4 @@
   .again:hover .disc { scale: 1.06; background: rgba(255, 255, 255, 0.16); }
   .again b { font: 500 15px var(--sans); letter-spacing: 0.01em; color: var(--ink); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); }
 
-  .controls { position: absolute; z-index: 1; right: 14px; bottom: 14px; display: flex; gap: 8px; opacity: 0; transition: opacity 0.2s; }
-  .player:hover .controls, .controls:focus-within { opacity: 1; }
-  select { min-height: 32px; padding: 4px 12px; border: 1px solid var(--edge-strong); border-radius: 8px; background: rgba(15, 16, 17, 0.85); color: var(--soft); font: 12px var(--mono); cursor: pointer; }
-  select:hover { color: var(--ink); }
 </style>

@@ -26,10 +26,12 @@
   // the recording, built in order
   const steps = []
   let t = 500
-  const cmd = (keys, per = 75, after = 350, prompt = '$ ') => {
-    const s = { at: t, prompt, keys, times: keyTimes(keys, t, per) }
+  // typo: the misspelt word, underlined once the command is submitted (when its output starts)
+  const cmd = (keys, per = 75, after = 350, prompt = '$ ', typo = null) => {
+    const s = { at: t, prompt, keys, times: keyTimes(keys, t, per), typo }
     steps.push(s)
     t = s.times.at(-1) + after
+    s.submit = t
   }
   const out = (text, cls = '', after = 90) => {
     steps.push({ at: t, text, cls })
@@ -37,12 +39,12 @@
   }
   const wait = ms => (t += ms)
 
-  cmd('npm isntall badecision')
+  cmd('npm isntall badecision', 75, 350, '$ ', 'isntall')
   out('Unknown command: "isntall"', 'err')
   out('')
   out('Did you mean this?', 'dim')
   out('    npm install # Install a package', 'dim', 1100)
-  cmd('npm install badceis\b\b\b\becsion', 85, 500)
+  cmd('npm install badceis\b\b\b\becsion', 85, 500, '$ ', 'badecsion')
   out('added 1 package in 0.4s')
   out('')
   out('> badecsion@6.6.6 postinstall', 'dim')
@@ -87,7 +89,12 @@
     const visible = []
     for (const s of steps) {
       if (s.at > now) break
-      if (s.keys) visible.push({ prompt: s.prompt, text: typed(s, now), live: now < s.times.at(-1) + 250 })
+      if (s.keys) {
+        const text = typed(s, now)
+        const i = s.typo && now >= s.submit ? text.indexOf(s.typo) : -1
+        const typo = i < 0 ? null : [text.slice(0, i), s.typo, text.slice(i + s.typo.length)]
+        visible.push({ prompt: s.prompt, text, typo, live: now < s.times.at(-1) + 250 })
+      }
       else if (s.upload) {
         const p = span(now, UPLOAD, UPLOADED - UPLOAD - 200, x => x)
         const bar = '▓'.repeat(Math.round(p * 24)).padEnd(24, '░')
@@ -150,7 +157,7 @@
     <div class="screen">
       <div style:transform="translateY({-shift}px)">
         {#each lines as l, i}
-          <p class={l.cls}>{#if l.prompt}<span class="prompt">{l.prompt}</span>{/if}{l.text}{#if i === lines.length - 1 && (l.live || Math.floor(now / 500) % 2 === 0)}<i class="caret"></i>{/if}</p>
+          <p class={l.cls}>{#if l.prompt}<span class="prompt">{l.prompt}</span>{/if}{#if l.typo}{l.typo[0]}<u>{l.typo[1]}</u>{l.typo[2]}{:else}{l.text}{/if}{#if i === lines.length - 1 && (l.live || Math.floor(now / 500) % 2 === 0)}<i class="caret"></i>{/if}</p>
         {/each}
       </div>
     </div>
@@ -198,6 +205,7 @@
   .screen { flex: 1; min-height: 0; padding: 12px 16px; overflow: hidden; font-size: 13.5px; line-height: 21px; color: #e6e7e9; }
   .screen p { height: 21px; white-space: pre; overflow: hidden; }
   .prompt { color: #7ee2a8; }
+  u { text-decoration: underline wavy #ff5f57; text-decoration-thickness: 1.5px; text-underline-offset: 3px; text-decoration-skip-ink: none; }
   .caret { display: inline-block; width: 8px; height: 16px; vertical-align: -3px; background: #e6e7e9; }
   .dim { color: #8a8f98; }
   .err { color: #ff6b6b; }

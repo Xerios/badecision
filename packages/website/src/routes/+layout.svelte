@@ -1,6 +1,6 @@
 <script>
   import '../style.css'
-  import Icon from '#lib/components/Icon.svelte'
+  import { page } from '$app/state'
   import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
   import { nav, footer } from '#lib/content.js'
   import { rich } from '#lib/text.js'
@@ -20,16 +20,13 @@
       BAdecision
     </a>
     <ul>
-      {#each nav as [label, href]}<li><a {href}>{label}</a></li>{/each}
+      {#each nav as [label, href]}<li><a {href} aria-current={page.url.pathname === href ? 'page' : null}>{label}</a></li>{/each}
     </ul>
-    <div>
-      <a href="#github"><Icon name="star" size={14} stroke={1.8} />Star · 4</a>
-      <a class="button primary" href="/#install">Get started</a>
-    </div>
+    <a class="button primary" href="/#pricing">Get started</a>
   </nav>
 </header>
 
-<a href="/#api">
+<a href="/developers#api">
   <span>
     <mark>New</mark>
     <span>BAdecision 2.0 is here, with <code>seriously</code> for the decisions that matter. 2.0.1 adds <code>StringToBooleanFactory</code>.</span>
@@ -39,7 +36,7 @@
 
 <main>{@render children()}</main>
 
-<footer>
+<footer id="start">
   <div>
     <AnimationPlayer variant="buildingup" />
     <nav aria-label="Footer">
@@ -62,9 +59,10 @@
   header { position: sticky; top: 0; z-index: 10; background: rgba(8, 9, 10, 0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
   header nav { max-width: 1160px; min-height: 60px; margin: 0 auto; padding: 10px var(--gutter); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; }
   header nav > a { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 600; font-size: 17px; letter-spacing: -0.03em; }
-  header ul { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: 14px; }
-  header div { display: flex; align-items: center; gap: 10px; }
-  header div a { min-height: 36px; padding: 6px 10px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--edge); border-radius: 8px; font-size: 13px; }
+  header nav > ul { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 4px 6px; font-size: 14px; }
+  header nav > ul a { min-height: 36px; padding: 6px 10px; display: inline-flex; align-items: center; border-radius: 8px; }
+  header nav > ul a:hover { background: var(--raised); }
+  header nav > ul [aria-current] { color: var(--ink); }
   header .button { padding: 8px 14px; font-size: 14px; }
 
   /* announcement banner */
@@ -79,7 +77,7 @@
   footer nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 32px; }
   footer ul { display: flex; flex-direction: column; gap: 10px; }
   footer ul li:first-child { color: var(--ink); font-weight: 500; }
-  footer ol a { text-decoration: underline; text-decoration-color: var(--edge-strong); text-underline-offset: 3px; }
+  footer ol :global(a) { text-decoration: underline; text-decoration-color: var(--edge-strong); text-underline-offset: 3px; }
   footer ol { padding-left: 18px; list-style: decimal; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--muted); }
   footer p { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
   footer p span:first-child { display: inline-flex; align-items: center; gap: 8px; }

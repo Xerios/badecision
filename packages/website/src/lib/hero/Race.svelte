@@ -133,7 +133,7 @@
 
   <div class="stats">
     <div class="stat"><b>{latency}</b><span>per decision</span></div>
-    <div class="stat"><b>${s2.toFixed(s2 > 0.0005 ? 3 : 2)}</b><span>API costs. There is no API.</span></div>
+    <div class="stat"><b>${s2.toFixed(s2 > 0.0005 ? 3 : 2)}</b><span>API costs. Nothing leaves your machine.</span></div>
     <div class="stat"><b>{fmt(s3, s3 > 0.05 ? 1 : 0)}%</b><span>hallucination, schema-guaranteed</span></div>
   </div>
   <p class="fine">Internal evaluation on TrustMeBench (unreleased). Workloads designed by our own team.</p>

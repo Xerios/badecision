@@ -10,6 +10,7 @@
 
   let { still = false } = $props()
   let ready = $state(false)
+  let root
   let now = $state(0)
 
   const phrases = [
@@ -66,10 +67,10 @@
     return v
   })
 
-  onMount(() => loop(t => (now = t), { still, at: C + L - 700, onReady: () => (ready = true) }))
+  onMount(() => loop(t => (now = t), { still, root, at: C + L - 700, onReady: () => (ready = true) }))
 </script>
 
-<div class="buildingup" class:ready aria-hidden="true" style:--l={light}>
+<div class="buildingup" bind:this={root} class:ready aria-hidden="true" style:--l={light}>
   <i class="pool"></i>
   <p class="logo">
     <svg width="34" height="34" viewBox="0 0 22 22">

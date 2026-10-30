@@ -18,6 +18,9 @@ export const typeOut = (text, now, start, per = 45) => text.slice(0, Math.max(0,
 export const typedAt = (text, start, per = 45) => start + text.length * per
 export const fmt = (n, digits = 0) => n.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })
 
+// Hands the running timeline (or loop timer) to the AnimationPlayer around `root`, which may pause and resume it.
+const announce = (root, clock) => root?.dispatchEvent(new CustomEvent('herotimeline', { bubbles: true, detail: clock }))
+
 /**
  * Builds and runs a variant's timeline. `build(tl, { one, all })` adds tweens and returns the end time.
  * Returns the cleanup for onMount.
@@ -42,7 +45,10 @@ export function play(root, build, { still = false, onend, onUpdate, onReady } = 
       tl.seek(end)
       onUpdate?.(end)
       onend?.()
-    } else tl.play()
+    } else {
+      tl.play()
+      announce(root, tl)
+    }
   })
   return () => {
     gone = true
@@ -52,9 +58,10 @@ export function play(root, build, { still = false, onend, onUpdate, onReady } = 
 
 /**
  * For looping variants: a clock that never ends. Calls onUpdate(ms) every frame; with `still`, renders `at` once.
+ * Pass `root` so the player can pause it.
  * Returns the cleanup for onMount.
  */
-export function loop(onUpdate, { still = false, at = 6000, onReady } = {}) {
+export function loop(onUpdate, { still = false, at = 6000, onReady, root } = {}) {
   let timer
   let gone = false
   document.fonts.ready.then(() => {
@@ -62,6 +69,7 @@ export function loop(onUpdate, { still = false, at = 6000, onReady } = {}) {
     onReady?.()
     if (still) return onUpdate(at)
     timer = createTimer({ duration: 1e9, onUpdate: self => onUpdate(self.currentTime) })
+    announce(root, timer)
   })
   return () => {
     gone = true

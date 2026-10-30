@@ -104,7 +104,7 @@
     <div class="tiles">
       <div class="tile"><span>Decisions / s</span><b>{fmt(rate)}</b><svg width="140" height="20"><polyline points={spark} fill="none" stroke="#5eead4" stroke-width="1.5" /></svg></div>
       <div class="tile"><span>p99 latency</span><b>0.021 ms</b><small>SLO 1 ms · 47× headroom</small></div>
-      <div class="tile"><span>Cost today</span><b>$0.00</b><small>there is no API</small></div>
+      <div class="tile"><span>Cost today</span><b>$0.00</b><small>billed on-device</small></div>
       <div class="tile alerting"><span>Maybe rate</span><b style:color={maybeNow > 30 ? '#fcd34d' : null}>{maybeNow}%</b><small>{maybeNow > 30 ? '▲ anomalous' : 'within forecast'}</small></div>
     </div>
 

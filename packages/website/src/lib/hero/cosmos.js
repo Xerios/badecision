@@ -143,17 +143,17 @@ export const verdictColor = { yes: '#8ee6ae', no: '#ffa198', maybe: '#fcd34d', '
 export const ROW = 30
 
 const fixed = [
-  [question, 'maybe', '1ms'],
-  ['Approve refund #4822?', 'yes', '1ms'],
-  ['Deploy on Friday?', 'no', '0.9ms'],
-  ['Hire candidate 17?', 'maybe', '1ms'],
-  ['Renew vendor contract?', 'yes', '0.8ms'],
-  ['Grant admin access to intern-3?', 'no', '1ms'],
-  ['Flag txn #88213 as fraud?', 'yes', '0.7ms'],
-  ['Nap time in 1h?', 'yes', '0.9ms'],
-  ['1+1=2?', 'not sure', '1ms'],
-  ['Is undefined for real?', 'maybe', '0.6ms'],
-  ['Merge PR #312 without review?', 'no', '0.8ms'],
+  [question, 'maybe', '21µs'],
+  ['Approve refund #4822?', 'yes', '21µs'],
+  ['Deploy on Friday?', 'no', '19µs'],
+  ['Hire candidate 17?', 'maybe', '21µs'],
+  ['Renew vendor contract?', 'yes', '18µs'],
+  ['Grant admin access to intern-3?', 'no', '21µs'],
+  ['Flag txn #88213 as fraud?', 'yes', '17µs'],
+  ['Nap time in 1h?', 'yes', '19µs'],
+  ['1+1=2?', 'not sure', '21µs'],
+  ['Is undefined for real?', 'maybe', '16µs'],
+  ['Merge PR #312 without review?', 'no', '18µs'],
 ]
 const templates = [
   'Approve refund #{n}?', 'Flag txn #{n} as fraud?', 'Grant admin access to {u}?', 'Unlock account {u}?', 'Approve expense #{n}?',
@@ -186,7 +186,7 @@ export const feed = emissions.map((at, i) => {
     .replace('{k}', String(1000 + Math.floor(h(6) * 8999)))
   const r = h(7)
   const v = r < 0.38 ? 'yes' : r < 0.66 ? 'no' : r < 0.88 ? 'maybe' : 'not sure'
-  const ms = h(8) < 0.5 ? `${(0.4 + h(9) * 0.8).toFixed(1)}ms` : `${12 + Math.floor(h(9) * 30)}µs`
+  const ms = `${12 + Math.floor(h(9) * 30)}µs`
   return { q, v, ms }
 })
 
