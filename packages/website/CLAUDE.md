@@ -16,6 +16,12 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
 - `src/lib/components/`: reused pieces: `Intro` (eyebrow, h2, lede, check list, note), `Window` (card with a file-name
   bar), `Facts` (label/value rows), `Table`, `Install`, `Icon` (paths in `src/lib/icons.js`), and `Playground` (the live
   demo, runs the real tiny model from `@badecision/core`).
+- `src/lib/hero/`: the hero animation (anime.js). `HeroAnimation.svelte` is the frame (800×600 stage scaled to fit,
+  Replay, a variant picker once there are several); `index.js` registers the variants. A variant plays once on mount,
+  holds its last frame, and takes `still` (reduced motion: jump to the end) and `onend`. Variants: `Cosmos` (copy,
+  timing and geometry in `cosmos.js`), `Race`, `ShipIt`, `Orrery`, `Keynote`, `Live`, `Channel`, `Fridge`. `stage.js`
+  has the shared `play()` (one timeline, started after fonts load) and easing/typing helpers. Anything procedural
+  derives from the timeline's current time so it stays seekable. Give each phase a hold after its last beat.
 - `src/lib/content.js`: list-like copy as JS objects (testimonials, FAQ, API reference, pricing, …). One-off headings and
   paragraphs stay inline in the page. `src/lib/snippets.js`: code samples and the license text. Strings rendered with
   `rich()` (`src/lib/text.js`) support `` `code` `` and `*emphasis*`.
