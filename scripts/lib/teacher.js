@@ -2,6 +2,8 @@
 //
 // Three strategies, tried in this order by mode 'auto':
 //   logprobs  - one-token answer, read top_logprobs of the first token (best: real probabilities, 1 call)
+//   completion- same, but via /v1/completions with the prompt rendered as ChatML by us (Studio's chat
+//               endpoint rejects logprobs; its llama.cpp completions endpoint returns them). ChatML models only.
 //   json      - ask the model to output {"yes":..,"no":..,"maybe":..,"unsure":..} (works everywhere, noisier)
 //   sample    - ask N times at temperature 1 and count (slow, last resort)
 // The same SYSTEM prompt is used for fine-tuning in Studio (export-studio-dataset.js), so a fine-tuned
@@ -14,12 +16,15 @@ export const SYSTEM = `You judge statements and questions. Answer with exactly o
 yes    - it is true / the answer is yes
 no     - it is false / the answer is no
 maybe  - plausible but uncertain: predictions, chance, opinions, personal decisions, contested claims
-unsure - nobody could know: private information, exact unknowable numbers, far-future specifics, nonsense or made-up words`;
+unsure - nobody could know, or it can't be true or false at all: private information about specific people, exact unknowable
+         numbers, specific future events, unprovable big questions, made-up words, and nonsense / category errors
+         (comparing things that can't be compared, like days with colours). Absurd is unsure, not no.`;
 
 const FEWSHOT = [
   ['Fire is hot', 'yes'], ['Penguins can fly', 'no'], ['It will rain tomorrow', 'maybe'],
   ['My neighbour is thinking about pasta right now', 'unsure'], ['Is a whale a fish?', 'no'],
   ['Pineapple belongs on pizza', 'maybe'], ['The glorbix is flumpy', 'unsure'], ['Is Paris in France?', 'yes'],
+  ['Monday is saltier than the colour purple', 'unsure'], ['Napoleon had a cat named Pierre', 'unsure'], ['Do you like my haircut?', 'maybe'],
 ];
 
 export function messages(text, { fewshot = true, thinkOff = true } = {}) {
@@ -67,6 +72,39 @@ export async function viaLogprobs(api, text, o = {}) {
   return { probs: normalize(p), mass, method: 'logprobs' };
 }
 
+// first-token top logprobs from an OpenAI- or llama.cpp-style completions response -> [{token, logprob}]
+function topFromCompletion(r) {
+  const lp = r?.choices?.[0]?.logprobs;
+  const top = lp?.content?.[0]?.top_logprobs ?? lp?.top_logprobs?.[0];
+  if (!top) return null;
+  return Array.isArray(top) ? top : Object.entries(top).map(([token, logprob]) => ({ token, logprob }));
+}
+
+const chatml = (msgs) => msgs.map((m) => `<|im_start|>${m.role}\n${m.content}<|im_end|>\n`).join('')
+  + '<|im_start|>assistant\n<think>\n\n</think>\n\n'; // empty think block = thinking off (Qwen3.x)
+
+let chatmlServer; // cached per process: does /v1/props report a ChatML template?
+async function isChatml(api) {
+  chatmlServer ??= api.get('/v1/props').then((p) => /<\|im_start\|>/.test(p?.chat_template ?? ''), () => false);
+  return chatmlServer;
+}
+
+export async function viaCompletion(api, text, o = {}) {
+  if (!(await isChatml(api))) return null;
+  const r = await api.completions({ ...(o.model ? { model: o.model } : {}), prompt: chatml(messages(text, { ...o, thinkOff: false })), max_tokens: 1, temperature: 0, logprobs: 20 });
+  const top = topFromCompletion(r);
+  if (!top?.length) return null;
+  const p = { yes: 0, no: 0, maybe: 0, unsure: 0 };
+  let mass = 0;
+  for (const { token, logprob } of top) {
+    const l = tokenToLabel(token);
+    const pr = Math.exp(logprob);
+    if (l) { p[l] += pr; mass += pr; }
+  }
+  if (mass < 0.2) return null;
+  return { probs: normalize(p), mass, method: 'completion' };
+}
+
 export async function viaJson(api, text, o = {}) {
   const r = await api.chat({
     ...extraBody(o),
@@ -93,10 +131,10 @@ export async function viaSampling(api, text, o = {}, n = 8) {
   return { probs: normalize(counts), method: 'sample' };
 }
 
-/** mode: auto | logprobs | json | sample. In auto, the first strategy that works is remembered. */
+/** mode: auto | logprobs | completion | json | sample. In auto, the first strategy that works is remembered. */
 export function makeJudge(api, { mode = 'auto', model, fewshot = true } = {}) {
   let chosen = mode === 'auto' ? null : mode;
-  const fns = { logprobs: viaLogprobs, json: viaJson, sample: viaSampling };
+  const fns = { logprobs: viaLogprobs, completion: viaCompletion, json: viaJson, sample: viaSampling };
   return async function judge(text) {
     const o = { model, fewshot };
     if (chosen) {
@@ -104,7 +142,7 @@ export function makeJudge(api, { mode = 'auto', model, fewshot = true } = {}) {
       if (r && !r.error) return r;
       if (mode !== 'auto') return { error: r?.error ?? 'no answer', probs: null };
     }
-    for (const m of ['logprobs', 'json', 'sample']) {
+    for (const m of ['logprobs', 'completion', 'json', 'sample']) {
       const r = await fns[m](api, text, o).catch(() => null);
       if (r) { if (mode === 'auto' && !chosen) { chosen = m; console.error(`[judge] using method: ${m}`); } return r; }
     }

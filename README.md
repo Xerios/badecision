@@ -5,7 +5,7 @@ It's 323 KB, has zero dependencies, runs on CPU in ~1 ms, and works in the brows
 An optional horoscope layer lets the stars bend the outcome. It is not accurate. On purpose.
 
 ```
-$ npm run ask -- "Should I buy the boat?" --birthday 1990-08-01
+$ pnpm run ask -- "Should I buy the boat?" --birthday 1990-08-01
   → Maybe.  (49%)
     yes     ████··························  13.0%
     no      ████··························  14.0%
@@ -19,9 +19,9 @@ $ npm run ask -- "Should I buy the boat?" --birthday 1990-08-01
 ## Quick start
 
 ```bash
-npm test          # offline self-checks
-npm run ask       # interactive CLI   (or: npm run ask -- "Fire is hot" --astro 0)
-npm run demo      # browser demo at http://localhost:5173/web/
+pnpm test          # offline self-checks
+pnpm run ask       # interactive CLI   (or: pnpm run ask -- "Fire is hot" --astro 0)
+pnpm run demo      # browser demo at http://localhost:5173/web/
 ```
 
 ## Use it in code
@@ -57,10 +57,10 @@ In a browser, serve the folder over http (ES modules don't load from `file://`) 
 ## Retrain
 
 ```bash
-npm run data:seed                      # rebuild the templated seed data
-npm run train                          # seed only
-npm run train:distilled                # seed + LLM-labelled data (after the Unsloth phase)
-npm run eval                           # score on the hand-written test set
+pnpm run data:seed                      # rebuild the templated seed data
+pnpm run train                          # seed only
+pnpm run train:distilled                # seed + LLM-labelled data (after the Unsloth phase)
+pnpm run eval                           # score on the hand-written test set
 node scripts/eval.js --astro 1         # how much do the stars hurt accuracy?
 ```
 

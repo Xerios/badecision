@@ -3,7 +3,7 @@
 > **For a fresh Claude session:** read this file top to bottom, then run _Phase 0_. Everything marked ✅ is built and
 > tested; everything marked 🔲 is the work left. The Unsloth parts were written **without access to the server**
 > (network was blocked when this was built), so treat them as "should work, verify first". A mock server
-> (`npm run unsloth:mock`) emulates the API and the whole pipeline passes against it (`npm test`).
+> (`pnpm run unsloth:mock`) emulates the API and the whole pipeline passes against it (`pnpm test`).
 
 ## Goal
 
@@ -50,13 +50,21 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 - `.env` (git-ignored) has `UNSLOTH_BASEURL = http://<studio-ip>:8888` and `UNSLOTH_API_KEY = sk-unsloth-…`.
   The PC behind it has an **RTX 3060 12 GB** and runs **Unsloth Studio**. `scripts/lib/unsloth.js` parses the
   `KEY = value` format (spaces OK).
-- From the Claude session the URL returned `403 Connection blocked by network allowlist`, even after the user
-  added it. Likely the allowlist entry must be the **bare host** (`<studio-ip>`, no scheme/port) and/or the session
-  must be **new** for the rules to apply. If it's still blocked, the user can run the `npm run unsloth:*` commands on any machine on their LAN.
-- Unsloth docs (unsloth.ai/docs/basics/api) say the API is **inference-only** (OpenAI-compatible `/v1/chat/completions`,
-  `/v1/completions`, `/v1/models`, …). **Training, dataset upload and export are done in the Studio web UI** (which can
-  import a YAML config). `/openapi.json` "includes internal routes", so the probe dumps it to look for undocumented
-  training endpoints. **"Installing" models**: also a UI action (model dropdown) or `unsloth run --model …` on that PC.
+- **Reachable from the Claude session** (2026-10-30): each sandboxed command must list `<studio-ip>:8888` as an allowed
+  host (that's what fixed the 403), plus the `NODE_USE_ENV_PROXY` vars below for Node scripts.
+- **Phase 0 findings** (Studio `v0.1.912-beta`, full route list in `studio/openapi.json`, 690 routes):
+  - The API is **not** inference-only. Present: `/v1/load` + `/v1/unload` (load a model, e.g.
+    `{"model_path":"unsloth/Qwen3.5-9B-GGUF","gguf_variant":"UD-Q4_K_XL","max_seq_length":8192,"n_parallel":4,"disable_vision":true}`),
+    `/api/inference/loaded-models`, OpenAI-style `/v1/fine_tuning/jobs` (create/list/events/checkpoints/cancel/pause/resume),
+    `/api/train/{start,stop,status,metrics,runs,hardware}`, `/api/datasets/upload`, `/api/export/export/{gguf,merged,lora}`,
+    `/api/hub/download`, and per-checkpoint inference at `/p/{run}/{checkpoint}/v1/chat/completions`.
+  - `/v1/models` lists every *installed* model (incl. TTS/image ones); the probe now uses `/api/inference/loaded-models`.
+  - **Chat endpoint rejects `logprobs`**, but `/v1/completions` (llama.cpp) returns top-20 logprobs. The judge's
+    `completion` method renders the prompt as ChatML itself and reads first-token probabilities (auto-selected for
+    ChatML models such as Qwen3.5). Far better than `json` mode (which gave 50/50 yes/no on "My neighbour owns 14 spoons").
+  - Installed text LLMs: Qwen3.5-9B (UD-Q4_K_XL downloaded), Qwen3.5-4B, gemma-4-E4B-it, gpt-oss-20b, LFM2.5-24B-A2B.
+  - **Teacher = Qwen3.5-9B UD-Q4_K_XL: 99% on `data/test.jsonl`** (90% before adding "absurd is unsure" + 3 few-shots to
+    `SYSTEM`; slightly optimistic since the prompt was tuned looking at the misses, with different example sentences).
 
 ## Status
 
@@ -73,15 +81,15 @@ runtime:   text ──► tiny model (323 KB int8, pure JS, ~1 ms) ──► pro
 | ✅  | CLI, browser demo, static server, eval, self-tests                                              | `scripts/cli.js`, `web/index.html`, `scripts/serve.js`, `scripts/eval.js`, `scripts/selftest.js` |
 | ✅  | Unsloth client, probe, generator, labeller (logprobs → json → sampling fallbacks)               | `scripts/lib/*.js`, `scripts/probe-unsloth.js`, `scripts/teacher-*.js`                           |
 | ✅  | Studio fine-tune dataset export (chat / ShareGPT / Alpaca)                                      | `scripts/export-studio-dataset.js`                                                               |
-| ✅  | Mock Unsloth server + pipeline test                                                             | `scripts/mock-unsloth.js`, `npm test`                                                            |
+| ✅  | Mock Unsloth server + pipeline test                                                             | `scripts/mock-unsloth.js`, `pnpm test`                                                            |
 | ⚠️  | Fallback Python trainer for the 3060 (soft-label answer-token LoRA + GGUF export). **Untested** | `studio/train_answer_head.py`                                                                    |
-| 🔲  | Phase 0: reach the real Studio, record capabilities                                             | below                                                                                            |
-| 🔲  | Phase 1: generate + label ~6k sentences with the Studio LLM                                     | below                                                                                            |
-| 🔲  | Phase 2: distil into the tiny model, compare to baseline                                        | below                                                                                            |
+| ✅  | Phase 0: reach the real Studio, record capabilities                                             | findings above                                                                                   |
+| ✅  | Phase 1: 4,623 unique sentences generated + labelled (6k requested, rest were duplicates)      | `data/teacher.jsonl`                                                                             |
+| ⚠️  | Phase 2: distilled, **no real gain** (77% vs 76%); baseline kept as default, see results below | `models/exp-distilled`, `models/exp-big`                                                         |
 | 🔲  | Phase 3: fine-tune a small LLM in Studio (optional), use as teacher and/or browser LLM tier     | below                                                                                            |
 | 🔲  | Phase 4: polish (browser LLM tier page, npm package, publish demo)                              | below                                                                                            |
 
-### Baseline numbers (seed data only, `npm run eval`)
+### Baseline numbers (seed data only, `pnpm run eval`)
 
 ```
 accuracy 76.0%   (hand-written test set, n=100)
@@ -92,24 +100,44 @@ maybe       89%      96%
 unsure      95%      80%
 ```
 
+### Phase 1–2 results (2026-10-30, teacher Qwen3.5-9B, `completion` judge, alpha 0.7)
+
+- Generation: 237 batches → 4,623 unique rows (yes 1223 / no 1039 / maybe 1092 / unsure 1269), ~10 min.
+- Teacher disagreed with the generator's intended label on ~800 rows; spot checks say the teacher is usually right
+  (generator wrote "Pluto is a planet" as yes). Known teacher blind spot: with thinking off it calls true **arithmetic
+  statements** false ("Nine minus three equals six" → no 0.99, any prompt framing; the question form is fine, and
+  thinking mode fixes it at 6–24 s/row). Affects only a handful of rows.
+
+| model (`--data seed.train,teacher`)          | test acc | ECE   | yes | no  | maybe | unsure | size   |
+| -------------------------------------------- | -------- | ----- | --- | --- | ----- | ------ | ------ |
+| baseline (seed only), **kept as default**    | 76%      | 0.292 | 72% | 56% | 96%   | 80%    | 323 KB |
+| distilled, default config (`exp-distilled`)  | 77%      | 0.228 | 76% | 72% | 88%   | 72%    | 323 KB |
+| `--buckets 32768 --dim 24 --hidden 48` (`exp-big`) | 74% | 0.142 | 52% | 80% | 92%  | 72%    | 904 KB |
+| `--char 3-4` / `--trigrams` / `--select loss` / all-big | 71–75% | 0.13–0.25 | | |   |        |        |
+
+(recall per class; n=100 so ±4 pts is noise.) Distillation improves calibration but not accuracy: 45/50 test
+yes/no facts have all their content words in the teacher data, yet a hashed bag-of-words can't bind word pairs
+("sharks"+"mammals" → no). Next levers: far more fact coverage (tens of thousands of short facts), or rely on
+the Phase 3 LLM tier for knowledge.
+
 ## Runbook
 
-All commands from the project root, Node ≥ 20, no `npm install` needed (zero deps).
+All commands from the project root, Node ≥ 20, **pnpm** (not npm; `packageManager` is pinned), no install needed (zero deps).
 
 ### Phase 0: connectivity & capabilities (5 min)
 
 ```bash
-npm test                      # 9 offline checks incl. mock-API pipeline, must pass first
-npm run unsloth:probe         # hits the real server from .env
+pnpm test                      # 9 offline checks incl. mock-API pipeline, must pass first
+pnpm run unsloth:probe         # hits the real server from .env
 ```
 
 The probe writes `studio/probe-report.json` and `studio/openapi.json` and prints:
 
 - `models`: which model is loaded. **The labeller needs a capable model loaded** (good picks for 12 GB: Qwen3-8B
   Q4, Qwen3-4B, Llama-3.1-8B Q4, Gemma-3-4B). If only a tiny model is loaded, load a bigger one in the Studio UI
-  first (that's the "install" step; the API can't do it).
-- `chatLogprobs`: if ✔, the judge uses real token probabilities (best). If ✘, it falls back to asking for JSON
-  probabilities (fine, noisier).
+  or via `POST /v1/load` (see Environment facts).
+- `chatLogprobs` / `completionLogprobs`: if either is ✔, the judge uses real token probabilities (best). If both ✘,
+  it falls back to asking for JSON probabilities (noisier).
 - `trainingRelatedRoutes`: **if any training/dataset/export routes show up**, read `studio/openapi.json`, then
   write `scripts/studio-train-api.js` that uploads `data/studio/train.chat.jsonl` and starts a run with the settings in
   Phase 3. If none show up, training goes through the UI (Phase 3, option A).
@@ -123,8 +151,7 @@ export NO_PROXY= no_proxy= NODE_USE_ENV_PROXY=1     # only needed in the Claude 
 curl -s -o /dev/null -w '%{http_code}\n' http://<studio-ip>:8888/v1/models   # 403 "blocked by network allowlist" = allowlist still not applied
 ```
 
-Verified 2026-10-30: with these vars Node reaches npmjs.org through the proxy (200), but the Studio host was
-still refused by the allowlist.
+Verified 2026-10-30: works once the command's sandbox allows `<studio-ip>:8888`.
 
 **Blocked (403 / allowlist / ECONNREFUSED)?** Check the allowlist entry is the bare host `<studio-ip>`, that Studio
 is running and listening on the LAN (not just localhost), and that the key is valid (401 = bad key). Last resort:
@@ -133,9 +160,9 @@ run Phases 1–3 on a machine on the LAN; they're plain Node scripts.
 ### Phase 1: generate & label with the Studio LLM (~1 h on a 3060, rough guess)
 
 ```bash
-npm run unsloth:generate -- --per-label 1500 --batch 25 --concurrency 4   # -> data/teacher.candidates.jsonl
-npm run unsloth:label -- --alpha 0.7 --concurrency 4                       # -> data/teacher.jsonl
-npm run unsloth:eval                                                       # how good is the teacher on the test set?
+pnpm run unsloth:generate -- --per-label 1500 --batch 25 --concurrency 4   # -> data/teacher.candidates.jsonl
+pnpm run unsloth:label -- --alpha 0.7 --concurrency 4                       # -> data/teacher.jsonl
+pnpm run unsloth:eval                                                       # how good is the teacher on the test set?
 ```
 
 - Both scripts are **resumable** (re-run after a crash, they skip finished work) and dedupe.
@@ -145,14 +172,14 @@ npm run unsloth:eval                                                       # how
 - Qwen3-style thinking models: the scripts send `/no_think` and `chat_template_kwargs.enable_thinking=false`.
   If answers still start with `<think>`, the probe's `thinkingLeaks` will say so; pick a non-thinking model.
 - Optional extra: re-label the seed data with the teacher for a softer target:
-  `npm run unsloth:label -- --in data/seed.train.jsonl --out data/teacher.seed.jsonl --alpha 0.4`.
+  `pnpm run unsloth:label -- --in data/seed.train.jsonl --out data/teacher.seed.jsonl --alpha 0.4`.
 - **Never** label `data/test.jsonl` into training data (only `unsloth:eval` reads it).
 
 ### Phase 2: distil into the tiny model (minutes, CPU)
 
 ```bash
-npm run train:distilled            # = train-tiny --data data/seed.train.jsonl,data/teacher.jsonl
-npm run eval                       # compare with the 76% baseline
+pnpm run train:distilled            # = train-tiny --data data/seed.train.jsonl,data/teacher.jsonl
+pnpm run eval                       # compare with the 76% baseline
 node scripts/train-tiny.js --data data/seed.train.jsonl,data/teacher.jsonl --buckets 32768 --dim 24 --hidden 48 --out models/tiny-big
 node scripts/eval.js --model models/tiny-big/model.bin
 ```
@@ -164,7 +191,7 @@ larger `--buckets`, more epochs with `--select acc`. Commit the best `models/tin
 ### Phase 3: fine-tune a small LLM on the 3060 (optional)
 
 ```bash
-npm run unsloth:export -- --soft-copies 1     # -> data/studio/{train,eval}.{chat,sharegpt,alpaca}.jsonl + studio/system_prompt.txt
+pnpm run unsloth:export -- --soft-copies 1     # -> data/studio/{train,eval}.{chat,sharegpt,alpaca}.jsonl + studio/system_prompt.txt
 ```
 
 **Option A, Studio UI** (documented path):
@@ -177,7 +204,7 @@ npm run unsloth:export -- --soft-copies 1     # -> data/studio/{train,eval}.{cha
 4. After training: export **GGUF q8_0 and q4_k_m** + merged 16-bit; load the fine-tuned model in Studio for inference.
 5. If the UI can export a YAML config, save it as `studio/finetune.yaml` so future runs are repeatable.
 
-**Option B, API**: only if Phase 0 found training routes (write `scripts/studio-train-api.js`).
+**Option B, API**: Phase 0 found training routes (`/v1/fine_tuning/jobs`, `/api/train/*`, `/api/datasets/upload`, `/api/export/*`); write `scripts/studio-train-api.js` against `studio/openapi.json`.
 
 **Option C, script on the 3060 PC**: `python studio/train_answer_head.py --data data/seed.train.jsonl data/teacher.jsonl`
 (untested; it trains with a soft cross-entropy on the four answer tokens, which is better than plain SFT for probabilities).
@@ -185,7 +212,7 @@ npm run unsloth:export -- --soft-copies 1     # -> data/studio/{train,eval}.{cha
 Then:
 
 ```bash
-npm run unsloth:eval -- --llm-model <fine-tuned-id> --fewshot false   # compare to the big teacher
+pnpm run unsloth:eval -- --llm-model <fine-tuned-id> --fewshot false   # compare to the big teacher
 ```
 
 - If the fine-tuned model beats the big teacher on the test set, re-label with it (`--model <id> --fewshot false`) and redo Phase 2.
@@ -195,7 +222,7 @@ npm run unsloth:eval -- --llm-model <fine-tuned-id> --fewshot false   # compare 
 
 ### Phase 4: polish ideas
 
-- `npm publish`-ready package (exports already set in package.json; `files` ships only `src/` + `models/tiny/`).
+- `pnpm publish`-ready package (exports already set in package.json; `files` ships only `src/` + `models/tiny/`).
 - Publish `web/` as a shareable page (needs the model inlined or hosted next to it).
 - Horoscope: Venus retrograde, eclipses, a "rising sign" if birth time is given, per-sign daily notes text.
 - Let the horoscope be learned instead of hand-tuned: add zodiac/moon tokens as features and train on (deliberately
@@ -215,7 +242,7 @@ src/
   bdm.js                     public API: createDecider()
 models/tiny/model.bin        the model (model.json = human-readable header + metrics)
 data/
-  seed.train.jsonl / seed.val.jsonl   templated seed data (rebuild: npm run data:seed)
+  seed.train.jsonl / seed.val.jsonl   templated seed data (rebuild: pnpm run data:seed)
   test.jsonl                 hand-written test set, 100 rows, never train on it
   teacher.candidates.jsonl   (Phase 1) LLM-generated sentences
   teacher.jsonl              (Phase 1) LLM-labelled soft targets
@@ -227,5 +254,5 @@ scripts/
 studio/
   system_prompt.txt          judge prompt (generated by unsloth:export, used by the python trainer)
   train_answer_head.py       fallback trainer for the 3060 (untested)
-web/index.html               demo page (npm run demo → http://localhost:5173/web/)
+web/index.html               demo page (pnpm run demo → http://localhost:5173/web/)
 ```

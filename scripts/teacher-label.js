@@ -2,7 +2,7 @@
 // Phase 1c / 3b: have the Studio LLM (base or fine-tuned) assign probabilities to sentences.
 //   node scripts/teacher-label.js                                    # labels data/teacher.candidates.jsonl
 //   node scripts/teacher-label.js --in data/seed.train.jsonl --out data/teacher.seed.jsonl --alpha 0.5
-//   options: --mode auto|logprobs|json|sample  --concurrency 4  --alpha 0.7  --model <id>  --limit 100
+//   options: --mode auto|logprobs|completion|json|sample  --concurrency 4  --alpha 0.7  --model <id>  --limit 100
 //
 // alpha blends teacher with the intended/seed label: probs = alpha*teacher + (1-alpha)*intended.
 // (1.0 = trust the teacher fully; rows without an intended label always use the teacher.)

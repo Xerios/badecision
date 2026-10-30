@@ -7,6 +7,7 @@
   "exports": { ".": "./src/bdm.js", "./horoscope": "./src/horoscope.js", "./model": "./src/model.js" },
   "files": ["src", "models/tiny"],
   "engines": { "node": ">=20" },
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "data:seed": "node scripts/build-seed-dataset.js",
     "train": "node scripts/train-tiny.js",

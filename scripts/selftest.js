@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Sanity checks that need no network: npm test
+// Sanity checks that need no network: pnpm test
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';

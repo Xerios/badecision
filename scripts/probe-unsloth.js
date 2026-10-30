@@ -21,9 +21,12 @@ try {
   const m = await api.models();
   ok('models', (m.data ?? m).map?.((x) => x.id ?? x) ?? m);
 } catch (e) { bad('models', e); if (/ECONNREFUSED|fetch failed|ENOTFOUND|EHOSTUNREACH|allowlist|403/.test(String(e?.message) + String(e?.cause))) { console.log('\nServer unreachable. Check UNSLOTH_BASEURL, that Studio is running, and the network allowlist.');
-  if ((process.env.HTTPS_PROXY || process.env.HTTP_PROXY) && !process.env.NODE_USE_ENV_PROXY) console.log('A proxy is configured but Node fetch ignores it. Retry with:\n  NO_PROXY= no_proxy= NODE_USE_ENV_PROXY=1 npm run unsloth:probe'); } }
+  if ((process.env.HTTPS_PROXY || process.env.HTTP_PROXY) && !process.env.NODE_USE_ENV_PROXY) console.log('A proxy is configured but Node fetch ignores it. Retry with:\n  NO_PROXY= no_proxy= NODE_USE_ENV_PROXY=1 pnpm run unsloth:probe'); } }
 
-const model = flags.model ?? (Array.isArray(report.models) ? report.models[0] : undefined);
+// /v1/models lists everything installed; prefer what's actually loaded (Studio-specific route, optional)
+try { report.loadedModels = (await api.get('/api/inference/loaded-models')).data?.filter((x) => x.loaded).map((x) => x.id); } catch { /* not Studio */ }
+const model = flags.model ?? report.loadedModels?.[0] ?? (Array.isArray(report.models) ? report.models[0] : undefined);
+if (report.loadedModels && !report.loadedModels.length) console.log('⚠ no model loaded in Studio: load a text LLM first');
 if (model) console.log(`(using model: ${model})`);
 
 try {
@@ -51,6 +54,10 @@ try {
 try {
   const r = await api.completions({ model, prompt: 'Q: Is fire hot? Answer yes or no.\nA:', max_tokens: 1, temperature: 0, logprobs: 5 });
   ok('completions', r.choices?.[0]?.text ?? r);
+  const lp = r.choices?.[0]?.logprobs;
+  const top = lp?.top_logprobs?.[0] ?? lp?.content?.[0]?.top_logprobs;
+  if (top) ok('completionLogprobs', Array.isArray(top) ? top.map((t) => `${JSON.stringify(t.token)}:${Math.exp(t.logprob).toFixed(3)}`) : Object.entries(top).map(([t, l]) => `${JSON.stringify(t)}:${Math.exp(l).toFixed(3)}`));
+  else bad('completionLogprobs', 'no logprobs in /v1/completions response');
 } catch (e) { bad('completions', e); }
 
 for (const p of ['/v1/props', '/api/health', '/health']) {
