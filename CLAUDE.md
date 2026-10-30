@@ -18,7 +18,9 @@ the root package is private and holds no code:
 - `packages/core/src/features.js` defines the model's input space. Any change there means retraining (`pnpm run train`) and
   re-checking `pnpm run eval`.
 - **Never train on `packages/model/data/test.jsonl` or `packages/model/data/omen-test.jsonl`.** They are the held-out sets.
-- Never commit `.env` (Studio URL + key, at the repo root). Never `npm publish` without the user asking.
+- Never commit `.env` (Studio URL + key, at the repo root). Never publish or stage without the user asking. Publish
+  only via `pkg:stage`/`pkg:publish` (pnpm rewrites `workspace:*` and runs `prepublishOnly`); never run
+  `npm publish`/`npm stage publish`, which pack whatever folder you are in.
 
 ## Layout
 - `packages/core/src/`: the shared core, plain JS ESM, runs in browsers and Node. The npm package's build
@@ -45,6 +47,8 @@ pnpm run pkg:build        # build packages/badecision/dist
 pnpm run pkg:kernel       # rebuild the WASM kernel too (needs clang with wasm32 + wasm-ld)
 pnpm run pkg:test         # the one test, with coverage
 pnpm run pkg:browser      # static server for packages/badecision/test/browser.html (http://localhost:5174/)
+pnpm run pkg:stage        # build, test, stage badecision on npm (approve with `pnpm stage approve <id>`)
+pnpm run pkg:publish      # build, test, publish badecision directly
 ```
 Root model scripts delegate with `pnpm --filter @badecision/model <script>`; the same names work inside `packages/model/`.
 

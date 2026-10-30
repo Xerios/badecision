@@ -1,6 +1,7 @@
 {
   "name": "badecision-model",
   "version": "0.1.0",
+  "private": true,
   "description": "Workspace: packages/core (shared JS + models), packages/badecision (the npm package), packages/model (training, eval, Studio tooling), packages/website (the Preact demo).",
   "type": "module",
   "engines": {
@@ -32,7 +33,9 @@
     "pkg:build": "pnpm --filter badecision build",
     "pkg:kernel": "pnpm --filter badecision build:kernel",
     "pkg:test": "pnpm --filter badecision test",
-    "pkg:browser": "node packages/badecision/scripts/serve.js"
+    "pkg:browser": "node packages/badecision/scripts/serve.js",
+    "pkg:stage": "pnpm --filter badecision stage publish",
+    "pkg:publish": "pnpm --filter badecision publish"
   },
   "license": "MIT"
 }
