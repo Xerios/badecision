@@ -12,7 +12,7 @@ export const footer = {
   columns: [
     ['Product', [['Overview', '/#product'], ['Use cases', '/#usecases'], ['Pricing', '/#pricing'], ['Cloud', '/cloud']]],
     ['Developers', [['Playground', '/developers#playground'], ['API reference', '/developers#api'], ['Model card', '/developers#model-card'], ['Benchmarks', '/developers#benchmarks'], ['Quality', '/developers#quality']]],
-    ['Package', [['npm', 'https://www.npmjs.com/package/badecision'], ['Testimonials', '/developers#testimonials'], ['License (both)', '/developers#license']]],
+    ['Package', [['npm', 'https://www.npmjs.com/package/badecision'], ['Testimonials', '/#testimonials'], ['License (both)', '/developers#license']]],
   ],
   footnotes: [
     'Issues are disabled on the repository.',
@@ -23,14 +23,14 @@ export const footer = {
   ],
 }
 
-// [label, value, colour]
+// [label, value, colour, link]
 export const badges = [
-  ['npm', 'v2.0.2', '#2f6fb5'],
-  ['coverage', '100%', '#1f7a35'],
-  ['tests', '1', '#0969da'],
-  ['dependencies', '0', '#1f7a35'],
-  ['bugs', '0', '#1f7a35'],
-  ['license', 'MIT AND UNLICENSED', '#9a5b00'],
+  ['npm', 'v2.0.2', '#2f6fb5', 'https://www.npmjs.com/package/badecision'],
+  ['coverage', '100%', '#1f7a35', '/developers#quality'],
+  ['tests', '1', '#0969da', '/developers#quality'],
+  ['dependencies', '0', '#1f7a35', 'https://www.npmjs.com/package/badecision?activeTab=dependencies'],
+  ['bugs', '0', '#1f7a35', '/developers#quality'],
+  ['license', 'MIT AND UNLICENSED', '#9a5b00', '/developers#license'],
 ]
 
 // [name, CSS]
@@ -200,7 +200,7 @@ export const faq = [
   ['Why WebAssembly for a model this small?', "It's fast, it's portable, and it gives off professional vibes."],
 ]
 
-// Use cases by animation (a key of src/lib/hero/index.js, also the anchor id): six on the landing page, the rest on
+// Use cases by animation (a key of src/lib/hero/index.js, also the anchor id): three on the landing page, four on
 // /developers between the technical sections. Rendered by src/lib/blocks/UseCase.svelte.
 export const usecases = {
   cookie: {

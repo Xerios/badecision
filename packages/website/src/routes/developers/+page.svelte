@@ -11,16 +11,9 @@
   import Install from '#lib/components/Install.svelte'
   import Playground from '#lib/components/Playground.svelte'
   import AnimationPlayer from '#lib/hero/AnimationPlayer.svelte'
-  import { api, modelCard, benchmarks, testimonials, usecases } from '#lib/content.js'
+  import { api, modelCard, benchmarks, usecases } from '#lib/content.js'
   import { examples, test, license } from '#lib/snippets.js'
   import { highlight } from '#lib/text.js'
-
-  const initials = name =>
-    name
-      .split(/[\s-]+/)
-      .slice(0, 2)
-      .map(w => w[0])
-      .join('')
 
   // the API section's example tab
   let tab = $state(0)
@@ -131,21 +124,6 @@
 
 <Section label={usecases.reliable.eyebrow} width="1440px" pad="clamp(48px, 6vw, 80px) var(--gutter)">
   <UseCase variant="reliable" flip {...usecases.reliable} />
-</Section>
-
-<Section tone="alt" id="testimonials" title="Loved by engineers, human and agent." small>
-  <AnimationPlayer variant="community" />
-  <Columns min="320px" gap="12px" align="stretch">
-    {#each testimonials as t}
-      <figure class="card quote">
-        <blockquote lang={t.lang}>{t.quote}</blockquote>
-        <figcaption>
-          <i style:background={t.avatar?.[0]} style:color={t.avatar?.[1]}>{t.initials ?? initials(t.name)}</i>
-          <span><b>{t.name}</b>{t.role}</span>
-        </figcaption>
-      </figure>
-    {/each}
-  </Columns>
 </Section>
 
 <Section id="license" label="License">
@@ -279,49 +257,5 @@
     background: rgba(125, 211, 252, 0.12);
     box-shadow: 0 0 0 6px rgba(125, 211, 252, 0.12);
     border-radius: 2px;
-  }
-  .quote {
-    height: 100%;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    border-color: var(--line);
-  }
-  blockquote {
-    color: var(--ink-2);
-    font-size: 15.5px;
-    quotes: '“' '”';
-  }
-  blockquote::before {
-    content: open-quote;
-  }
-  blockquote::after {
-    content: close-quote;
-  }
-  .quote figcaption {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    font-size: 13.5px;
-  }
-  .quote i {
-    flex: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--grey);
-    color: var(--ink-2);
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-  }
-  .quote b {
-    display: block;
-    color: var(--ink);
-    font-weight: 400;
   }
 </style>

@@ -18,11 +18,11 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
   current page is `aria-current`; Get started goes to `/#pricing`), announcement banner, `<main>`, footer (inline markup).
 - `src/routes/+page.svelte`: the landing page, the non-technical pitch. Each band is a `Section`; one-off markup and its
   styles live in the page that uses it.
-- Use cases (`usecases` in `content.js`, keyed by animation; rendered by the `UseCase` block): six bands on the landing
-  page (`#usecases`, then `#<variant>`), the other four (`thinking`, `ship`, `race`, `reliable`) between the sections of
+- Use cases (`usecases` in `content.js`, keyed by animation; rendered by the `UseCase` block): three bands on the landing
+  page (`cookie` at `#usecases`, `fluent`, `channel`), the other four (`thinking`, `ship`, `race`, `reliable`) between the sections of
   `/developers`.
 - `src/routes/developers/+page.svelte`: everything technical: install, Playground, API (example tabs filter the
-  reference rows), Model card (`fridge`), Benchmarks (`sprint`), Quality, Testimonials (`community`) and the License. License sections get ids `#license-<n>`; the linked
+  reference rows), Model card (`fridge`), Benchmarks (`sprint`), Quality and the License. License sections get ids `#license-<n>`; the linked
   one is highlighted from `page.url.hash` (`$app/state`), since `:target` doesn't follow client-side navigation.
 - `src/routes/cloud/+page.svelte`: everything about the (fictional) cloud-hosted version: the Cloud intro, the
   Observability dashboard (`live`) and Enterprise artificial latency (`premium`). Links to it go to `/cloud`.
@@ -44,7 +44,7 @@ SvelteKit, built as a fully static site (`@sveltejs/adapter-static`), over `@bad
   stage width (up to 80vh tall); there is no variant picker; the stage takes no pointer input, selection or context menu); `index.js`
   registers the variants (`size`, `bare`). Landing placement, one per band: hero `cosmos`,
   Governance `orrery`, Get
-  started `typo`, footer `buildingup` (in the layout). `/developers` has `fridge`, `sprint` and `community`, `/cloud` has `live` and `premium`; use cases are listed above; the rest are unused. A variant plays once on mount,
+  started `typo`, Testimonials (after the FAQ) `community`, footer `buildingup` (in the layout). `/developers` has `fridge` and `sprint`, `/cloud` has `live` and `premium`; use cases are listed above; the rest are unused. A variant plays once on mount,
   holds its last frame, and takes `still` (reduced motion: jump to the end) and `onend`. Variants: `Cosmos` (copy,
   timing and geometry in `cosmos.js`), `Race`, `ShipIt`, `Orrery`, `Keynote`, `Live`, `Channel`, `Fridge`. `stage.js`
   has the shared `play()` (one timeline, started after fonts load) and easing/typing helpers. Anything procedural
