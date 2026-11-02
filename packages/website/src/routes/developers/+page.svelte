@@ -68,7 +68,7 @@
   <AnimationPlayer variant="fridge" />
   <article class="card model-card">
     <header>
-      <h3>badecision/balanced-assessment-decisions-2.0.2</h3>
+      <h3>badecision/balanced-assessment-decisions-2.0.3</h3>
       <small>Last updated Oct 30, 2026</small>
       <ul>
         {#each modelCard.tags as tag}<li>{tag}</li>{/each}

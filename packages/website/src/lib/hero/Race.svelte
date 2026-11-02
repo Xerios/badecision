@@ -108,7 +108,7 @@
 
   <section class="pane right">
     <div class="flash"></div>
-    <header><span>badecision <small>2.0.2 · wasm</small></span><span class="pill">{now >= T.answer ? '✓ Done' : 'Ready'}</span></header>
+    <header><span>badecision <small>2.0.3 · wasm</small></span><span class="pill">{now >= T.answer ? '✓ Done' : 'Ready'}</span></header>
     <div class="body">
       <p class="sent">› {question}</p>
       <p class="verdict"><b>→ NO</b><span>0.02 ms · $0.00</span></p>

@@ -25,7 +25,7 @@ export const footer = {
 
 // [label, value, colour, link]
 export const badges = [
-  ['npm', 'v2.0.2', '#2f6fb5', 'https://www.npmjs.com/package/badecision'],
+  ['npm', 'v2.0.3', '#2f6fb5', 'https://www.npmjs.com/package/badecision'],
   ['coverage', '100%', '#1f7a35', '/developers#quality'],
   ['tests', '1', '#0969da', '/developers#quality'],
   ['dependencies', '0', '#1f7a35', 'https://www.npmjs.com/package/badecision?activeTab=dependencies'],
@@ -106,7 +106,7 @@ export const modelCard = {
     { label: 'Environmental impact', value: '[More Information Needed]', muted: true },
     { label: 'Evaluation', value: '[More Information Needed]', muted: true },
     { label: 'Intelligence', value: 'SI' },
-    { label: 'Version', value: '2.0.2' },
+    { label: 'Version', value: '2.0.3' },
   ],
 }
 

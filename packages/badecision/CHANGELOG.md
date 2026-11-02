@@ -3,6 +3,12 @@
 All notable changes to `badecision`. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/). The API is a joke; the versioning isn't.
 
+## 2.0.3 (2026-11-02)
+
+### Changed
+
+- Version bump only; no API or model changes.
+
 ## 2.0.2 (2026-10-30)
 
 ### Changed (breaking)

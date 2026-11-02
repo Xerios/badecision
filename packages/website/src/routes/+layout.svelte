@@ -64,7 +64,7 @@
     <ol>
       {#each footer.footnotes as note}<li>{@html rich(note)}</li>{/each}
     </ol>
-    <p><span>All systems nominal</span><span>BAdecision · Balanced Assessment Decisions · v2.0.2 · ©2026 · Hand-written by AI</span></p>
+    <p><span>All systems nominal</span><span>BAdecision · Balanced Assessment Decisions · v2.0.3 · ©2026 · Hand-written by AI</span></p>
     <small>BAdecision is a parody. It is not affiliated with any company or model mentioned on this site. Testimonials are fictional, including the ones from real AI agents.</small>
   </div>
 </footer>

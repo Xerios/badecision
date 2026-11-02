@@ -55,7 +55,7 @@ const structuredData = site => ({
   ...(site && { url: site + '/' }),
   applicationCategory: 'DeveloperApplication',
   operatingSystem: 'Node.js, Deno, Bun, web browsers',
-  softwareVersion: '2.0.2',
+  softwareVersion: '2.0.3',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   downloadUrl: 'https://www.npmjs.com/package/badecision',
   license: 'https://opensource.org/licenses/MIT',

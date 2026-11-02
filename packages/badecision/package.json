@@ -1,6 +1,6 @@
 {
   "name": "badecision",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Balanced Assessment Decisions. Decisions as a service, without the service. A tiny WebAssembly yes / no / maybe model with a horoscope, for the browser and Node. Now with a serious one (SmolLM2-360M, async).",
   "keywords": ["decision", "yes-no", "horoscope", "astrology", "wasm", "webassembly", "tiny-model", "machine-learning", "smollm2", "gguf", "llm", "joke"],
   "license": "MIT",
